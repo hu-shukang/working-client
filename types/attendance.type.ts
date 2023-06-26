@@ -1,6 +1,6 @@
 /** 勤怠レコード（１日分） */
 export type AttendanceRowModel = {
-  /** 日付(ISO形式、例：2023-06-26T06:28:43.227Z)*/
+  /** 日付(ISO形式、例：2023-06-26T06:28:43.227Z) */
   date: string;
   /** 出社時刻 */
   start: string;
@@ -31,7 +31,7 @@ export const attendanceList = () => {
       break: 60,
       nightBreak: 0,
       timeOff: '',
-      remotely: i % 2 == 0,
+      remotely: i % 2 === 0,
       transportationCosts: 1000 + i,
       comment: ''
     });

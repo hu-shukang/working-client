@@ -1,14 +1,11 @@
-# ESLint + Prettier 環境設定
+# ESLint
 
-コマンド
+yarn add --dev eslint
 
-```shell
-yarn add -D eslint eslint-plugin-vue
-yarn add -D typescript @typescript-eslint/eslint-plugin @typescript-eslint/parser @nuxtjs/eslint-config-typescript
-```
+# Prettier
 
-esLint の初期化を実行
+yarn add --dev prettier eslint-config-prettier eslint-plugin-prettier
 
-```shell
-yarn run eslint --init
-```
+# TypeScript support
+
+yarn add --dev typescript @typescript-eslint/parser @nuxtjs/eslint-config-typescript

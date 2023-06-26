@@ -41,7 +41,7 @@ class DateUtil {
   }
 
   public calcSettlement(actualWorking: number) {
-    if (actualWorking % ConstUtil.SETTLEMENT_UNIT != 0) {
+    if (actualWorking % ConstUtil.SETTLEMENT_UNIT !== 0) {
       return (Math.floor(actualWorking / ConstUtil.SETTLEMENT_UNIT) + 1) * ConstUtil.SETTLEMENT_UNIT;
     }
     return actualWorking;
@@ -65,7 +65,7 @@ class DateUtil {
   public isHolidayOrWeekend(date: string) {
     const d = dayjs(date);
     const day = d.day();
-    if (day == 0 || day == 6) {
+    if (day === 0 || day === 6) {
       return true;
     }
     return false;
