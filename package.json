@@ -31,6 +31,8 @@
     "typescript": "*"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "dayjs": "^1.11.8",
     "sass": "^1.63.6"
   }
 }

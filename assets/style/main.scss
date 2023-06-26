@@ -11,6 +11,10 @@
   min-height: calc(100vh - var(--el-header-height) - var(--el-footer-height));
 }
 
+.el-main {
+  overflow: unset !important;
+}
+
 .el-footer {
   line-height: var(--el-footer-height);
   background-color: var(--el-color-info-light-5);
@@ -36,4 +40,27 @@
 
 .el-descriptions__label {
   font-weight: bold;
+}
+
+.tbl {
+  width: 100%;
+  th {
+    font-weight: bold;
+    color: var(--el-text-color-secondary);
+    background-color: white;
+  }
+  td {
+    background-color: white;
+    color: var(--el-text-color-regular);
+  }
+
+  th,
+  td {
+    font-size: 14px;
+    height: 23px;
+    line-height: 23px;
+    padding: 4px 6px;
+    border: 1px solid var(--el-border-color-lighter);
+    vertical-align: middle;
+  }
 }

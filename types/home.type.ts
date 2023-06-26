@@ -11,7 +11,7 @@ export type NotifyDetail = {
 // Test Data
 export const notifyData = (): Notify[] => {
   const list: Notify[] = [];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     list.push({
       id: i.toString(),
       title: 'Test' + i,

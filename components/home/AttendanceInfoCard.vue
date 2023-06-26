@@ -6,7 +6,9 @@
       </div>
     </template>
     <el-descriptions :column="2">
+      <el-descriptions-item label="所属ID">1000</el-descriptions-item>
       <el-descriptions-item label="所属">東京技術部</el-descriptions-item>
+      <el-descriptions-item label="社員ID">170176</el-descriptions-item>
       <el-descriptions-item label="氏名">胡 書康</el-descriptions-item>
       <el-descriptions-item label="基本出社時刻">09:00</el-descriptions-item>
       <el-descriptions-item label="基本退社時刻">18:00</el-descriptions-item>

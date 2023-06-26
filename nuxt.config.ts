@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   css: [
     '~/assets/style/variables.scss',
     '~/assets/style/reset.scss',
+    '~/assets/style/util.scss',
     '~/assets/style/main.scss'
   ],
   modules: ['@element-plus/nuxt'],
