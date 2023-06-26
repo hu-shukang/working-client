@@ -1,0 +1,39 @@
+.el-header {
+  background-color: var(--el-color-primary);
+  color: var(--el-color-white);
+  line-height: var(--el-header-height);
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+}
+.main-container {
+  margin-top: var(--el-header-height);
+  min-height: calc(100vh - var(--el-header-height) - var(--el-footer-height));
+}
+
+.el-footer {
+  line-height: var(--el-footer-height);
+  background-color: var(--el-color-info-light-5);
+}
+
+.el-aside {
+  border-right: solid 1px var(--el-border-color);
+}
+.el-menu {
+  border-right: none !important;
+}
+
+.el-breadcrumb {
+  margin-bottom: var(--el-main-padding);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.el-descriptions__label {
+  font-weight: bold;
+}
