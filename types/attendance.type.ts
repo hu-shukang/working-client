@@ -1,5 +1,6 @@
 /** 勤怠レコード（１日分） */
 export type AttendanceRowModel = {
+  checked: boolean;
   /** 日付(ISO形式、例：2023-06-26T06:28:43.227Z) */
   date: string;
   /** 出社時刻 */
@@ -25,7 +26,8 @@ export const attendanceList = () => {
   const list: AttendanceRowModel[] = [];
   for (let i = 0; i < 30; i++) {
     list.push({
-      date: `2023-06-${(i + 1).toString().padStart(2, '0')}T06:28:43.227Z`,
+      checked: false,
+      date: `2023-05-${(i + 1).toString().padStart(2, '0')}T06:28:43.227Z`,
       start: '09:00',
       end: '19:16',
       break: 60,

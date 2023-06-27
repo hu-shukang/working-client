@@ -14,6 +14,10 @@ class DateUtil {
     dayjs.locale(ja);
   }
 
+  public toYYYYMMDD(origin?: DayjsDate) {
+    return dayjs(origin).format('YYYY-MM-DD');
+  }
+
   public toMMDD(origin?: DayjsDate) {
     return dayjs(origin).format('MM月DD日');
   }
@@ -62,13 +66,10 @@ class DateUtil {
     return nightOvertimeMinute;
   }
 
-  public isHolidayOrWeekend(date: string) {
+  public isWeekend(date: string) {
     const d = dayjs(date);
     const day = d.day();
-    if (day === 0 || day === 6) {
-      return true;
-    }
-    return false;
+    return day === 0 || day === 6;
   }
 }
 

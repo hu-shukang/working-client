@@ -1,7 +1,14 @@
 <template>
   <tr>
+    <td class="text-center check">
+      <el-checkbox v-model="checked" />
+    </td>
     <td class="text-center date">{{ date }}</td>
-    <td :class="{ 'text-center weekday': true, weekend: isHolidayOrWeekend }">{{ weekday }}</td>
+    <td :class="{ 'text-center weekday': true, weekend: isWeekend, holiday: holiday != null }">
+      <el-tooltip class="box-item" effect="dark" :content="holiday" placement="right" :disabled="holiday == null">
+        <div>{{ weekday }}</div>
+      </el-tooltip>
+    </td>
     <td class="text-center start">{{ row.start }}</td>
     <td class="text-center end">{{ row.end }}</td>
     <td class="text-center break">{{ row.break }}</td>
@@ -23,13 +30,21 @@
   import { AttendanceRowModel } from '~/types/attendance.type';
   import { dateUtil } from '~/utils/date.util';
 
-  const props = defineProps<{ row: AttendanceRowModel }>();
+  const props = defineProps<{ index: number; row: AttendanceRowModel; holidays: any }>();
+  const emit = defineEmits(['check']);
+  const checked = computed({
+    get: () => props.row.checked,
+    set: (value: boolean) => emit('check', props.index, value)
+  });
 
   const date = computed(() => dateUtil.toMMDD(props.row.date));
+  const yyyymmdd = computed(() => dateUtil.toYYYYMMDD(props.row.date));
 
   const weekday = computed(() => dateUtil.toWeekday(props.row.date));
 
-  const isHolidayOrWeekend = computed(() => dateUtil.isHolidayOrWeekend(props.row.date));
+  const isWeekend = computed(() => dateUtil.isWeekend(props.row.date));
+
+  const holiday = computed(() => props.holidays[yyyymmdd.value]);
 
   const actualWorkingMinute = computed(() => dateUtil.calcActualWorking(props.row));
   const actualWorking = computed(() => dateUtil.minuteToHHmm(actualWorkingMinute.value));
@@ -43,6 +58,10 @@
 
 <style scoped lang="scss">
   .weekend {
-    color: var(--el-color-error);
+    background-color: var(--el-color-warning-light-5);
+  }
+
+  .holiday {
+    background-color: var(--el-color-error-light-5);
   }
 </style>

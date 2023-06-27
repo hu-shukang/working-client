@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     '~/assets/style/util.scss',
     '~/assets/style/main.scss'
   ],
-  modules: ['@element-plus/nuxt'],
+  modules: ['@element-plus/nuxt', '@nuxt/content'],
   components: [
     {
       path: '~/components',
