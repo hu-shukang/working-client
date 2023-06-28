@@ -1,6 +1,5 @@
-/** 勤怠レコード（１日分） */
-export type AttendanceRowModel = {
-  checked: boolean;
+/** 勤怠情報（１日分） */
+export type AttendanceInfo = {
   /** 日付(ISO形式、例：2023-06-26T06:28:43.227Z) */
   date: string;
   /** 出社時刻 */
@@ -21,6 +20,11 @@ export type AttendanceRowModel = {
   comment: string;
 };
 
+/** 勤怠情報（１日分） */
+export type AttendanceRowModel = {
+  checked: boolean;
+} & AttendanceInfo;
+
 // Test Data
 export const attendanceList = () => {
   const list: AttendanceRowModel[] = [];
@@ -39,4 +43,19 @@ export const attendanceList = () => {
     });
   }
   return list;
+};
+
+export const emptyAttendanceRowModel = (date: string): AttendanceRowModel => {
+  return {
+    checked: false,
+    date,
+    start: '',
+    end: '',
+    break: 0,
+    nightBreak: 0,
+    timeOff: '',
+    remotely: false,
+    transportationCosts: 0,
+    comment: ''
+  };
 };

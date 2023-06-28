@@ -71,6 +71,21 @@ class DateUtil {
     const day = d.day();
     return day === 0 || day === 6;
   }
+
+  public getDayCount(year: number, month: number): number {
+    const date = dayjs();
+    date.set('year', year);
+    date.set('month', month - 1);
+    return date.daysInMonth();
+  }
+
+  public getIOSDateString(year: number, month: number, day: number): string {
+    const date = dayjs();
+    date.set('year', year);
+    date.set('month', month - 1);
+    date.set('date', day);
+    return date.toISOString();
+  }
 }
 
 export const dateUtil = new DateUtil();
