@@ -14,9 +14,9 @@ class DateUtil {
     dayjs.locale(ja);
   }
 
-  public current() {
-    const today = dayjs();
-    return { year: today.year(), month: today.month() + 1, day: today.date() };
+  public current(origin?: DayjsDate) {
+    const today = dayjs(origin);
+    return { year: today.year(), month: today.month(), day: today.date() };
   }
 
   public toYYYYMMDD(origin?: DayjsDate) {
@@ -80,15 +80,15 @@ class DateUtil {
   public getDayCount(year: number, month: number): number {
     const date = dayjs();
     date.set('year', year);
-    date.set('month', month - 1);
+    date.set('month', month);
     return date.daysInMonth();
   }
 
   public getIOSDateString(year: number, month: number, day: number): string {
-    const date = dayjs();
-    date.set('year', year);
-    date.set('month', month - 1);
-    date.set('date', day);
+    let date = dayjs();
+    date = date.set('year', year);
+    date = date.set('month', month);
+    date = date.set('date', day);
     return date.toISOString();
   }
 }

@@ -64,3 +64,7 @@
     vertical-align: middle;
   }
 }
+
+.el-month-table td.today .cell {
+  color: unset !important;
+}

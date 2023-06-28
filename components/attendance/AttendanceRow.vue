@@ -11,17 +11,17 @@
     </td>
     <td class="text-center start">{{ row.start }}</td>
     <td class="text-center end">{{ row.end }}</td>
-    <td class="text-center break">{{ row.break }}</td>
+    <td class="text-center break">{{ row.break == 0 ? '' : row.break }}</td>
     <td class="text-center night-break">{{ row.nightBreak == 0 ? '' : row.nightBreak }}</td>
     <td class="text-center actual-working">{{ actualWorking }}</td>
     <td class="text-center settlement">{{ settlement }}</td>
     <td class="text-center night-overtime">{{ nightOvertime }}</td>
-    <td class="text-center time-off">特別休暇</td>
+    <td class="text-center time-off">{{ row.timeOff }}</td>
     <td class="text-center remotely">
       <el-icon v-if="row.remotely"><Select /></el-icon>
     </td>
     <td class="text-center transportation-costs"></td>
-    <td>リフレッシュ休暇1日目</td>
+    <td>{{ row.comment }}</td>
   </tr>
 </template>
 

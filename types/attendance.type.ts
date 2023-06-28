@@ -48,7 +48,7 @@ export const attendanceList = () => {
 export const emptyAttendanceRowModel = (date: string): AttendanceRowModel => {
   return {
     checked: false,
-    date,
+    date: date,
     start: '',
     end: '',
     break: 0,
