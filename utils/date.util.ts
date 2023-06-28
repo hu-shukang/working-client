@@ -14,6 +14,11 @@ class DateUtil {
     dayjs.locale(ja);
   }
 
+  public current() {
+    const today = dayjs();
+    return { year: today.year(), month: today.month() + 1, day: today.date() };
+  }
+
   public toYYYYMMDD(origin?: DayjsDate) {
     return dayjs(origin).format('YYYY-MM-DD');
   }

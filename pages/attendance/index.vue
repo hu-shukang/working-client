@@ -16,9 +16,11 @@
 <script setup lang="ts">
   import { Plus, Edit, Delete } from '@element-plus/icons-vue';
   import { AttendanceRowModel, emptyAttendanceRowModel } from '~/types/attendance.type';
+  import { useAttendanceStore } from '~/stores/attendance.store';
 
-  const year = ref<number>(2023);
-  const month = ref<number>(3);
+  const attendanceStore = useAttendanceStore();
+  const year = computed(() => attendanceStore.year);
+  const month = computed(() => attendanceStore.month);
   const list = ref<AttendanceRowModel[]>([]);
 
   const resetAttendanceList = (year: number, month: number) => {

@@ -29,7 +29,10 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@pinia/nuxt": "^0.4.11",
     "dayjs": "^1.11.8",
+    "pinia": "^2.1.4",
+    "pinia-plugin-persist": "^1.0.0",
     "sass": "^1.63.6"
   }
 }
