@@ -27,6 +27,10 @@ class DateUtil {
     return dayjs(origin).format('MM月DD日');
   }
 
+  public toHHmm(origin?: DayjsDate) {
+    return dayjs(origin).format('HH:mm');
+  }
+
   public toWeekday(origin?: DayjsDate) {
     return dayjs(origin).format('ddd');
   }
@@ -90,6 +94,28 @@ class DateUtil {
     date = date.set('month', month);
     date = date.set('date', day);
     return date.toISOString();
+  }
+
+  public toIOSDateString(origin: DayjsDate): string {
+    return dayjs(origin).toISOString();
+  }
+
+  public inMonth(year: number, month: number, target: DayjsDate) {
+    const date = dayjs(target);
+    return date.get('year') === year && date.get('month') === month;
+  }
+
+  public inRange(range: [DayjsDate, DayjsDate], target: DayjsDate) {
+    const t = dayjs(target).startOf('date');
+    const start = dayjs(range[0]).startOf('date');
+    const end = dayjs(range[1]).startOf('date');
+    return !t.isBefore(start) && !t.isAfter(end);
+  }
+
+  public isSame(d1: DayjsDate, d2: DayjsDate, unit?: dayjs.OpUnitType) {
+    const dj1 = dayjs(d1);
+    const dj2 = dayjs(d2);
+    return dj1.isSame(dj2, unit);
   }
 }
 

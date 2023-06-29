@@ -68,3 +68,14 @@
 .el-month-table td.today .cell {
   color: unset !important;
 }
+
+.el-date-editor--daterange,
+.el-date-editor--timerange {
+  &.el-input__wrapper {
+    flex-grow: unset !important;
+  }
+}
+
+.el-input-number .el-input__inner {
+  text-align: left !important;
+}

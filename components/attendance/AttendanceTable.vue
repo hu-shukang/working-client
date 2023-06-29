@@ -9,15 +9,15 @@
           <th class="date" rowspan="2">日付</th>
           <th class="weekday" rowspan="2">曜日</th>
           <th colspan="2">時刻</th>
-          <th class="break" rowspan="2">通常休憩</th>
-          <th class="night-break" rowspan="2">深夜休憩</th>
+          <th class="break" rowspan="2">通常休憩<br />(単位: 分)</th>
+          <th class="night-break" rowspan="2">深夜休憩<br />(単位: 分)</th>
           <th class="actual-working" rowspan="2">実働時間</th>
           <th class="settlement" rowspan="2">精算時間</th>
           <th class="night-overtime" rowspan="2">深夜残業</th>
           <th class="time-off" rowspan="2">休暇</th>
           <th class="remotely" rowspan="2">在宅</th>
           <th class="transportation-costs" rowspan="2">実費<br />通勤費</th>
-          <th rowspan="2">備考欄<br />（遅刻・早退理由）</th>
+          <th rowspan="2">備考欄<br />(遅刻・早退理由)</th>
         </tr>
         <tr>
           <th class="start">出社</th>
@@ -43,9 +43,10 @@
 </template>
 
 <script setup lang="ts">
+  import { ParsedContent } from '@nuxt/content/dist/runtime/types';
   import { AttendanceRowModel } from '~/types/attendance.type';
 
-  const props = defineProps<{ modelValue: AttendanceRowModel[]; holidays: any }>();
+  const props = defineProps<{ modelValue: AttendanceRowModel[]; holidays: ParsedContent | null }>();
   const emit = defineEmits(['update:modelValue']);
 
   const check = (index: number, value: boolean) => {

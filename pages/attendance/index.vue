@@ -12,18 +12,32 @@
       <el-button type="primary" plain :icon="Plus" @click="add">新規</el-button>
     </div>
     <AttendanceTable v-model="list" :holidays="holidays" />
+
+    <AddDialog
+      v-if="addDialogVisiable"
+      v-model:visible="addDialogVisiable"
+      :year="year"
+      :month="month"
+      @output="addOutput"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
   import { Plus, Edit, Delete } from '@element-plus/icons-vue';
   import { ElMessage, ElMessageBox } from 'element-plus';
-  import { AttendanceRowModel, emptyAttendanceRowModel } from '~/types/attendance.type';
+  import {
+    AttendanceAddModel,
+    AttendanceRowModel,
+    emptyAttendanceRowModel,
+    attendanceAddModelToAttendanceRowModel
+  } from '~/types/attendance.type';
   import { useAttendanceStore } from '~/stores/attendance.store';
 
   const attendanceStore = useAttendanceStore();
   const year = computed(() => attendanceStore.year);
   const month = computed(() => attendanceStore.month);
+  const addDialogVisiable = ref(false);
   const yearMonth = computed<Date>({
     get: () => new Date(attendanceStore.year, attendanceStore.month),
     set: (newDate: Date) => {
@@ -48,7 +62,34 @@
     watch: [year]
   });
 
-  const add = () => {};
+  const add = () => {
+    addDialogVisiable.value = true;
+  };
+
+  const addOutput = (model: AttendanceAddModel) => {
+    if (model.isSingleDate) {
+      for (let i = 0; i < list.value.length; i++) {
+        const row = list.value[i];
+        if (dateUtil.isSame(row.date, model.date, 'date')) {
+          list.value[i] = attendanceAddModelToAttendanceRowModel(model, row.date, list.value[i].checked);
+          break;
+        }
+      }
+    } else {
+      for (let i = 0; i < list.value.length; i++) {
+        const row = list.value[i];
+        if (dateUtil.inRange(model.range!, row.date)) {
+          if (
+            model.expectWeekendHoliday &&
+            (dateUtil.isWeekend(row.date) || (holidays.value && holidays.value[dateUtil.toYYYYMMDD(row.date)]))
+          ) {
+            continue;
+          }
+          list.value[i] = attendanceAddModelToAttendanceRowModel(model, row.date, list.value[i].checked);
+        }
+      }
+    }
+  };
 
   const edit = () => {};
 

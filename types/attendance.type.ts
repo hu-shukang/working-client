@@ -25,13 +25,73 @@ export type AttendanceRowModel = {
   checked: boolean;
 } & AttendanceInfo;
 
+export type AttendanceAddModel = {
+  /** 日にちで入力か、範囲で入力か */
+  isSingleDate: boolean;
+  /** 日にち */
+  date?: string | undefined;
+  /** 日付範囲 */
+  range?: [string, string];
+  /** 週末、祝日を除くか */
+  expectWeekendHoliday: boolean;
+  /** 出社時刻, 退社時刻 */
+  working: [string, string];
+  /** 通常休憩(分) */
+  break: number;
+  /** 深夜休憩(分) */
+  nightBreak: number;
+  /** 休暇 */
+  timeOff: string;
+  /** 在宅 */
+  remotely: boolean;
+  /** 交通費 */
+  transportationCosts: number;
+  /** 備考 */
+  comment: string;
+};
+
+export const initAttendanceAddModel = (): AttendanceAddModel => {
+  return {
+    isSingleDate: true,
+    date: undefined,
+    range: undefined,
+    expectWeekendHoliday: true,
+    working: ['2000-01-01T00:00:00.000Z', '2000-01-01T09:00:00.000Z'],
+    break: 60,
+    nightBreak: 0,
+    timeOff: '',
+    remotely: false,
+    transportationCosts: 0,
+    comment: ''
+  };
+};
+
+export const attendanceAddModelToAttendanceRowModel = (
+  model: AttendanceAddModel,
+  date: string,
+  checked = false
+): AttendanceRowModel => {
+  return {
+    checked: checked,
+    date: date,
+    start: model.working == null ? '' : dateUtil.toHHmm(model.working[0]),
+    end: model.working == null ? '' : dateUtil.toHHmm(model.working[1]),
+    break: model.break,
+    nightBreak: model.nightBreak,
+    timeOff: model.timeOff,
+    remotely: model.remotely,
+    transportationCosts: model.transportationCosts,
+    comment: model.comment
+  };
+};
+
 // Test Data
 export const attendanceList = () => {
   const list: AttendanceRowModel[] = [];
   for (let i = 0; i < 30; i++) {
     list.push({
       checked: false,
-      date: `2023-05-${(i + 1).toString().padStart(2, '0')}T06:28:43.227Z`,
+      date: `2023-05-${(i + 1).toString().padStart(2, '0')}T00:00:00.000Z`,
       start: '09:00',
       end: '19:16',
       break: 60,
