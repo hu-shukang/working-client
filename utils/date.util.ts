@@ -46,7 +46,37 @@ class DateUtil {
     return `${hoursString}:${minutesString}`;
   }
 
-  public calcActualWorking(attendanceRowModel: AttendanceRowModel) {
+  public calcDaytimeActualWorking(attendanceRowModel: { start: string; end: string; break: number }) {
+    let start = dayjs(`2000/01/01T${attendanceRowModel.start}`);
+    let end = dayjs(`2000/01/01T${attendanceRowModel.end}`);
+    const nightStart = dayjs(`2000/01/01T${ConstUtil.NIGHT_START_TIME}`);
+    const nightEnd = dayjs(`2000/01/01T${ConstUtil.NIGHT_END_TIME}`);
+    if (start.isBefore(nightEnd)) {
+      start = nightEnd;
+    }
+    if (end.isAfter(nightStart)) {
+      end = nightStart;
+    }
+    const period = end.diff(start, 'minute');
+    return period - attendanceRowModel.break;
+  }
+
+  public calcNightActualWorking(attendanceRowModel: { start: string; end: string; nightBreak: number }) {
+    const start = dayjs(`2000/01/01T${attendanceRowModel.start}`);
+    const end = dayjs(`2000/01/01T${attendanceRowModel.end}`);
+    const nightStart = dayjs(`2000/01/01T${ConstUtil.NIGHT_START_TIME}`);
+    const nightEnd = dayjs(`2000/01/01T${ConstUtil.NIGHT_END_TIME}`);
+    let period = 0;
+    if (start.isBefore(nightEnd)) {
+      period += nightEnd.diff(start, 'minute');
+    }
+    if (end.isAfter(nightStart)) {
+      period += end.diff(nightStart, 'minute');
+    }
+    return period - attendanceRowModel.nightBreak;
+  }
+
+  public calcActualWorking(attendanceRowModel: { start: string; end: string; break: number; nightBreak: number }) {
     const start = dayjs(`2000/01/01T${attendanceRowModel.start}`);
     const end = dayjs(`2000/01/01T${attendanceRowModel.end}`);
     const period = end.diff(start, 'minute');
@@ -116,6 +146,12 @@ class DateUtil {
     const dj1 = dayjs(d1);
     const dj2 = dayjs(d2);
     return dj1.isSame(dj2, unit);
+  }
+
+  public isSameBefore(origin: DayjsDate, target: DayjsDate) {
+    const dj1 = dayjs(origin);
+    const dj2 = dayjs(target);
+    return dj1.isSame(dj2) || dj1.isBefore(dj2);
   }
 }
 
