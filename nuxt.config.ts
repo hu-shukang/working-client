@@ -8,7 +8,10 @@ export default defineNuxtConfig({
     '~/assets/style/util.scss',
     '~/assets/style/main.scss'
   ],
-  modules: ['@element-plus/nuxt', '@nuxt/content', '@pinia/nuxt'],
+  modules: ['@element-plus/nuxt', '@nuxt/content', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
+  piniaPersistedstate: {
+    storage: 'sessionStorage'
+  },
   components: [
     {
       path: '~/components',

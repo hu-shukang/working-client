@@ -133,7 +133,6 @@
         dateUtil.hhmmToDayjs(originData.end).toISOString()
       ];
     }
-    console.log(props.origins);
   });
 </script>
 

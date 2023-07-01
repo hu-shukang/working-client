@@ -33,6 +33,7 @@
 <script setup lang="ts">
   import { Plus, Edit, Delete } from '@element-plus/icons-vue';
   import { ElMessage, ElMessageBox } from 'element-plus';
+  import { storeToRefs } from 'pinia';
   import {
     AttendanceAddModel,
     AttendanceRowModel,
@@ -43,30 +44,24 @@
   import { useAttendanceStore } from '~/stores/attendance.store';
 
   const attendanceStore = useAttendanceStore();
-  const year = computed(() => attendanceStore.year);
-  const month = computed(() => attendanceStore.month);
+  const { year, month } = storeToRefs(attendanceStore);
   const addDialogVisiable = ref(false);
   const editDialogVisiable = ref(false);
   const yearMonth = computed<Date>({
     get: () => new Date(attendanceStore.year, attendanceStore.month),
     set: (newDate: Date) => {
-      attendanceStore.year = newDate.getFullYear();
-      attendanceStore.month = newDate.getMonth();
+      year.value = newDate.getFullYear();
+      month.value = newDate.getMonth();
     }
   });
-  const list = ref<AttendanceRowModel[]>([]);
 
-  const selectedRows = computed(() => list.value.filter((item) => item.checked));
-  const resetAttendanceList = (year: number, month: number) => {
-    const dayCount = dateUtil.getDayCount(year, month);
-    const result: AttendanceRowModel[] = [];
-    for (let i = 1; i <= dayCount; i++) {
-      const date = dateUtil.getIOSDateString(year, month, i);
-      const attendanceRow = emptyAttendanceRowModel(date);
-      result.push(attendanceRow);
+  const list = computed({
+    get: () => attendanceStore.getAttendanceList,
+    set: (value: AttendanceRowModel[]) => {
+      attendanceStore.attendance[`${year.value}${month.value}`] = value;
     }
-    list.value = result;
-  };
+  });
+  const selectedRows = computed(() => list.value.filter((item) => item.checked));
 
   const { data: holidays } = await useAsyncData('holidays', () => queryContent(`/holidays/${year.value}`).findOne(), {
     watch: [year]
@@ -145,12 +140,6 @@
       } catch (e: any) {}
     }
   };
-
-  onMounted(() => {
-    resetAttendanceList(year.value, month.value);
-  });
-
-  watch([year, month], ([y, m]) => resetAttendanceList(y, m));
 </script>
 
 <style scoped lang="scss">
