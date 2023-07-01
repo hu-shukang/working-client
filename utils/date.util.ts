@@ -46,11 +46,15 @@ class DateUtil {
     return `${hoursString}:${minutesString}`;
   }
 
+  public hhmmToDayjs(hhmm: string) {
+    return dayjs(`2000/01/01T${hhmm}`);
+  }
+
   public calcDaytimeActualWorking(attendanceRowModel: { start: string; end: string; break: number }) {
-    let start = dayjs(`2000/01/01T${attendanceRowModel.start}`);
-    let end = dayjs(`2000/01/01T${attendanceRowModel.end}`);
-    const nightStart = dayjs(`2000/01/01T${ConstUtil.NIGHT_START_TIME}`);
-    const nightEnd = dayjs(`2000/01/01T${ConstUtil.NIGHT_END_TIME}`);
+    let start = this.hhmmToDayjs(attendanceRowModel.start);
+    let end = this.hhmmToDayjs(attendanceRowModel.end);
+    const nightStart = this.hhmmToDayjs(ConstUtil.NIGHT_START_TIME);
+    const nightEnd = this.hhmmToDayjs(ConstUtil.NIGHT_END_TIME);
     if (start.isBefore(nightEnd)) {
       start = nightEnd;
     }
@@ -62,10 +66,10 @@ class DateUtil {
   }
 
   public calcNightActualWorking(attendanceRowModel: { start: string; end: string; nightBreak: number }) {
-    const start = dayjs(`2000/01/01T${attendanceRowModel.start}`);
-    const end = dayjs(`2000/01/01T${attendanceRowModel.end}`);
-    const nightStart = dayjs(`2000/01/01T${ConstUtil.NIGHT_START_TIME}`);
-    const nightEnd = dayjs(`2000/01/01T${ConstUtil.NIGHT_END_TIME}`);
+    const start = this.hhmmToDayjs(attendanceRowModel.start);
+    const end = this.hhmmToDayjs(attendanceRowModel.end);
+    const nightStart = this.hhmmToDayjs(ConstUtil.NIGHT_START_TIME);
+    const nightEnd = this.hhmmToDayjs(ConstUtil.NIGHT_END_TIME);
     let period = 0;
     if (start.isBefore(nightEnd)) {
       period += nightEnd.diff(start, 'minute');
@@ -77,8 +81,8 @@ class DateUtil {
   }
 
   public calcActualWorking(attendanceRowModel: { start: string; end: string; break: number; nightBreak: number }) {
-    const start = dayjs(`2000/01/01T${attendanceRowModel.start}`);
-    const end = dayjs(`2000/01/01T${attendanceRowModel.end}`);
+    const start = this.hhmmToDayjs(attendanceRowModel.start);
+    const end = this.hhmmToDayjs(attendanceRowModel.end);
     const period = end.diff(start, 'minute');
     return period - attendanceRowModel.break - attendanceRowModel.nightBreak;
   }
@@ -91,10 +95,10 @@ class DateUtil {
   }
 
   public calcNightOvertime(attendanceRowModel: AttendanceRowModel) {
-    const start = dayjs(`2000/01/01T${attendanceRowModel.start}`);
-    const end = dayjs(`2000/01/01T${attendanceRowModel.end}`);
-    const nightStart = dayjs(`2000/01/01T${ConstUtil.NIGHT_START_TIME}`);
-    const nightEnd = dayjs(`2000/01/01T${ConstUtil.NIGHT_END_TIME}`);
+    const start = this.hhmmToDayjs(attendanceRowModel.start);
+    const end = this.hhmmToDayjs(attendanceRowModel.end);
+    const nightStart = this.hhmmToDayjs(ConstUtil.NIGHT_START_TIME);
+    const nightEnd = this.hhmmToDayjs(ConstUtil.NIGHT_END_TIME);
     let nightOvertimeMinute = 0;
     if (end.isAfter(nightStart)) {
       nightOvertimeMinute += nightStart.diff(end);

@@ -25,15 +25,8 @@ export type AttendanceRowModel = {
   checked: boolean;
 } & AttendanceInfo;
 
-export type AttendanceAddModel = {
-  /** 日にちで入力か、範囲で入力か */
-  isSingleDate: boolean;
-  /** 日にち */
-  date?: string | undefined;
-  /** 日付範囲 */
-  range?: [string, string];
-  /** 週末、祝日を除くか */
-  expectWeekendHoliday: boolean;
+/** 勤務情報編集Form */
+export type AttendanceEditModel = {
   /** 出社時刻, 退社時刻 */
   working: [string, string];
   /** 通常休憩(分) */
@@ -49,6 +42,18 @@ export type AttendanceAddModel = {
   /** 備考 */
   comment: string;
 };
+
+/** 勤務情報作成Form */
+export type AttendanceAddModel = {
+  /** 日にちで入力か、範囲で入力か */
+  isSingleDate: boolean;
+  /** 日にち */
+  date?: string | undefined;
+  /** 日付範囲 */
+  range?: [string, string];
+  /** 週末、祝日を除くか */
+  expectWeekendHoliday: boolean;
+} & AttendanceEditModel;
 
 export const initAttendanceAddModel = (): AttendanceAddModel => {
   return {
@@ -66,11 +71,19 @@ export const initAttendanceAddModel = (): AttendanceAddModel => {
   };
 };
 
-export const attendanceAddModelToAttendanceRowModel = (
-  model: AttendanceAddModel,
-  date: string,
-  checked = false
-): AttendanceRowModel => {
+export const initAttendanceEditModel = (): AttendanceEditModel => {
+  return {
+    working: ['2000-01-01T00:00:00.000Z', '2000-01-01T09:00:00.000Z'],
+    break: 60,
+    nightBreak: 0,
+    timeOff: '',
+    remotely: false,
+    transportationCosts: 0,
+    comment: ''
+  };
+};
+
+export const toAttendanceRowModel = (model: AttendanceEditModel, date: string, checked = false): AttendanceRowModel => {
   return {
     checked: checked,
     date: date,

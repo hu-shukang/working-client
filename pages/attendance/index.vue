@@ -20,6 +20,13 @@
       :month="month"
       @output="addOutput"
     />
+
+    <EditDialog
+      v-if="editDialogVisiable"
+      v-model:visible="editDialogVisiable"
+      :origins="selectedRows"
+      @output="editOutput"
+    />
   </div>
 </template>
 
@@ -30,7 +37,8 @@
     AttendanceAddModel,
     AttendanceRowModel,
     emptyAttendanceRowModel,
-    attendanceAddModelToAttendanceRowModel
+    toAttendanceRowModel,
+    AttendanceEditModel
   } from '~/types/attendance.type';
   import { useAttendanceStore } from '~/stores/attendance.store';
 
@@ -38,6 +46,7 @@
   const year = computed(() => attendanceStore.year);
   const month = computed(() => attendanceStore.month);
   const addDialogVisiable = ref(false);
+  const editDialogVisiable = ref(false);
   const yearMonth = computed<Date>({
     get: () => new Date(attendanceStore.year, attendanceStore.month),
     set: (newDate: Date) => {
@@ -47,6 +56,7 @@
   });
   const list = ref<AttendanceRowModel[]>([]);
 
+  const selectedRows = computed(() => list.value.filter((item) => item.checked));
   const resetAttendanceList = (year: number, month: number) => {
     const dayCount = dateUtil.getDayCount(year, month);
     const result: AttendanceRowModel[] = [];
@@ -71,7 +81,7 @@
       for (let i = 0; i < list.value.length; i++) {
         const row = list.value[i];
         if (dateUtil.isSame(row.date, model.date, 'date')) {
-          list.value[i] = attendanceAddModelToAttendanceRowModel(model, row.date, list.value[i].checked);
+          list.value[i] = toAttendanceRowModel(model, row.date, list.value[i].checked);
           break;
         }
       }
@@ -85,23 +95,38 @@
           ) {
             continue;
           }
-          list.value[i] = attendanceAddModelToAttendanceRowModel(model, row.date, list.value[i].checked);
+          list.value[i] = toAttendanceRowModel(model, row.date, list.value[i].checked);
         }
       }
     }
   };
 
-  const edit = () => {};
+  const edit = () => {
+    if (selectedRows.value.length === 0) {
+      ElMessageBox.alert('編集したい勤怠情報を選択してください。', 'ご確認');
+    } else {
+      editDialogVisiable.value = true;
+    }
+  };
+
+  const editOutput = (model: AttendanceEditModel) => {
+    const newList = JSON.parse(JSON.stringify(list.value)) as AttendanceRowModel[];
+    for (let i = 0; i < newList.length; i++) {
+      if (newList[i].checked) {
+        newList[i] = toAttendanceRowModel(model, newList[i].date, newList[i].checked);
+      }
+    }
+    list.value = newList;
+  };
 
   const clear = async () => {
-    const dates = list.value
-      .filter((item) => item.checked)
-      .map((item) => item.date)
-      .map(dateUtil.toMMDD)
-      .join(', ');
-    if (dates === '') {
+    if (selectedRows.value.length === 0) {
       ElMessageBox.alert('クリアしたい勤怠情報を選択してください。', 'ご確認');
     } else {
+      const dates = selectedRows.value
+        .map((item) => item.date)
+        .map(dateUtil.toMMDD)
+        .join(', ');
       try {
         await ElMessageBox.confirm(`[${dates}]の勤怠情報をクリアしますか`, 'ご確認', {
           type: 'warning'

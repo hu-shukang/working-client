@@ -1,35 +1,8 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="新規作成" :append-to-body="true" width="550px" center align-center>
-    <el-alert
-      title="※ 既に作成されたレコードに対して再度作成する場合は上書きになります。"
-      type="warning"
-      class="mb-2"
-      :closable="false"
-    />
+  <el-dialog v-model="dialogVisible" title="編集" :append-to-body="true" width="550px" center align-center>
     <el-form ref="formRef" :model="form" :rules="rules" label-width="150px">
-      <el-form-item label="単一・範囲">
-        <el-radio-group v-model="form.isSingleDate">
-          <el-radio :label="true">単一の日で作成する</el-radio>
-          <el-radio :label="false">範囲の日で作成する</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item v-if="form.isSingleDate" label="日付" prop="date">
-        <el-date-picker v-model="form.date" type="date" placeholder="選択" :disabled-date="disabledDate" />
-      </el-form-item>
-      <el-form-item v-if="!form.isSingleDate" label="日付範囲" prop="range">
-        <div style="width: 300px">
-          <el-date-picker
-            v-model="form.range"
-            type="daterange"
-            range-separator="〜"
-            start-placeholder="開始日"
-            end-placeholder="終了日"
-            :disabled-date="disabledDate"
-          />
-        </div>
-      </el-form-item>
-      <el-form-item v-if="!form.isSingleDate" label="週末祝日除外">
-        <el-switch v-model="form.expectWeekendHoliday" />
+      <el-form-item label="編集対象">
+        <el-tag v-for="origin in origins" :key="origin.date">{{ toMMDD(origin.date) }}</el-tag>
       </el-form-item>
       <el-form-item label="勤務時間" prop="working">
         <el-time-picker
@@ -65,7 +38,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">キャンセル</el-button>
-        <el-button type="primary" @click="submit(formRef)">作成</el-button>
+        <el-button type="primary" @click="submit(formRef)">編集</el-button>
       </span>
     </template>
   </el-dialog>
@@ -73,10 +46,11 @@
 
 <script setup lang="ts">
   import { FormInstance, FormRules } from 'element-plus';
-  import { AttendanceAddModel, initAttendanceAddModel } from '~/types/attendance.type';
+  import { AttendanceEditModel, AttendanceRowModel, initAttendanceEditModel } from '~/types/attendance.type';
   import { ConstUtil } from '~/utils/const.util';
+  import { dateUtil } from '~/utils/date.util';
 
-  const props = defineProps<{ visible: boolean; year: number; month: number }>();
+  const props = defineProps<{ visible: boolean; origins: AttendanceRowModel[] }>();
   const emit = defineEmits(['update:visible', 'output']);
 
   const timeOffOptions = ConstUtil.TIME_OFF_OPTIONS;
@@ -86,23 +60,9 @@
   });
 
   const formRef = ref<FormInstance>();
-  const form = reactive<AttendanceAddModel>(initAttendanceAddModel());
+  const form = reactive<AttendanceEditModel>(initAttendanceEditModel());
 
-  const validateDate = (_rule: any, value: string | undefined, callback: any) => {
-    if (form.isSingleDate && stringUtil.isBlank(value)) {
-      callback(new Error('日付を入力してください'));
-    } else {
-      callback();
-    }
-  };
-
-  const validateRange = (_rule: any, value: [string, string] | undefined, callback: any) => {
-    if (!form.isSingleDate && stringUtil.isNull(value)) {
-      callback(new Error('日付範囲を入力してください'));
-    } else {
-      callback();
-    }
-  };
+  const toMMDD = dateUtil.toMMDD;
 
   const validateWorking = (_rule: any, value: [string, string] | undefined, callback: any) => {
     if (value === undefined || dateUtil.isSameBefore(value[1], value[0])) {
@@ -142,17 +102,11 @@
     }
   };
 
-  const rules = reactive<FormRules<AttendanceAddModel>>({
-    date: [{ validator: validateDate, trigger: 'blur' }],
-    range: [{ validator: validateRange, trigger: 'blur' }],
+  const rules = reactive<FormRules<AttendanceEditModel>>({
     working: [{ validator: validateWorking, trigger: 'blur' }],
     break: [{ validator: validateBreak, trigger: 'blur' }],
     nightBreak: [{ validator: validateNightBreak, trigger: 'blur' }]
   });
-
-  const disabledDate = (time: Date) => {
-    return !dateUtil.inMonth(props.year, props.month, time);
-  };
 
   const submit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
@@ -165,6 +119,22 @@
       }
     });
   };
+
+  onMounted(() => {
+    if (props.origins.length === 1) {
+      const originData = props.origins[0];
+      form.break = originData.break;
+      form.comment = originData.comment;
+      form.nightBreak = originData.nightBreak;
+      form.timeOff = originData.timeOff;
+      form.transportationCosts = originData.transportationCosts;
+      form.working = [
+        dateUtil.hhmmToDayjs(originData.start).toISOString(),
+        dateUtil.hhmmToDayjs(originData.end).toISOString()
+      ];
+    }
+    console.log(props.origins);
+  });
 </script>
 
 <style scoped lang="scss">
@@ -173,5 +143,10 @@
   }
   .input-width-2 {
     width: 300px !important;
+  }
+  .el-tag {
+    margin-right: 0.5rem;
+    margin-bottom: 0.25rem;
+    width: 73px;
   }
 </style>
