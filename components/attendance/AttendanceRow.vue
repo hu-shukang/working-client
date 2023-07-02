@@ -17,10 +17,6 @@
     <td class="text-center settlement">{{ settlement }}</td>
     <td class="text-center night-overtime">{{ nightOvertime }}</td>
     <td class="text-center time-off">{{ timeOff }}</td>
-    <td class="text-center remotely">
-      <el-icon v-if="row.remotely"><Select /></el-icon>
-    </td>
-    <td class="text-center transportation-costs"></td>
     <td>{{ row.comment }}</td>
   </tr>
 </template>
