@@ -1,12 +1,12 @@
 <template>
-  <el-menu default-active="2" class="el-menu-vertical-demo">
+  <el-menu default-active="1" class="el-menu-vertical-demo">
     <el-menu-item index="1" @click="$router.push('/')">
       <el-icon><HomeFilled /></el-icon>
       <span>ホーム</span>
     </el-menu-item>
-    <el-menu-item index="2">
+    <el-menu-item index="2" @click="$router.push('/attendance')">
       <el-icon><HomeFilled /></el-icon>
-      <span>Navigator Two</span>
+      <span>勤務表</span>
     </el-menu-item>
     <el-menu-item index="3" disabled>
       <el-icon><document /></el-icon>
