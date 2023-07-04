@@ -146,5 +146,6 @@
   .tool-bar {
     margin-bottom: var(--el-secounday-padding);
     display: flex;
+    align-items: center;
   }
 </style>

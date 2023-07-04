@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { TrafficRowModel } from '~/types/traffic.type';
 import { AttendanceRowModel, emptyAttendanceRowModel } from '~/types/attendance.type';
 
 const initAttendanceStore = () => {
@@ -6,7 +7,8 @@ const initAttendanceStore = () => {
   return {
     year: year,
     month: month,
-    attendance: {} as { [key: string]: AttendanceRowModel[] }
+    attendance: {} as { [key: string]: AttendanceRowModel[] },
+    trafficList: [] as TrafficRowModel[]
   };
 };
 
