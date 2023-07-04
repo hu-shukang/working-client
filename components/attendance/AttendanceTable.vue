@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-descriptions class="attendance-descriptions pb-secounday" :column="6" border>
+    <el-descriptions class="attendance-descriptions mb-2" :column="6" border>
       <el-descriptions-item label="標準稼働">22</el-descriptions-item>
       <el-descriptions-item label="出勤日数">17</el-descriptions-item>
       <el-descriptions-item label="在宅日数" :span="4">22</el-descriptions-item>
@@ -31,6 +31,8 @@
           <th class="settlement" rowspan="2">精算時間</th>
           <th class="night-overtime" rowspan="2">深夜残業</th>
           <th class="time-off" rowspan="2">休暇</th>
+          <th class="remotely" rowspan="2">在宅</th>
+          <th class="transportation-costs" rowspan="2">実費<br />通勤費</th>
           <th rowspan="2">備考欄<br />(遅刻・早退理由)</th>
         </tr>
         <tr>
@@ -89,9 +91,8 @@
   .scroll-bar {
     height: calc(
       100vh - var(--el-header-height) - var(--el-footer-height) - var(--el-main-padding) - var(--el-main-padding) - 34px -
-        42px - 64px - 121px - var(--el-secounday-padding)
+        42px - 64px
     );
-    min-height: 500px;
     border-bottom: 1px solid var(--el-border-color-lighter);
   }
   .check,
@@ -114,15 +115,15 @@
   }
   .start,
   :deep(.start) {
-    width: 64px;
-    max-width: 64px;
-    min-width: 64px;
+    width: 40px;
+    max-width: 40px;
+    min-width: 40px;
   }
   .end,
   :deep(.end) {
-    width: 64px;
-    max-width: 64px;
-    min-width: 64px;
+    width: 40px;
+    max-width: 40px;
+    min-width: 40px;
   }
   .break,
   :deep(.break) {
@@ -159,6 +160,18 @@
     width: 62px;
     max-width: 62px;
     min-width: 62px;
+  }
+  .remotely,
+  :deep(.remotely) {
+    width: 50px;
+    max-width: 50px;
+    min-width: 50px;
+  }
+  .transportation-costs,
+  :deep(.transportation-costs) {
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
   }
   .el-checkbox,
   :deep(.el-checkbox) {

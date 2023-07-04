@@ -52,6 +52,12 @@
           <el-option v-for="option in timeOffOptions" :key="option.value" :label="option.label" :value="option.value" />
         </el-select>
       </el-form-item>
+      <el-form-item label="在宅勤務">
+        <el-switch v-model="form.remotely" />
+      </el-form-item>
+      <el-form-item label="交通費実費">
+        <el-input-number v-model="form.transportationCosts" :min="0" class="input-width" :controls="false" />
+      </el-form-item>
       <el-form-item label="備考">
         <el-input v-model="form.comment" :rows="3" class="input-width-2" type="textarea" placeholder="備考" />
       </el-form-item>
