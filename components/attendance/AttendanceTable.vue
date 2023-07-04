@@ -2,7 +2,8 @@
   <div>
     <el-descriptions class="attendance-descriptions pb-secounday" :column="6" border>
       <el-descriptions-item label="標準稼働">22</el-descriptions-item>
-      <el-descriptions-item label="出勤日数" :span="5">17</el-descriptions-item>
+      <el-descriptions-item label="出勤日数">17</el-descriptions-item>
+      <el-descriptions-item label="在宅日数" :span="4">22</el-descriptions-item>
       <el-descriptions-item label="有休">2.0</el-descriptions-item>
       <el-descriptions-item label="半有休">2.0</el-descriptions-item>
       <el-descriptions-item label="振替休日">0.0</el-descriptions-item>
