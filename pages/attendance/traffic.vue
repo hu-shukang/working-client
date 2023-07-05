@@ -8,15 +8,18 @@
       <el-button type="primary" plain :icon="Plus" @click="add">新規</el-button>
     </div>
     <TrafficTable v-model="list" />
+
+    <TrafficAddDialog v-if="addDialogVisiable" v-model:visible="addDialogVisiable" @output="addOutput" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { Plus, Edit, Delete } from '@element-plus/icons-vue';
-  import { TrafficRowModel } from '~/types/traffic.type';
+  import { TrafficRowModel, TrafficAddModel, trafficAddModelToTrafficRowModel } from '~/types/traffic.type';
   import { useAttendanceStore } from '~/stores/attendance.store';
 
   const attendanceStore = useAttendanceStore();
+  const addDialogVisiable = ref(false);
 
   const list = computed({
     get: () => attendanceStore.trafficList,
@@ -29,7 +32,15 @@
 
   const edit = () => {};
 
-  const add = () => {};
+  const add = () => {
+    addDialogVisiable.value = true;
+  };
+
+  const addOutput = (model: TrafficAddModel) => {
+    const index = list.value.length + 1;
+    const v = trafficAddModelToTrafficRowModel(index, model);
+    list.value.push(v);
+  };
 </script>
 
 <style scoped lang="scss">

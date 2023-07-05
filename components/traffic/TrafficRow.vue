@@ -3,10 +3,11 @@
     <td class="text-center check">
       <el-checkbox v-model="checked" />
     </td>
-    <td class="index">{{ row.index }}</td>
+    <td class="text-center index">{{ row.index }}</td>
     <td class="route">{{ route }}</td>
-    <td class="round-trip">{{ row.roundTrip }}</td>
-    <td class="month-train-pass">{{ row.monthTrainPass }}</td>
+    <td class="text-end round-trip">{{ roundTrip }}</td>
+    <td class="text-end month-train-pass">{{ monthTrainPass }}</td>
+    <td class="comment">{{ row.comment }}</td>
   </tr>
 </template>
 
@@ -21,5 +22,9 @@
     get: () => props.row.checked,
     set: (value: boolean) => emit('check', props.index, value)
   });
-  const route = computed(() => props.row.route.join('-'));
+  const route = computed(() =>
+    [props.row.startStation, ...(props.row.transitStation ?? []), props.row.endStation].join(' - ')
+  );
+  const roundTrip = computed(() => stringUtil.formatPrice(props.row.roundTrip, true));
+  const monthTrainPass = computed(() => stringUtil.formatPrice(props.row.monthTrainPass, true));
 </script>

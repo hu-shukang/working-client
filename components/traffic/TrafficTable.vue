@@ -10,13 +10,14 @@
           <th class="route" rowspan="2">通勤経路</th>
           <th class="round-trip">往復実費</th>
           <th class="month-train-pass">定期(1ヶ月)</th>
+          <th class="comment">コメント</th>
         </tr>
       </thead>
     </table>
     <el-empty
       v-if="modelValue.length === 0"
       :image-size="200"
-      description="普段に使用する交通ルートを追加してください"
+      description="頻繁に使用する交通ルートを追加してください"
     />
     <el-scrollbar v-else class="scroll-bar" :always="true">
       <table class="tbl stick">
@@ -75,6 +76,13 @@
     width: 40px;
     max-width: 40px;
     min-width: 40px;
+  }
+
+  .route,
+  :deep(.route) {
+    width: 300px;
+    max-width: 300px;
+    min-width: 300px;
   }
   .round-trip,
   :deep(.round-trip) {
