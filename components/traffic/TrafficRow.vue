@@ -3,7 +3,7 @@
     <td class="text-center check">
       <el-checkbox v-model="checked" />
     </td>
-    <td class="text-center index">{{ row.index }}</td>
+    <td class="text-center index">{{ row.index + 1 }}</td>
     <td class="route">{{ route }}</td>
     <td class="text-end round-trip">{{ roundTrip }}</td>
     <td class="text-end month-train-pass">{{ monthTrainPass }}</td>

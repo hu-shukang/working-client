@@ -13,6 +13,10 @@ class StringUtil {
     return underscore.isBlank(content);
   }
 
+  public notBlank(content?: string | undefined) {
+    return !this.isBlank(content);
+  }
+
   public isNull(content: any) {
     return content === null || content === undefined;
   }

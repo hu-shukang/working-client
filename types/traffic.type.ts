@@ -18,6 +18,13 @@ export type TrafficAddModel = {
   comment: string;
 };
 
+export type TrafficEditModel = {
+  /** index */
+  index: number;
+  /** id */
+  id: string;
+} & TrafficAddModel;
+
 export type TrafficInfo = {
   /** index */
   index: number;
@@ -58,7 +65,23 @@ export const trafficAddModelToTrafficRowModel = (index: number, model: TrafficAd
     id: stringUtil.uuid(),
     startStation: model.startStation,
     endStation: model.endStation,
-    transitStation: model.transitStation ? model.transitStation.map((t) => t.name) : undefined,
+    transitStation: model.transitStation
+      ? model.transitStation.filter((t) => stringUtil.notBlank(t.name)).map((t) => t.name)
+      : undefined,
+    roundTrip: model.roundTrip,
+    monthTrainPass: model.monthTrainPass,
+    comment: model.comment
+  };
+};
+
+export const trafficRowModelToTrafficEditModel = (model: TrafficRowModel): TrafficEditModel => {
+  return {
+    index: model.index,
+    id: model.id,
+    startStation: model.startStation,
+    endStation: model.endStation,
+    transitStation:
+      model.transitStation === undefined ? undefined : model.transitStation.map((s, i) => ({ key: i, name: s })),
     roundTrip: model.roundTrip,
     monthTrainPass: model.monthTrainPass,
     comment: model.comment
