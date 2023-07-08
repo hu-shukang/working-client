@@ -23,7 +23,7 @@ class StringUtil {
 
   public formatPrice(price: number, withPrefix = false) {
     let formattedPrice = price.toString();
-    formattedPrice = formattedPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    formattedPrice = formattedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return withPrefix ? formattedPrice + '円' : formattedPrice;
   }
 }

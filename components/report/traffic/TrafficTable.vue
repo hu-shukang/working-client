@@ -16,7 +16,7 @@
     </table>
     <el-empty
       v-if="modelValue.length === 0"
-      :image-size="200"
+      :image-size="150"
       description="頻繁に使用する交通ルートを追加してください"
     />
     <el-scrollbar v-else class="scroll-bar" :always="true">

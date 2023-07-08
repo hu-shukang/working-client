@@ -13,7 +13,7 @@
     </div>
     <AttendanceTable v-model="list" :holidays="holidays" />
 
-    <AddDialog
+    <AttendanceAddDialog
       v-if="addDialogVisiable"
       v-model:visible="addDialogVisiable"
       :year="year"
@@ -21,7 +21,7 @@
       @output="addOutput"
     />
 
-    <EditDialog
+    <AttendanceEditDialog
       v-if="editDialogVisiable"
       v-model:visible="editDialogVisiable"
       :origins="selectedRows"
