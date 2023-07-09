@@ -26,5 +26,7 @@
     [props.row.startStation, ...(props.row.transitStation ?? []), props.row.endStation].join(' - ')
   );
   const roundTrip = computed(() => stringUtil.formatPrice(props.row.roundTrip, true));
-  const monthTrainPass = computed(() => stringUtil.formatPrice(props.row.monthTrainPass, true));
+  const monthTrainPass = computed(() =>
+    props.row.monthTrainPass ? stringUtil.formatPrice(props.row.monthTrainPass, true) : '-'
+  );
 </script>

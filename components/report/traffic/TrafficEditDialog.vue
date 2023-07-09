@@ -25,7 +25,7 @@
       <el-form-item label="往復実費" prop="roundTrip" required>
         <el-input-number v-model="form.roundTrip" :min="0" class="input-width" :controls="false" />
       </el-form-item>
-      <el-form-item label="定期券(1ヶ月)" prop="monthTrainPass" required>
+      <el-form-item label="定期券(1ヶ月)" prop="monthTrainPass">
         <el-input-number v-model="form.monthTrainPass" :min="0" class="input-width" :controls="false" />
       </el-form-item>
       <el-form-item label="備考">
@@ -71,11 +71,10 @@
     } else {
       callback();
     }
-    formRef.value!.validateField('monthTrainPass', () => null);
   };
 
   const validateMonthTrainPass = (_rule: any, value: number, callback: any) => {
-    if (value <= form.roundTrip) {
+    if (form.roundTrip && value <= form.roundTrip) {
       callback(new Error('定期券の金額は往復実費より以下なっています'));
     } else {
       callback();
@@ -89,10 +88,7 @@
       { type: 'number', required: true, message: '往復実費は必須です', trigger: 'blur' },
       { validator: validateRoundTrip, trigger: 'blur' }
     ],
-    monthTrainPass: [
-      { type: 'number', required: true, message: '定期券は必須です', trigger: 'blur' },
-      { validator: validateMonthTrainPass, trigger: 'blur' }
-    ],
+    monthTrainPass: [{ validator: validateMonthTrainPass, trigger: 'blur' }],
     comment: [{ min: 100, message: '駅名は最大100文字', trigger: 'blur' }]
   });
 

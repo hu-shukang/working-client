@@ -142,12 +142,3 @@
     }
   };
 </script>
-
-<style scoped lang="scss">
-  .tool-bar {
-    height: 32px;
-    margin-bottom: var(--el-secounday-padding);
-    display: flex;
-    align-items: center;
-  }
-</style>

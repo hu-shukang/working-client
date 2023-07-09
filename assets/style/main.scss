@@ -89,3 +89,10 @@
 .el-empty {
   border: 1px solid var(--el-border-color-lighter);
 }
+
+.tool-bar {
+  height: 32px;
+  margin-bottom: var(--el-secounday-padding);
+  display: flex;
+  align-items: center;
+}

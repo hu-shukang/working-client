@@ -11,9 +11,9 @@ export type TrafficAddModel = {
   /** 到着駅 */
   endStation: string;
   /** 往復実費 */
-  roundTrip: number;
+  roundTrip?: number;
   /** 定期券(1ヶ月) */
-  monthTrainPass: number;
+  monthTrainPass?: number;
   /** コメント */
   comment: string;
 };
@@ -39,7 +39,7 @@ export type TrafficInfo = {
   /** 往復実費 */
   roundTrip: number;
   /** 定期券(1ヶ月) */
-  monthTrainPass: number;
+  monthTrainPass?: number;
   /** コメント */
   comment: string;
 };
@@ -52,8 +52,6 @@ export const initTrafficAddModel = (): TrafficAddModel => {
   return {
     startStation: '',
     endStation: '',
-    roundTrip: 0,
-    monthTrainPass: 0,
     comment: ''
   };
 };
@@ -68,7 +66,7 @@ export const trafficAddModelToTrafficRowModel = (index: number, model: TrafficAd
     transitStation: model.transitStation
       ? model.transitStation.filter((t) => stringUtil.notBlank(t.name)).map((t) => t.name)
       : undefined,
-    roundTrip: model.roundTrip,
+    roundTrip: model.roundTrip!,
     monthTrainPass: model.monthTrainPass,
     comment: model.comment
   };
