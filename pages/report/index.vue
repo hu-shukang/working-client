@@ -12,8 +12,10 @@
           </div>
         </template>
         <div>
-          <el-button plain @click="$router.push('/report/traffic')">通勤経路</el-button>
+          <el-button plain @click="$router.push('/report/traffic')">通勤経路登録</el-button>
           <el-button plain @click="$router.push('/report/attendance')">勤怠表</el-button>
+          <el-button plain>週報</el-button>
+          <el-button plain>現金精算依頼書</el-button>
           <el-button plain>提出</el-button>
         </div>
       </el-card>
@@ -25,7 +27,7 @@
         </template>
         <div>
           <el-button plain>氏名・住所・連絡先</el-button>
-          <el-button plain>口座</el-button>
+          <el-button plain>給与振込口座</el-button>
           <el-button plain>扶養家族</el-button>
         </div>
       </el-card>

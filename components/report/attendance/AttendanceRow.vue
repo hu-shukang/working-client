@@ -5,7 +5,7 @@
     </td>
     <td class="text-center date">{{ date }}</td>
     <td :class="{ 'text-center weekday': true, weekend: isWeekend, holiday: holiday != null }">
-      <el-tooltip class="box-item" effect="dark" :content="holiday" placement="right" :disabled="holiday == null">
+      <el-tooltip class="box-item" effect="light" :content="holiday" placement="right" :disabled="holiday == null">
         <div>{{ weekday }}</div>
       </el-tooltip>
     </td>
