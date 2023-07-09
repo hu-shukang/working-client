@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">ホーム画面</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/report' }">提出</el-breadcrumb-item>
+      <el-breadcrumb-item>通勤経路</el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="tool-bar">
       <div>通勤経路</div>
       <div class="flex-grow-1"></div>

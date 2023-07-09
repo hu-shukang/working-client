@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-descriptions class="attendance-descriptions mb-2" :column="6" border>
+    <el-descriptions class="attendance-descriptions mb-secounday" :column="6" border>
       <el-descriptions-item label="標準稼働">22</el-descriptions-item>
       <el-descriptions-item label="出勤日数">17</el-descriptions-item>
       <el-descriptions-item label="在宅日数" :span="4">22</el-descriptions-item>
@@ -115,15 +115,15 @@
   }
   .start,
   :deep(.start) {
-    width: 40px;
-    max-width: 40px;
-    min-width: 40px;
+    width: 64px;
+    max-width: 64px;
+    min-width: 64px;
   }
   .end,
   :deep(.end) {
-    width: 40px;
-    max-width: 40px;
-    min-width: 40px;
+    width: 64px;
+    max-width: 64px;
+    min-width: 64px;
   }
   .break,
   :deep(.break) {
@@ -157,9 +157,9 @@
   }
   .time-off,
   :deep(.time-off) {
-    width: 62px;
-    max-width: 62px;
-    min-width: 62px;
+    width: 64px;
+    max-width: 64px;
+    min-width: 64px;
   }
   .remotely,
   :deep(.remotely) {

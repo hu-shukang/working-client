@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-steps :active="1" align-center>
-      <el-step title="Step 1" description="交通ルート" />
-      <el-step title="Step 2" description="勤務表" />
-      <el-step title="Step 3" description="その他" />
-    </el-steps>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">ホーム画面</el-breadcrumb-item>
+      <el-breadcrumb-item>提出</el-breadcrumb-item>
+    </el-breadcrumb>
     <div>
-      <slot />
+      <el-button plain @click="$router.push('/report/traffic')">通勤経路</el-button>
+      <el-button plain @click="$router.push('/report/attendance')">勤怠表</el-button>
     </div>
   </div>
 </template>
