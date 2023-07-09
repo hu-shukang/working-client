@@ -42,14 +42,14 @@
     toAttendanceRowModel,
     AttendanceEditModel
   } from '~/types/attendance.type';
-  import { useAttendanceStore } from '~/stores/attendance.store';
+  import { useReportStore } from '~/stores/report.store';
 
-  const attendanceStore = useAttendanceStore();
-  const { year, month } = storeToRefs(attendanceStore);
+  const reportStore = useReportStore();
+  const { year, month } = storeToRefs(reportStore);
   const addDialogVisiable = ref(false);
   const editDialogVisiable = ref(false);
   const yearMonth = computed<Date>({
-    get: () => new Date(attendanceStore.year, attendanceStore.month),
+    get: () => new Date(reportStore.year, reportStore.month),
     set: (newDate: Date) => {
       year.value = newDate.getFullYear();
       month.value = newDate.getMonth();
@@ -57,9 +57,9 @@
   });
 
   const list = computed({
-    get: () => attendanceStore.getAttendanceList,
+    get: () => reportStore.getAttendanceList,
     set: (value: AttendanceRowModel[]) => {
-      attendanceStore.attendance[`${year.value}${month.value}`] = value;
+      reportStore.attendance[`${year.value}${month.value}`] = value;
     }
   });
   const selectedRows = computed(() => list.value.filter((item) => item.checked));
@@ -141,4 +141,11 @@
       } catch (e: any) {}
     }
   };
+  const resetCheck = () => {
+    list.value.forEach((item) => (item.checked = false));
+  };
+
+  onUnmounted(() => {
+    resetCheck();
+  });
 </script>

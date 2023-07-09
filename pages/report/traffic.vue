@@ -32,9 +32,9 @@
     trafficAddModelToTrafficRowModel,
     TrafficEditModel
   } from '~/types/traffic.type';
-  import { useAttendanceStore } from '~/stores/attendance.store';
+  import { useReportStore } from '~/stores/report.store';
 
-  const attendanceStore = useAttendanceStore();
+  const attendanceStore = useReportStore();
   const addDialogVisiable = ref(false);
   const editDialogVisiable = ref(false);
   const selectedRows = computed(() => list.value.filter((item) => item.checked));
@@ -101,4 +101,12 @@
     const v = trafficAddModelToTrafficRowModel(index, model);
     list.value.push(v);
   };
+
+  const resetCheck = () => {
+    list.value.forEach((item) => (item.checked = false));
+  };
+
+  onUnmounted(() => {
+    resetCheck();
+  });
 </script>

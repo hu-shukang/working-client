@@ -22,9 +22,13 @@
 
 .el-aside {
   border-right: solid 1px var(--el-border-color);
+  width: unset !important;
 }
 .el-menu {
   border-right: none !important;
+  .el-menu-item {
+    padding-right: 40px !important;
+  }
 }
 
 .el-breadcrumb {
@@ -95,4 +99,18 @@
   margin-bottom: var(--el-secounday-padding);
   display: flex;
   align-items: center;
+}
+
+.option-secounday {
+  color: var(--el-text-color-secondary);
+  font-size: 11px;
+  padding-left: 10px;
+}
+
+.el-popper {
+  display: flex;
+  align-items: center;
+  .el-link {
+    font-size: 12px;
+  }
 }

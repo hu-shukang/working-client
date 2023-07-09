@@ -10,7 +10,7 @@
           <th class="route" rowspan="2">通勤経路</th>
           <th class="round-trip">往復実費</th>
           <th class="month-train-pass">定期(1ヶ月)</th>
-          <th class="comment">コメント</th>
+          <th class="comment">備考</th>
         </tr>
       </thead>
     </table>

@@ -3,7 +3,7 @@
     <el-alert
       title="※ 既に作成されたレコードに対して再度作成する場合は上書きになります。"
       type="warning"
-      class="mb-2"
+      class="mb-secounday"
       :closable="false"
     />
     <el-form ref="formRef" :model="form" :rules="rules" label-width="150px">
@@ -56,7 +56,22 @@
         <el-switch v-model="form.remotely" />
       </el-form-item>
       <el-form-item label="交通費実費">
-        <el-input-number v-model="form.transportationCosts" :min="0" class="input-width" :controls="false" />
+        <el-col :span="11">
+          <el-select v-model="form.route" class="input-width" placeholder="交通費実費" clearable>
+            <el-option
+              v-for="item in trafficList"
+              :key="item.id"
+              :label="formatPrice(item.roundTrip, true)"
+              :value="item.id"
+            >
+              <span class="float-left">{{ formatPrice(item.roundTrip, true) }}</span>
+              <span class="float-right option-secounday">{{ formatStation(item) }}</span>
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="10">
+          <el-button plain @click="addTraffic">交通ルート追加</el-button>
+        </el-col>
       </el-form-item>
       <el-form-item label="備考">
         <el-input v-model="form.comment" :rows="3" class="input-width-2" type="textarea" placeholder="備考" />
@@ -73,17 +88,24 @@
 
 <script setup lang="ts">
   import { FormInstance, FormRules } from 'element-plus';
+  import { useReportStore } from '~/stores/report.store';
   import { AttendanceAddModel, initAttendanceAddModel } from '~/types/attendance.type';
   import { ConstUtil } from '~/utils/const.util';
 
   const props = defineProps<{ visible: boolean; year: number; month: number }>();
   const emit = defineEmits(['update:visible', 'output']);
+  const reportStore = useReportStore();
+  const router = useRouter();
 
+  const trafficList = computed(() => reportStore.trafficList);
   const timeOffOptions = ConstUtil.TIME_OFF_OPTIONS;
   const dialogVisible = computed({
     get: () => props.visible,
     set: (newValue: boolean) => emit('update:visible', newValue)
   });
+
+  const formatStation = stringUtil.formatStation;
+  const formatPrice = stringUtil.formatPrice;
 
   const formRef = ref<FormInstance>();
   const form = reactive<AttendanceAddModel>(initAttendanceAddModel());
@@ -164,6 +186,10 @@
         return false;
       }
     });
+  };
+
+  const addTraffic = () => {
+    router.push('/report/traffic');
   };
 </script>
 

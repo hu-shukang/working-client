@@ -14,8 +14,8 @@ export type AttendanceInfo = {
   timeOff: string;
   /** 在宅 */
   remotely: boolean;
-  /** 交通費 */
-  transportationCosts: number;
+  /** 交通ルート */
+  route?: string;
   /** 備考 */
   comment: string;
 };
@@ -38,7 +38,7 @@ export type AttendanceEditModel = {
   /** 在宅 */
   remotely: boolean;
   /** 交通費 */
-  transportationCosts: number;
+  route?: string;
   /** 備考 */
   comment: string;
 };
@@ -66,7 +66,6 @@ export const initAttendanceAddModel = (): AttendanceAddModel => {
     nightBreak: 0,
     timeOff: '',
     remotely: false,
-    transportationCosts: 0,
     comment: ''
   };
 };
@@ -78,7 +77,6 @@ export const initAttendanceEditModel = (): AttendanceEditModel => {
     nightBreak: 0,
     timeOff: '',
     remotely: false,
-    transportationCosts: 0,
     comment: ''
   };
 };
@@ -93,7 +91,7 @@ export const toAttendanceRowModel = (model: AttendanceEditModel, date: string, c
     nightBreak: model.nightBreak,
     timeOff: model.timeOff,
     remotely: model.remotely,
-    transportationCosts: model.transportationCosts,
+    route: model.route,
     comment: model.comment
   };
 };
@@ -111,7 +109,6 @@ export const attendanceList = () => {
       nightBreak: 0,
       timeOff: '',
       remotely: i % 2 === 0,
-      transportationCosts: 1000 + i,
       comment: ''
     });
   }
@@ -128,7 +125,6 @@ export const emptyAttendanceRowModel = (date: string): AttendanceRowModel => {
     nightBreak: 0,
     timeOff: '',
     remotely: false,
-    transportationCosts: 0,
     comment: ''
   };
 };

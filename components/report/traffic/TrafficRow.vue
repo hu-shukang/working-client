@@ -22,9 +22,7 @@
     get: () => props.row.checked,
     set: (value: boolean) => emit('check', props.index, value)
   });
-  const route = computed(() =>
-    [props.row.startStation, ...(props.row.transitStation ?? []), props.row.endStation].join(' - ')
-  );
+  const route = computed(() => stringUtil.formatStationWithTransit(props.row));
   const roundTrip = computed(() => stringUtil.formatPrice(props.row.roundTrip, true));
   const monthTrainPass = computed(() =>
     props.row.monthTrainPass ? stringUtil.formatPrice(props.row.monthTrainPass, true) : '-'

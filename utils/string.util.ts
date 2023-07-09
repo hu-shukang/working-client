@@ -26,6 +26,14 @@ class StringUtil {
     formattedPrice = formattedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return withPrefix ? formattedPrice + '円' : formattedPrice;
   }
+
+  public formatStation(model: { startStation: string; endStation: string }) {
+    return model.startStation + '-' + model.endStation;
+  }
+
+  public formatStationWithTransit(model: { startStation: string; endStation: string; transitStation?: string[] }) {
+    return [model.startStation, ...(model.transitStation ?? []), model.endStation].join('-');
+  }
 }
 
 export const stringUtil = new StringUtil();

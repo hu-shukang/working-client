@@ -33,7 +33,7 @@
           <th class="time-off" rowspan="2">休暇</th>
           <th class="remotely" rowspan="2">在宅</th>
           <th class="transportation-costs" rowspan="2">実費<br />通勤費</th>
-          <th rowspan="2">備考欄<br />(遅刻・早退理由)</th>
+          <th rowspan="2">備考<br />(遅刻・早退理由)</th>
         </tr>
         <tr>
           <th class="start">出社</th>

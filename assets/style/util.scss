@@ -56,5 +56,17 @@ text-decoration-none {
 }
 
 .mb-secounday {
-  margin-bottom: var(--el-secounday-padding);
+  margin-bottom: var(--el-secounday-padding) !important;
+}
+
+.ml-secounday {
+  margin-left: var(--el-secounday-padding) !important;
+}
+
+.float-left {
+  float: left !important;
+}
+
+.float-right {
+  float: right !important;
 }
