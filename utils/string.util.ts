@@ -34,6 +34,14 @@ class StringUtil {
   public formatStationWithTransit(model: { startStation: string; endStation: string; transitStation?: string[] }) {
     return [model.startStation, ...(model.transitStation ?? []), model.endStation].join('-');
   }
+
+  public formatPercent(value: number) {
+    return (value * 100).toFixed(0) + '%';
+  }
+
+  public formatHour(value: number) {
+    return value + 'H';
+  }
 }
 
 export const stringUtil = new StringUtil();
