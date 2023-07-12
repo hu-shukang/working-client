@@ -21,6 +21,10 @@ class StringUtil {
     return content === null || content === undefined;
   }
 
+  public notNull(content: any) {
+    return !this.isNull(content);
+  }
+
   public formatPrice(price: number, withPrefix = false) {
     let formattedPrice = price.toString();
     formattedPrice = formattedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ',');

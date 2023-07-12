@@ -125,3 +125,7 @@
   font-size: 11px;
   color: var(--el-text-color-secondary);
 }
+
+.el-tag + .el-tag {
+  margin-left: var(--el-secounday-padding);
+}

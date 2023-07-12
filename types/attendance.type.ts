@@ -128,3 +128,14 @@ export const emptyAttendanceRowModel = (date: string): AttendanceRowModel => {
     comment: ''
   };
 };
+
+export const emptyAttendanceList = (year: number, month: number) => {
+  const dayCount = dateUtil.getDayCount(year, month);
+  const result = [];
+  for (let i = 1; i <= dayCount; i++) {
+    const date = dateUtil.getIOSDateString(year, month, i);
+    const attendanceRow = emptyAttendanceRowModel(date);
+    result.push(attendanceRow);
+  }
+  return result;
+};

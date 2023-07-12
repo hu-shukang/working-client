@@ -29,7 +29,7 @@
       <table class="tbl stick">
         <tbody>
           <AttendanceRow
-            v-for="(row, index) in modelValue"
+            v-for="(row, index) in list"
             :key="row.date"
             :index="index"
             :row="row"
@@ -54,9 +54,9 @@
     <div class="mt-main">
       <div class="category-title">集計</div>
       <el-descriptions class="attendance-descriptions mt-secounday" :column="6" border>
-        <el-descriptions-item label="標準稼働">22</el-descriptions-item>
-        <el-descriptions-item label="出勤日数">17</el-descriptions-item>
-        <el-descriptions-item label="在宅日数" :span="4">22</el-descriptions-item>
+        <el-descriptions-item label="標準稼働">{{ totalWorkDay }}日</el-descriptions-item>
+        <el-descriptions-item label="出勤日数">{{ actualWorkDay }}日</el-descriptions-item>
+        <el-descriptions-item label="在宅日数" :span="4">{{ remotelyDay }}日</el-descriptions-item>
         <el-descriptions-item label="有休">2.0</el-descriptions-item>
         <el-descriptions-item label="半有休">2.0</el-descriptions-item>
         <el-descriptions-item label="振替休日">0.0</el-descriptions-item>
@@ -68,7 +68,10 @@
         <el-descriptions-item label="遅刻">0.0</el-descriptions-item>
         <el-descriptions-item label="早退">0.0</el-descriptions-item>
         <el-descriptions-item label="その他" :span="2">0.0</el-descriptions-item>
-        <el-descriptions-item label="交通経費" :span="4">58,965円</el-descriptions-item>
+        <el-descriptions-item label="経費" :span="4">
+          <el-tag v-for="item of totalPrice.items" :key="item">{{ item }}</el-tag>
+          <el-tag :key="totalPrice.total" type="success">{{ totalPrice.total }}</el-tag>
+        </el-descriptions-item>
       </el-descriptions>
     </div>
   </div>
@@ -79,33 +82,84 @@
   import { useReportStore } from '~/stores/report.store';
   import { AttendanceRowModel } from '~/types/attendance.type';
 
-  const props = defineProps<{ modelValue: AttendanceRowModel[]; holidays: ParsedContent | null }>();
-  const emit = defineEmits(['update:modelValue']);
+  const props = defineProps<{ list: AttendanceRowModel[]; holidays: ParsedContent | null }>();
+  const emit = defineEmits(['check']);
 
   const reportStore = useReportStore();
   const check = (index: number, value: boolean) => {
-    const newModelValue = JSON.parse(JSON.stringify(props.modelValue)) as AttendanceRowModel[];
-    newModelValue[index].checked = value;
-    emit('update:modelValue', newModelValue);
+    emit('check', [index], value);
   };
 
   const isIndeterminate = computed(
-    () => props.modelValue.some((item) => item.checked) && props.modelValue.some((item) => !item.checked)
+    () => props.list.some((item) => item.checked) && props.list.some((item) => !item.checked)
   );
 
   const allCheck = computed({
-    get: () => props.modelValue.every((item) => item.checked),
+    get: () => props.list.every((item) => item.checked),
     set: (value: boolean) => {
-      const newModelValue = JSON.parse(JSON.stringify(props.modelValue)) as AttendanceRowModel[];
-      for (let i = 0; i < newModelValue.length; i++) {
-        newModelValue[i].checked = value;
-      }
-      emit('update:modelValue', newModelValue);
+      emit('check', [...props.list.map((_, index) => index)], value);
     }
   });
 
-  const monthTrainPass = ref();
+  const monthTrainPass = ref<string>();
   const trafficList = computed(() => reportStore.monthTrainPassTrafficList);
+  const totalWorkDay = computed(() => {
+    let result = 0;
+    for (const item of props.list) {
+      const isWeekend = dateUtil.isWeekend(item.date);
+      const yyyymmdd = dateUtil.toYYYYMMDD(item.date);
+      const isHoliday = props.holidays ? props.holidays[yyyymmdd] !== undefined : false;
+      if (!isWeekend && !isHoliday) {
+        result += 1;
+      }
+    }
+    return result;
+  });
+  const actualWorkDay = computed(() => {
+    let result = 0;
+    for (const item of props.list) {
+      const m = dateUtil.calcActualWorking(item);
+      if (m > 0) {
+        result++;
+      }
+    }
+    return result;
+  });
+  const remotelyDay = computed(() => props.list.filter((item) => item.remotely).length);
+  const totalPrice = computed(() => {
+    const trafficMap = reportStore.getTrafficMap;
+    const items: string[] = [];
+    let total = 0;
+    let routePrice = 0;
+    let remotelyPrice = 0;
+    for (const item of props.list) {
+      if (item.route) {
+        const traffic = trafficMap.get(item.route);
+        if (traffic) {
+          routePrice += traffic.roundTrip;
+        }
+      }
+      if (item.remotely) {
+        remotelyPrice += ConstUtil.REMOTELT_ALLOWANCE;
+      }
+    }
+    if (routePrice > 0) {
+      items.push(`交通費実費: ${stringUtil.formatPrice(routePrice, true)}`);
+      total += routePrice;
+    }
+    if (remotelyPrice > 0) {
+      items.push(`在宅手当: ${stringUtil.formatPrice(remotelyPrice, true)}`);
+      total += remotelyPrice;
+    }
+    if (monthTrainPass.value) {
+      const monthTrainPassPrice = trafficMap.get(monthTrainPass.value)?.monthTrainPass ?? 0;
+      if (monthTrainPassPrice > 0) {
+        items.push(`定期券(1ヶ月): ${stringUtil.formatPrice(monthTrainPassPrice, true)}`);
+        total += monthTrainPassPrice;
+      }
+    }
+    return { items: items, total: `合計: ${stringUtil.formatPrice(total, true)}` };
+  });
 
   const formatPrice = stringUtil.formatPrice;
   const formatStation = stringUtil.formatStationWithTransit;

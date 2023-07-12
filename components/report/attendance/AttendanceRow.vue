@@ -43,7 +43,11 @@
   import { ConstUtil } from '~/utils/const.util';
   import { useReportStore } from '~/stores/report.store';
 
-  const props = defineProps<{ index: number; row: AttendanceRowModel; holidays: ParsedContent | null }>();
+  const props = defineProps<{
+    index: number;
+    row: AttendanceRowModel;
+    holidays: ParsedContent | null;
+  }>();
   const emit = defineEmits(['check']);
   const reportStore = useReportStore();
 
