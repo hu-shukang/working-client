@@ -1,21 +1,5 @@
 <template>
   <div>
-    <el-descriptions class="attendance-descriptions mb-secounday" :column="6" border>
-      <el-descriptions-item label="標準稼働">22</el-descriptions-item>
-      <el-descriptions-item label="出勤日数">17</el-descriptions-item>
-      <el-descriptions-item label="在宅日数" :span="4">22</el-descriptions-item>
-      <el-descriptions-item label="有休">2.0</el-descriptions-item>
-      <el-descriptions-item label="半有休">2.0</el-descriptions-item>
-      <el-descriptions-item label="振替休日">0.0</el-descriptions-item>
-      <el-descriptions-item label="特別休暇">0.0</el-descriptions-item>
-      <el-descriptions-item label="欠勤">0.0</el-descriptions-item>
-      <el-descriptions-item label="休暇合計">0.0</el-descriptions-item>
-      <el-descriptions-item label="休日出勤">0.0</el-descriptions-item>
-      <el-descriptions-item label="振替出勤">0.0</el-descriptions-item>
-      <el-descriptions-item label="遅刻">0.0</el-descriptions-item>
-      <el-descriptions-item label="早退">0.0</el-descriptions-item>
-      <el-descriptions-item label="その他">0.0</el-descriptions-item>
-    </el-descriptions>
     <table class="tbl stick">
       <thead>
         <tr>
@@ -55,16 +39,50 @@
         </tbody>
       </table>
     </el-scrollbar>
+    <div class="mt-main">
+      <div class="category-title">定期券(1ヶ月)費用申請</div>
+      <div class="month-train-pass-select mt-secounday">
+        <el-select v-model="monthTrainPass" placeholder="選択" clearable>
+          <el-option v-for="item in trafficList" :key="item.id" :label="formatStation(item)" :value="item.id">
+            <span class="float-left">{{ formatPrice(item.monthTrainPass!, true) }}</span>
+            <span class="float-right option-secounday">{{ formatStation(item) }}</span>
+          </el-option>
+        </el-select>
+        <div class="tip ml-secounday">※ 定期券(1ヶ月)費用を未入力の交通ルートは表示しません。</div>
+      </div>
+    </div>
+    <div class="mt-main">
+      <div class="category-title">集計</div>
+      <el-descriptions class="attendance-descriptions mt-secounday" :column="6" border>
+        <el-descriptions-item label="標準稼働">22</el-descriptions-item>
+        <el-descriptions-item label="出勤日数">17</el-descriptions-item>
+        <el-descriptions-item label="在宅日数" :span="4">22</el-descriptions-item>
+        <el-descriptions-item label="有休">2.0</el-descriptions-item>
+        <el-descriptions-item label="半有休">2.0</el-descriptions-item>
+        <el-descriptions-item label="振替休日">0.0</el-descriptions-item>
+        <el-descriptions-item label="特別休暇">0.0</el-descriptions-item>
+        <el-descriptions-item label="欠勤">0.0</el-descriptions-item>
+        <el-descriptions-item label="休暇合計">0.0</el-descriptions-item>
+        <el-descriptions-item label="休日出勤">0.0</el-descriptions-item>
+        <el-descriptions-item label="振替出勤">0.0</el-descriptions-item>
+        <el-descriptions-item label="遅刻">0.0</el-descriptions-item>
+        <el-descriptions-item label="早退">0.0</el-descriptions-item>
+        <el-descriptions-item label="その他" :span="2">0.0</el-descriptions-item>
+        <el-descriptions-item label="交通経費" :span="4">58,965円</el-descriptions-item>
+      </el-descriptions>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ParsedContent } from '@nuxt/content/dist/runtime/types';
+  import { useReportStore } from '~/stores/report.store';
   import { AttendanceRowModel } from '~/types/attendance.type';
 
   const props = defineProps<{ modelValue: AttendanceRowModel[]; holidays: ParsedContent | null }>();
   const emit = defineEmits(['update:modelValue']);
 
+  const reportStore = useReportStore();
   const check = (index: number, value: boolean) => {
     const newModelValue = JSON.parse(JSON.stringify(props.modelValue)) as AttendanceRowModel[];
     newModelValue[index].checked = value;
@@ -85,14 +103,17 @@
       emit('update:modelValue', newModelValue);
     }
   });
+
+  const monthTrainPass = ref();
+  const trafficList = computed(() => reportStore.monthTrainPassTrafficList);
+
+  const formatPrice = stringUtil.formatPrice;
+  const formatStation = stringUtil.formatStationWithTransit;
 </script>
 
 <style scoped lang="scss">
   .scroll-bar {
-    height: calc(
-      100vh - var(--el-header-height) - var(--el-footer-height) - var(--el-main-padding) - var(--el-main-padding) - 34px -
-        42px - 64px
-    );
+    height: 400px;
     border-bottom: 1px solid var(--el-border-color-lighter);
   }
   .check,
@@ -176,5 +197,12 @@
   .el-checkbox,
   :deep(.el-checkbox) {
     height: var(--table-row-default-height);
+  }
+  .month-train-pass-select {
+    display: flex;
+    align-items: center;
+    .el-select {
+      width: 300px;
+    }
   }
 </style>

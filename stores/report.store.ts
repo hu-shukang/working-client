@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { TrafficRowModel } from '~/types/traffic.type';
+import { TrafficRowModel, initTrafficRowModelList } from '~/types/traffic.type';
 import { AttendanceRowModel, emptyAttendanceRowModel } from '~/types/attendance.type';
 
 const initReportStore = () => {
@@ -8,7 +8,7 @@ const initReportStore = () => {
     year: year,
     month: month,
     attendance: {} as { [key: string]: AttendanceRowModel[] },
-    trafficList: [] as TrafficRowModel[]
+    trafficList: initTrafficRowModelList() as TrafficRowModel[]
   };
 };
 
@@ -28,6 +28,9 @@ export const useReportStore = defineStore('attendance', {
         result.push(attendanceRow);
       }
       return result;
+    },
+    monthTrainPassTrafficList: (state) => {
+      return state.trafficList.filter((item) => item.monthTrainPass);
     },
     getTrafficMap: (state) => {
       const result = new Map<string, TrafficRowModel>();

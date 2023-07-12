@@ -74,7 +74,7 @@
   };
 
   const validateMonthTrainPass = (_rule: any, value: number, callback: any) => {
-    if (form.roundTrip && value <= form.roundTrip) {
+    if (form.roundTrip && value && value <= form.roundTrip) {
       callback(new Error('定期券の金額は往復実費より以下なっています'));
     } else {
       callback();

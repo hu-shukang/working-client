@@ -55,12 +55,36 @@ text-decoration-none {
   flex-grow: 1 !important;
 }
 
+.mt-main {
+  margin-top: var(--el-main-padding) !important;
+}
+
+.mb-main {
+  margin-bottom: var(--el-main-padding) !important;
+}
+
+.ml-main {
+  margin-left: var(--el-main-padding) !important;
+}
+
+.mr-main {
+  margin-right: var(--el-main-padding) !important;
+}
+
+.mt-secounday {
+  margin-top: var(--el-secounday-padding) !important;
+}
+
 .mb-secounday {
   margin-bottom: var(--el-secounday-padding) !important;
 }
 
 .ml-secounday {
   margin-left: var(--el-secounday-padding) !important;
+}
+
+.mr-secounday {
+  margin-right: var(--el-secounday-padding) !important;
 }
 
 .float-left {

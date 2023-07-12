@@ -14,6 +14,11 @@
     </div>
     <AttendanceTable v-model="list" :holidays="holidays" />
 
+    <div class="mt-main text-center">
+      <el-button size="large" @click="back">戻る</el-button>
+      <el-button size="large" type="primary" @click="save">保存</el-button>
+      <el-button size="large" type="success" @click="submit">提出</el-button>
+    </div>
     <AttendanceAddDialog
       v-if="addDialogVisiable"
       v-model:visible="addDialogVisiable"
@@ -45,6 +50,7 @@
   import { useReportStore } from '~/stores/report.store';
 
   const reportStore = useReportStore();
+  const router = useRouter();
   const { year, month } = storeToRefs(reportStore);
   const addDialogVisiable = ref(false);
   const editDialogVisiable = ref(false);
@@ -73,6 +79,7 @@
   };
 
   const addOutput = (model: AttendanceAddModel) => {
+    console.log(model);
     if (model.isSingleDate) {
       for (let i = 0; i < list.value.length; i++) {
         const row = list.value[i];
@@ -95,6 +102,7 @@
         }
       }
     }
+    console.log(list);
   };
 
   const edit = () => {
@@ -143,6 +151,40 @@
   };
   const resetCheck = () => {
     list.value.forEach((item) => (item.checked = false));
+  };
+
+  const back = () => {
+    ElMessageBox.confirm('保存せずに戻りますか？', 'ご確認', {
+      confirmButtonText: 'OK',
+      cancelButtonText: '続けて編集する',
+      type: 'warning'
+    })
+      .then(() => {
+        router.push('/report');
+      })
+      .catch(() => {});
+  };
+
+  const save = () => {
+    ElMessageBox.confirm('保存しました', '成功', {
+      confirmButtonText: 'OK',
+      type: 'success',
+      showCancelButton: false
+    }).then(() => {
+      router.push('/report');
+    });
+  };
+
+  const submit = () => {
+    ElMessageBox.confirm('保存して提出画面に入りますか？', 'ご確認', {
+      confirmButtonText: 'OK',
+      cancelButtonText: '続けて編集する',
+      type: 'info'
+    })
+      .then(() => {
+        router.push('/report');
+      })
+      .catch(() => {});
   };
 
   onUnmounted(() => {
