@@ -14,7 +14,7 @@
         <div>
           <el-button plain @click="$router.push('/report/traffic')">通勤経路登録</el-button>
           <el-button plain @click="$router.push('/report/attendance')">勤怠表</el-button>
-          <el-button plain>週報</el-button>
+          <el-button plain @click="$router.push('/report/weekly')">週報</el-button>
           <el-button plain>現金精算依頼書</el-button>
           <el-button plain>提出</el-button>
         </div>

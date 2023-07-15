@@ -131,9 +131,26 @@
 }
 
 .v-note-wrapper {
-  border: unset !important;
+  font-family: Menlo, 'Ubuntu Mono', Consolas, 'Courier New', 'Microsoft Yahei', 'Hiragino Sans GB',
+    'WenQuanYi Micro Hei', sans-serif !important;
+  border: 1px solid var(--el-border-color) !important;
+  transition: border-color 0.3s ease;
+  border-radius: 4px;
+  min-height: 150px !important;
+  textarea::placeholder {
+    color: var(--el-color-info-light-3); /* 将占位符文本的颜色设置为蓝色 */
+  }
+  &:focus-within {
+    border-color: var(--el-color-primary) !important;
+  }
+  .single-show {
+    font-size: 14px;
+  }
 }
-
+//
+.v-note-panel {
+  border-radius: 4px;
+}
 .v-note-wrapper .v-note-panel .v-note-show .v-show-content,
 .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper .content-input-wrapper {
   padding: var(--el-secounday-padding) !important;

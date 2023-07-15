@@ -4,10 +4,10 @@
       <mavon-editor
         v-model="content"
         language="ja"
+        placeholder="編集"
         :toolbars-flag="false"
         :autofocus="false"
         :tab-size="4"
-        :short-cut="false"
         :subfield="false"
         :default-open="readonly === true ? 'preview' : mode"
         :box-shadow="false"
