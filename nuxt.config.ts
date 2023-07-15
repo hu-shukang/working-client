@@ -12,6 +12,7 @@ export default defineNuxtConfig({
   piniaPersistedstate: {
     storage: 'sessionStorage'
   },
+  plugins: [{ src: '@/plugins/editor.plugin', ssr: false }],
   components: [
     {
       path: '~/components',

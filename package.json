@@ -35,6 +35,7 @@
     "@pinia/nuxt": "^0.4.11",
     "chart.js": "^4.3.0",
     "dayjs": "^1.11.8",
+    "mavon-editor": "^3.0.1",
     "pinia": "^2.1.4",
     "sass": "^1.63.6",
     "underscore.string": "^3.3.6",

@@ -129,3 +129,12 @@
 .el-tag + .el-tag {
   margin-left: var(--el-secounday-padding);
 }
+
+.v-note-wrapper {
+  border: unset !important;
+}
+
+.v-note-wrapper .v-note-panel .v-note-show .v-show-content,
+.v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper .content-input-wrapper {
+  padding: var(--el-secounday-padding) !important;
+}
