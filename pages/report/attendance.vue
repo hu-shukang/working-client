@@ -5,20 +5,36 @@
       <el-breadcrumb-item :to="{ path: '/report' }">提出</el-breadcrumb-item>
       <el-breadcrumb-item>勤怠表</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="tool-bar">
-      <el-date-picker v-model="yearMonth" type="month" placeholder="Select" format="YYYY年MM月" :clearable="false" />
-      <div class="flex-grow-1"></div>
-      <el-button type="danger" plain :icon="Delete" @click="clear">クリア</el-button>
-      <el-button type="warning" plain :icon="Edit" @click="edit">編集</el-button>
-      <el-button type="primary" plain :icon="Plus" @click="add">新規</el-button>
-    </div>
-    <AttendanceTable :list="list" :holidays="holidays" @check="check" />
+    <div>
+      <el-card class="mb-secounday">
+        <template #header>
+          <div class="card-header">
+            <span>勤務表</span>
+          </div>
+        </template>
+        <div class="tool-bar">
+          <el-date-picker
+            v-model="yearMonth"
+            type="month"
+            placeholder="Select"
+            format="YYYY年MM月"
+            :clearable="false"
+          />
+          <div class="flex-grow-1"></div>
+          <el-button type="danger" plain :icon="Delete" @click="clear">クリア</el-button>
+          <el-button type="warning" plain :icon="Edit" @click="edit">編集</el-button>
+          <el-button type="primary" plain :icon="Plus" @click="add">新規</el-button>
+        </div>
+        <AttendanceTable :list="list" :holidays="holidays" @check="check" />
 
-    <div class="mt-main text-center">
-      <el-button size="large" @click="back">戻る</el-button>
-      <el-button size="large" type="primary" @click="save">保存</el-button>
-      <el-button size="large" type="success" @click="submit">提出</el-button>
+        <div class="mt-main text-center">
+          <el-button size="large" @click="back">戻る</el-button>
+          <el-button size="large" type="primary" @click="save">保存</el-button>
+          <el-button size="large" type="success" @click="submit">提出</el-button>
+        </div>
+      </el-card>
     </div>
+
     <AttendanceAddDialog
       v-if="addDialogVisiable"
       v-model:visible="addDialogVisiable"

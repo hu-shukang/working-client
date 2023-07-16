@@ -5,14 +5,22 @@
       <el-breadcrumb-item :to="{ path: '/report' }">提出</el-breadcrumb-item>
       <el-breadcrumb-item>通勤経路</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="tool-bar">
-      <div>通勤経路</div>
-      <div class="flex-grow-1"></div>
-      <el-button type="danger" plain :icon="Delete" @click="remove">削除</el-button>
-      <el-button type="warning" plain :icon="Edit" @click="edit">編集</el-button>
-      <el-button type="primary" plain :icon="Plus" @click="add">新規</el-button>
+    <div>
+      <el-card class="mb-secounday">
+        <template #header>
+          <div class="card-header">
+            <span>通勤経路</span>
+          </div>
+        </template>
+        <div class="tool-bar">
+          <div class="flex-grow-1"></div>
+          <el-button type="danger" plain :icon="Delete" @click="remove">削除</el-button>
+          <el-button type="warning" plain :icon="Edit" @click="edit">編集</el-button>
+          <el-button type="primary" plain :icon="Plus" @click="add">新規</el-button>
+        </div>
+        <TrafficTable v-model="list" />
+      </el-card>
     </div>
-    <TrafficTable v-model="list" />
 
     <TrafficAddDialog v-if="addDialogVisiable" v-model:visible="addDialogVisiable" @output="addOutput" />
     <TrafficEditDialog

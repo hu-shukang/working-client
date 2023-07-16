@@ -23,6 +23,8 @@ export enum ApprovalStatus {
 
 /** 週報概要 */
 export type WeeklySummary = {
+  /** uuid */
+  id: string;
   /** 開始日 */
   start: string;
   /** 終了日 */
@@ -66,29 +68,34 @@ export const initWeeklyForm = (): WeeklyForm => {
 export const initWeeklySummary = (): WeeklySummary[] => {
   return [
     {
+      id: stringUtil.uuid(),
       start: '2023-07-24T00:00:00',
       end: '2023-07-31T00:00:00',
       status: ApprovalStatus.CREATED
     },
     {
+      id: stringUtil.uuid(),
       start: '2023-07-17T00:00:00',
       end: '2023-07-23T00:00:00',
       status: ApprovalStatus.SUBMISSION,
       submitDate: '2023-07-23T10:00:00'
     },
     {
+      id: stringUtil.uuid(),
       start: '2023-07-10T00:00:00',
       end: '2023-07-16T00:00:00',
       status: ApprovalStatus.SUBMISSION,
       submitDate: '2023-07-16T12:00:00'
     },
     {
+      id: stringUtil.uuid(),
       start: '2023-07-01T00:00:00',
       end: '2023-07-09T00:00:00',
       status: ApprovalStatus.SUBMISSION,
       submitDate: '2023-07-09T13:00:00'
     },
     {
+      id: stringUtil.uuid(),
       start: '2023-06-26T00:00:00',
       end: '2023-06-30T00:00:00',
       status: ApprovalStatus.APPROVAL,
@@ -97,6 +104,7 @@ export const initWeeklySummary = (): WeeklySummary[] => {
       approvalEmployee: '胡 書康'
     },
     {
+      id: stringUtil.uuid(),
       start: '2023-06-19T00:00:00',
       end: '2023-06-25T00:00:00',
       status: ApprovalStatus.APPROVAL,
@@ -106,6 +114,7 @@ export const initWeeklySummary = (): WeeklySummary[] => {
       approvalComment: 'コメント'
     },
     {
+      id: stringUtil.uuid(),
       start: '2023-06-12T00:00:00',
       end: '2023-06-18T00:00:00',
       status: ApprovalStatus.APPROVAL,
@@ -114,6 +123,7 @@ export const initWeeklySummary = (): WeeklySummary[] => {
       approvalEmployee: '胡 書康'
     },
     {
+      id: stringUtil.uuid(),
       start: '2023-06-05T00:00:00',
       end: '2023-06-11T00:00:00',
       status: ApprovalStatus.APPROVAL,
@@ -122,6 +132,7 @@ export const initWeeklySummary = (): WeeklySummary[] => {
       approvalEmployee: '胡 書康'
     },
     {
+      id: stringUtil.uuid(),
       start: '2023-06-01T00:00:00',
       end: '2023-06-04T00:00:00',
       status: ApprovalStatus.APPROVAL,

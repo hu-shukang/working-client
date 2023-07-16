@@ -59,7 +59,7 @@
 
 <style scoped lang="scss">
   .scroll-bar {
-    height: calc(
+    max-height: calc(
       100vh - var(--el-header-height) - var(--el-footer-height) - var(--el-main-padding) - var(--el-main-padding) - 34px -
         42px - 64px
     );
