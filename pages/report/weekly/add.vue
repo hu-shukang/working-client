@@ -11,7 +11,13 @@
           <span>週報</span>
         </div>
       </template>
-      <el-alert class="mb-secounday" title="入力欄はMarkdown文法をサポートできます。" :closable="false" type="info" />
+      <el-alert
+        class="mb-secounday"
+        title="入力欄はMarkdown文法をサポートできます。"
+        :closable="false"
+        type="info"
+        show-icon
+      />
       <table class="tbl weekly-tbl">
         <tr>
           <th>期間</th>

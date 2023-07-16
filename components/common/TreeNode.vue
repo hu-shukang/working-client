@@ -1,5 +1,5 @@
 <template>
-  <details :open="node.open">
+  <details :id="node.id" :open="node.open">
     <summary>
       <img class="node-icon close" src="/assets/image/plus-square.svg" alt="" />
       <img class="node-icon open" src="/assets/image/minus-square.svg" alt="" />

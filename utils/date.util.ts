@@ -19,8 +19,12 @@ class DateUtil {
     return { year: today.year(), month: today.month(), day: today.date() };
   }
 
+  public toYYYYMMDDHHmm(origin?: DayjsDate) {
+    return dayjs(origin).format('YYYY/MM/DD HH:mm');
+  }
+
   public toYYYYMMDD(origin?: DayjsDate) {
-    return dayjs(origin).format('YYYY-MM-DD');
+    return dayjs(origin).format('YYYY/MM/DD');
   }
 
   public toMMDD(origin?: DayjsDate) {
@@ -33,6 +37,10 @@ class DateUtil {
 
   public toWeekday(origin?: DayjsDate) {
     return dayjs(origin).format('ddd');
+  }
+
+  public toMMDDWeekday(origin?: DayjsDate) {
+    return dayjs(origin).format('MM/DD(ddd)');
   }
 
   public minuteToHHmm(minute: number) {

@@ -15,4 +15,10 @@ export class ConstUtil {
     { value: '8', label: '早退' },
     { value: '9', label: 'その他' }
   ];
+
+  public static readonly APPROVAL_STATUS_MAP = {
+    '000': '作成済',
+    '100': '提出済',
+    '200': '承認済'
+  };
 }
