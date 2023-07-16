@@ -2,6 +2,7 @@
   <ClientOnly>
     <div class="editor-wrapper">
       <mavon-editor
+        ref="editorRef"
         v-model="content"
         language="ja"
         placeholder="編集"
@@ -33,9 +34,9 @@
       default: false
     }
   });
+  const emit = defineEmits(['update:modelValue', 'blur']);
 
-  const emit = defineEmits(['update:modelValue']);
-
+  const editorRef = ref();
   const content = computed({
     get: () => props.modelValue,
     set: (newValue) => emit('update:modelValue', newValue)
@@ -50,11 +51,27 @@
       mode.value = 'edit';
     }
   };
+
+  const handlerBlur = () => {
+    emit('blur');
+  };
+
+  onMounted(() => {
+    setTimeout(() => {
+      if (editorRef.value) {
+        const childElement = editorRef.value.$el.querySelector('textarea') as HTMLTextAreaElement | undefined;
+        if (childElement) {
+          childElement.addEventListener('blur', handlerBlur);
+        }
+      }
+    }, 1000);
+  });
 </script>
 
 <style scoped lang="scss">
   .editor-wrapper {
     position: relative;
+    width: 100%;
     .mode-btn {
       position: absolute;
       right: var(--el-secounday-padding);

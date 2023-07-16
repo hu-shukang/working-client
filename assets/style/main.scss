@@ -130,6 +130,11 @@
   margin-left: var(--el-secounday-padding);
 }
 
+.el-form-item.is-error {
+  .v-note-wrapper {
+    border-color: var(--el-color-danger) !important;
+  }
+}
 .v-note-wrapper {
   font-family: Menlo, 'Ubuntu Mono', Consolas, 'Courier New', 'Microsoft Yahei', 'Hiragino Sans GB',
     'WenQuanYi Micro Hei', sans-serif !important;

@@ -13,37 +13,30 @@
           <span class="tip">※入力欄はMarkdown文法をサポートできます。</span>
         </div>
       </template>
-      <table class="tbl weekly-tbl">
-        <tr>
-          <th>期間</th>
-          <td>
-            <el-date-picker
-              v-model="form.range"
-              type="daterange"
-              range-separator="〜"
-              start-placeholder="開始日"
-              end-placeholder="終了日"
-              :disabled-date="disabledDate"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>作業内容</th>
-          <td><Editor v-model="form.workContent" /></td>
-        </tr>
-        <tr>
-          <th>課題と解決策</th>
-          <td><Editor v-model="form.problemSolution" /></td>
-        </tr>
-        <tr>
-          <th>学びと気づき</th>
-          <td><Editor v-model="form.realization" /></td>
-        </tr>
-        <tr>
-          <th>報告・相談事項</th>
-          <td><Editor v-model="form.talk" /></td>
-        </tr>
-      </table>
+      <el-form ref="formRef" :model="form" label-width="120px">
+        <el-form-item label="期間" prop="range" required>
+          <el-date-picker
+            v-model="form.range"
+            type="daterange"
+            range-separator="〜"
+            start-placeholder="開始日"
+            end-placeholder="終了日"
+            :disabled-date="disabledDate"
+          />
+        </el-form-item>
+        <el-form-item label="作業内容" prop="workContent" required>
+          <Editor v-model="form.workContent" @blur="validateField('workContent')" />
+        </el-form-item>
+        <el-form-item label="課題と解決策" prop="problemSolution">
+          <Editor v-model="form.problemSolution" />
+        </el-form-item>
+        <el-form-item label="学びと気づき" prop="realization">
+          <Editor v-model="form.realization" />
+        </el-form-item>
+        <el-form-item label="報告・相談事項" prop="talk">
+          <Editor v-model="form.talk" />
+        </el-form-item>
+      </el-form>
       <div class="mt-main text-center">
         <el-button size="large" @click="back">戻る</el-button>
         <el-button size="large" type="primary" @click="save">保存</el-button>
@@ -54,14 +47,19 @@
 </template>
 
 <script setup lang="ts">
+  import { FormInstance } from 'element-plus';
   import { useReportStore } from '~/stores/report.store';
   import { initWeeklyAddModel } from '~/types/weekly.type';
 
   const router = useRouter();
   const reportStore = useReportStore();
   const form = reactive(initWeeklyAddModel());
+  const formRef = ref<FormInstance>();
   const disabledDate = (time: Date) => {
     return !dateUtil.inMonth(reportStore.year, reportStore.month, time);
+  };
+  const validateField = (field: string) => {
+    formRef.value!.validateField(field);
   };
   const back = () => {
     ElMessageBox.confirm('保存せずに戻りますか？', 'ご確認', {
@@ -97,12 +95,3 @@
       .catch(() => {});
   };
 </script>
-
-<style scoped lang="scss">
-  .weekly-tbl {
-    th {
-      width: 150px;
-      text-align: left;
-    }
-  }
-</style>
