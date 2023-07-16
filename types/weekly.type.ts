@@ -1,5 +1,5 @@
 /** 週報Form */
-export type WeeklyForm = {
+export type WeeklyAddModel = {
   /** 期間 */
   range: [string, string] | undefined;
   /** 作業内容 */
@@ -54,7 +54,7 @@ export const weeklySummaryToRowModel = (item: WeeklySummary): WeeklySummaryRowMo
   };
 };
 
-export const initWeeklyForm = (): WeeklyForm => {
+export const initWeeklyAddModel = (): WeeklyAddModel => {
   return {
     range: undefined,
     workContent: '',

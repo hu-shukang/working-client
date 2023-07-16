@@ -17,9 +17,9 @@
           <div class="flex-grow-1"></div>
           <el-button type="danger" plain :icon="Delete" @click="clear">削除</el-button>
           <el-button type="warning" plain :icon="Edit">編集</el-button>
-          <el-button type="primary" plain :icon="Plus">新規</el-button>
+          <el-button type="primary" plain :icon="Plus" @click="$router.push('/report/weekly/add')">新規</el-button>
         </div>
-        <WeeklySummaryTable v-model="list" />
+        <WeeklySummaryTable :list="list" @check="check" />
       </el-card>
     </div>
   </div>
@@ -27,25 +27,9 @@
 
 <script setup lang="ts">
   import { Plus, Edit, Delete } from '@element-plus/icons-vue';
-  import {
-    WeeklySummaryRowModel,
-    initWeeklySummary,
-    weeklySummaryToRowModel,
-    ApprovalStatus
-  } from '~/types/weekly.type';
-  import { useReportStore } from '~/stores/report.store';
+  import { ApprovalStatus } from '~/types/weekly.type';
 
-  const reportStore = useReportStore();
-  const list = ref<WeeklySummaryRowModel[]>([]);
-  const selectedRows = computed(() => list.value.filter((item) => item.checked));
-  const year = computed({
-    get: () => {
-      const date = new Date();
-      date.setFullYear(reportStore.year);
-      return date;
-    },
-    set: (value) => (reportStore.year = value.getFullYear())
-  });
+  const { list, year, selectedRows, deleteWeekly, check } = useWeekly();
 
   const clear = async () => {
     if (selectedRows.value.length === 0) {
@@ -57,7 +41,7 @@
         await ElMessageBox.confirm(`選択された週報を削除しますか`, 'ご確認', {
           type: 'warning'
         });
-        list.value = list.value.filter((item) => !item.checked);
+        deleteWeekly();
         ElMessage({
           message: '削除しました。',
           type: 'success'
@@ -65,8 +49,4 @@
       } catch (e: any) {}
     }
   };
-
-  onMounted(() => {
-    list.value = initWeeklySummary().map(weeklySummaryToRowModel);
-  });
 </script>

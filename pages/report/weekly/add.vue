@@ -3,21 +3,16 @@
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">ホーム画面</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/report' }">提出</el-breadcrumb-item>
-      <el-breadcrumb-item>週報</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/report/weekly' }">週報一覧</el-breadcrumb-item>
+      <el-breadcrumb-item>新規作成</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card class="mb-secounday">
       <template #header>
         <div class="card-header">
-          <span>週報</span>
+          <span>週報新規作成</span>
+          <span class="tip">※入力欄はMarkdown文法をサポートできます。</span>
         </div>
       </template>
-      <el-alert
-        class="mb-secounday"
-        title="入力欄はMarkdown文法をサポートできます。"
-        :closable="false"
-        type="info"
-        show-icon
-      />
       <table class="tbl weekly-tbl">
         <tr>
           <th>期間</th>
@@ -60,11 +55,11 @@
 
 <script setup lang="ts">
   import { useReportStore } from '~/stores/report.store';
-  import { initWeeklyForm } from '~/types/weekly.type';
+  import { initWeeklyAddModel } from '~/types/weekly.type';
 
   const router = useRouter();
   const reportStore = useReportStore();
-  const form = reactive(initWeeklyForm());
+  const form = reactive(initWeeklyAddModel());
   const disabledDate = (time: Date) => {
     return !dateUtil.inMonth(reportStore.year, reportStore.month, time);
   };

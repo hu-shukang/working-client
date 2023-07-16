@@ -3,7 +3,7 @@
     <table class="tbl stick">
       <thead>
         <tr>
-          <th class="check" rowspan="2">
+          <th class="check">
             <el-checkbox v-model="allCheck" :indeterminate="isIndeterminate" />
           </th>
           <th class="range">期間</th>
@@ -15,21 +15,11 @@
         </tr>
       </thead>
     </table>
-    <el-empty
-      v-if="modelValue.length === 0"
-      :image-size="150"
-      description="頻繁に使用する交通ルートを追加してください"
-    />
+    <el-empty v-if="list.length === 0" :image-size="150" description="頻繁に使用する交通ルートを追加してください" />
     <el-scrollbar v-else class="scroll-bar" :always="true">
       <table class="tbl stick">
         <tbody>
-          <WeeklySummaryRow
-            v-for="(row, index) in modelValue"
-            :key="row.start"
-            :index="index"
-            :row="row"
-            @check="check"
-          />
+          <WeeklySummaryRow v-for="(row, index) in list" :key="row.id" :index="index" :row="row" @check="check" />
         </tbody>
       </table>
     </el-scrollbar>
@@ -39,27 +29,22 @@
 <script setup lang="ts">
   import { WeeklySummaryRowModel } from '~/types/weekly.type';
 
-  const props = defineProps<{ modelValue: WeeklySummaryRowModel[] }>();
-  const emit = defineEmits(['update:modelValue']);
+  const props = defineProps<{ list: WeeklySummaryRowModel[] }>();
+  const emit = defineEmits(['check']);
 
   const check = (index: number, value: boolean) => {
-    const newModelValue = JSON.parse(JSON.stringify(props.modelValue)) as WeeklySummaryRowModel[];
-    newModelValue[index].checked = value;
-    emit('update:modelValue', newModelValue);
+    emit('check', [index], value);
   };
 
   const isIndeterminate = computed(
-    () => props.modelValue.some((item) => item.checked) && props.modelValue.some((item) => !item.checked)
+    () => props.list.some((item) => item.checked) && props.list.some((item) => !item.checked)
   );
 
   const allCheck = computed({
-    get: () => props.modelValue.length > 0 && props.modelValue.every((item) => item.checked),
+    get: () => props.list.length > 0 && props.list.every((item) => item.checked),
     set: (value: boolean) => {
-      const newModelValue = JSON.parse(JSON.stringify(props.modelValue)) as WeeklySummaryRowModel[];
-      for (let i = 0; i < newModelValue.length; i++) {
-        newModelValue[i].checked = value;
-      }
-      emit('update:modelValue', newModelValue);
+      const indexList = props.list.map((_, index) => index);
+      emit('check', indexList, value);
     }
   });
 </script>
