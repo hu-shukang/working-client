@@ -43,6 +43,7 @@
   });
   const mode = ref<'edit' | 'preview'>('edit');
   const icon = computed(() => (mode.value === 'edit' ? View : Hide));
+  let textarea: HTMLTextAreaElement | undefined;
 
   const toggleModel = () => {
     if (mode.value === 'edit') {
@@ -59,12 +60,18 @@
   onMounted(() => {
     setTimeout(() => {
       if (editorRef.value) {
-        const childElement = editorRef.value.$el.querySelector('textarea') as HTMLTextAreaElement | undefined;
-        if (childElement) {
-          childElement.addEventListener('blur', handlerBlur);
+        textarea = editorRef.value.$el.querySelector('textarea') as HTMLTextAreaElement | undefined;
+        if (textarea) {
+          textarea.addEventListener('blur', handlerBlur);
         }
       }
     }, 1000);
+  });
+
+  onUnmounted(() => {
+    if (textarea) {
+      textarea.removeEventListener('blur', handlerBlur);
+    }
   });
 </script>
 
