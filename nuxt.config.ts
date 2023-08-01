@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      apiBase: ''
+    }
+  },
   css: [
     '~/assets/style/variables.scss',
     '~/assets/style/reset.scss',

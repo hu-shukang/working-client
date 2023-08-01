@@ -6,22 +6,25 @@
 
 <script setup lang="ts">
   import { GoogleSignInButton, type CredentialResponse } from 'vue3-google-signin';
+  import { AuthResult } from '~/types/certification.type';
 
   definePageMeta({
     layout: 'empty'
   });
 
+  const config = useRuntimeConfig();
+
   // handle success event
   const handleLoginSuccess = async (response: CredentialResponse) => {
     const { credential } = response;
-    const { data: resp } = await useFetch(`${process.env.API_BASE_URL}/user_attributes`, {
-      method: 'PUT',
+    const { data: resp } = await useFetch<AuthResult>(`${config.public.apiBase}/certification/signin`, {
+      method: 'POST',
       body: {
         type: 'Google',
-        idToken: credential
+        idToken: credential + 'af'
       }
     });
-    console.log(resp.value);
+    console.log(resp.value?.AccessToken);
   };
 
   // handle an error event
