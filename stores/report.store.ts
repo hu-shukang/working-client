@@ -22,5 +22,7 @@ export const useReportStore = defineStore('attendance', {
       return result;
     }
   },
-  persist: true
+  persist: {
+    storage: persistedState.sessionStorage
+  }
 });

@@ -2,19 +2,22 @@ export default defineNuxtPlugin({
   name: 'error-handler-plugin',
   enforce: process.server ? 'pre' : 'post',
   setup(nuxtApp) {
-    nuxtApp.vueApp.config.errorHandler = (error, context) => {
-      console.log('=== error handler ===');
-      console.log(error);
-      console.log(context);
+    const errorHandler = (error: any) => {
+      ElMessageBox.alert(error.message, 'エラー', {
+        confirmButtonText: 'OK'
+      });
+    };
+
+    nuxtApp.vueApp.config.errorHandler = (error: any) => {
+      errorHandler(error);
     };
 
     window.addEventListener('error', (event) => {
-      console.log('=== window error handler ===');
-      console.log(event);
+      errorHandler(event.error);
     });
 
     window.addEventListener('unhandledrejection', (event) => {
-      console.log('=== window unhandledrejection handler ===');
+      console.log('=== unhandledrejection ===');
       console.log(event);
     });
   }
