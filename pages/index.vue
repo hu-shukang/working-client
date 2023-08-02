@@ -20,7 +20,14 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  definePageMeta({
+    middleware: [
+      'auth'
+      // Add in more middleware here
+    ]
+  });
+</script>
 
 <style scoped lang="scss">
   .card-wrapper {

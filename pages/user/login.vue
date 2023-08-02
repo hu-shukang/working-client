@@ -9,6 +9,7 @@
   import { useIndexStore } from '~/stores/index.store';
   import { useHttp } from '~/composables/use-http';
   import { AuthResult } from '~/types/certification.type';
+  import { tokenUtil } from '~/utils/token.util';
 
   definePageMeta({
     layout: 'empty'
@@ -17,6 +18,7 @@
   const loading = ref(false);
   const { post } = useHttp();
   const indexStore = useIndexStore();
+  const router = useRouter();
 
   // handle success event
   const handleLoginSuccess = async (response: CredentialResponse) => {
@@ -25,8 +27,9 @@
     const body = { type: 'Google', idToken: credential };
     try {
       const resp = await post<AuthResult>('/certification/signin', { body: body });
+      tokenUtil.decodeAndStore(resp.IdToken);
       indexStore.certification = resp;
-      console.log(indexStore.certification);
+      router.replace('/');
     } finally {
       loading.value = false;
     }
