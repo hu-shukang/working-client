@@ -13,16 +13,7 @@ export default defineNuxtConfig({
     '~/assets/style/util.scss',
     '~/assets/style/main.scss'
   ],
-  modules: [
-    '@element-plus/nuxt',
-    '@nuxt/content',
-    '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
-    'nuxt-vue3-google-signin'
-  ],
-  piniaPersistedstate: {
-    storage: 'sessionStorage'
-  },
+  modules: ['@element-plus/nuxt', '@nuxt/content', '@pinia/nuxt', 'nuxt-vue3-google-signin'],
   plugins: [{ src: '@/plugins/editor.plugin', ssr: false }],
   components: [
     {

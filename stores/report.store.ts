@@ -21,8 +21,5 @@ export const useReportStore = defineStore('attendance', {
       state.trafficList.forEach((t) => result.set(t.id, t));
       return result;
     }
-  },
-  persist: {
-    storage: persistedState.sessionStorage
   }
 });

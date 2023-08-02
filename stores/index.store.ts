@@ -10,8 +10,5 @@ const initIndexStore = (): IndexStore => {
 };
 
 export const useIndexStore = defineStore('index', {
-  state: () => initIndexStore(),
-  persist: {
-    storage: persistedState.sessionStorage
-  }
+  state: () => initIndexStore()
 });
