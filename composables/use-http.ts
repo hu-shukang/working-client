@@ -1,4 +1,4 @@
-import { TokenRefreshError } from '~/types/error.type';
+import { HttpError, TokenRefreshError } from '~/types/error.type';
 import { useIndexStore } from '~/stores/index.store';
 
 type HttpConfig = {
@@ -70,7 +70,8 @@ export function useHttp() {
       if (resp.ok) {
         return json as T;
       }
-      throw new Error(json.message);
+      const { error, businessErrorCode } = json;
+      throw new HttpError(error, resp.status, businessErrorCode);
     } finally {
       console.log('finally');
       indexStore.stopLoading();
