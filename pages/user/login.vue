@@ -1,5 +1,5 @@
 <template>
-  <div v-loading.fullscreen.lock="loading">
+  <div>
     <button @click="login">Login Using Google</button>
   </div>
 </template>
@@ -10,9 +10,9 @@
 
   const indexStore = useIndexStore();
   const { post } = useHttp();
-  const loading = ref(false);
+
   const login = async () => {
-    // loading.value = true;
+    indexStore.startLoading();
     const result = await googleAuthCodeLogin();
     const body = { provider: 'google', code: result.code };
     const resp = await post<any>('/user/token', { body: body });

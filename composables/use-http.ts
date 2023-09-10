@@ -73,6 +73,7 @@ export function useHttp() {
       throw new Error(json.message);
     } finally {
       console.log('finally');
+      indexStore.stopLoading();
     }
   };
 

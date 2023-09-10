@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container v-loading.fullscreen.lock="loading">
     <el-header>Header</el-header>
     <el-container class="main-container">
       <el-aside>
@@ -12,3 +12,10 @@
     <el-footer>Footer</el-footer>
   </el-container>
 </template>
+
+<script setup lang="ts">
+  import { useIndexStore } from '~/stores/index.store';
+
+  const indexStore = useIndexStore();
+  const loading = computed(() => indexStore.loading);
+</script>
