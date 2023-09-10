@@ -1,3 +1,4 @@
+import { TokenRefreshError } from '~/types/error.type';
 import { useIndexStore } from '~/stores/index.store';
 
 type HttpConfig = {
@@ -11,7 +12,9 @@ export function useHttp() {
   const indexStore = useIndexStore();
   const config = useRuntimeConfig();
   const apiBase = config.public.apiBase;
-
+  const commonHeaders: HeadersInit = {
+    'Content-Type': 'application/json'
+  };
   const get = async <T>(url: string, config?: HttpConfig): Promise<T> => {
     return await request(url, 'GET', config);
   };
@@ -20,13 +23,39 @@ export function useHttp() {
     return await request(url, 'POST', config);
   };
 
+  const refreshTokens = async () => {
+    const idToken = indexStore.certification?.idToken as string;
+    const refreshToken = indexStore.certification?.refreshToken as string;
+    try {
+      const resp = await fetch(`${apiBase}/token/refresh`, {
+        method: 'POST',
+        headers: {
+          ...commonHeaders,
+          Authorization: idToken
+        },
+        body: JSON.stringify({
+          refreshToken: refreshToken
+        })
+      });
+      const json = await resp.json();
+      indexStore.certification = json;
+    } catch (e: any) {
+      throw new TokenRefreshError();
+    } finally {
+      console.log('finally');
+    }
+  };
+
   const request = async <T>(url: string, method: Method, config?: HttpConfig): Promise<T> => {
-    let headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    };
-    const idToken = indexStore.certification?.IdToken;
+    let idToken = indexStore.certification?.idToken;
+    const expiryDate = indexStore.certification?.expiryDate;
+    if (expiryDate && expiryDate <= dateUtil.unix()) {
+      await refreshTokens();
+      idToken = indexStore.certification?.idToken;
+    }
+    let headers = { ...commonHeaders };
     if (idToken) {
-      headers.idToken = idToken;
+      headers.Authorization = idToken;
     }
     if (config?.headers) {
       headers = { ...headers, ...config.headers };

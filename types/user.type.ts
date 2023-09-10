@@ -9,3 +9,19 @@ export type UserInfo = {
   iat: number;
   employeeCode?: string;
 };
+
+export type EmployeeInfo = {
+  /** 社員ID */
+  id: string;
+  /** 入社日 */
+  hireDate: number;
+};
+
+export type Tokens = {
+  accessToken: string;
+  idToken: string;
+  refreshToken: string;
+  tokenType: string;
+  expiryDate: number;
+  scope: string;
+};

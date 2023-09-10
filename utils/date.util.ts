@@ -14,6 +14,10 @@ class DateUtil {
     dayjs.locale(ja);
   }
 
+  public unix(origin?: DayjsDate) {
+    return dayjs(origin).valueOf();
+  }
+
   public current(origin?: DayjsDate) {
     const today = dayjs(origin);
     return { year: today.year(), month: today.month(), day: today.date() };

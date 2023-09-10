@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
-import { UserInfo } from '~/types/user.type';
-import { AuthResult } from '~/types/certification.type';
+import { EmployeeInfo, Tokens } from '~/types/user.type';
 
 type IndexStore = {
-  certification?: AuthResult;
-  user?: UserInfo;
+  certification?: Tokens;
+  employeeInfo?: EmployeeInfo;
 };
 
 const initIndexStore = (): IndexStore => {

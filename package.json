@@ -36,11 +36,11 @@
     "dayjs": "^1.11.8",
     "jwt-decode": "^3.1.2",
     "mavon-editor": "^3.0.1",
-    "nuxt-vue3-google-signin": "^0.0.9",
     "pinia": "^2.1.4",
     "sass": "^1.63.6",
     "underscore.string": "^3.3.6",
     "uuid": "^9.0.0",
-    "vue-chart-3": "^3.1.8"
+    "vue-chart-3": "^3.1.8",
+    "vue3-google-login": "^2.0.20"
   }
 }
