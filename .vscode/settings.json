@@ -5,6 +5,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "dart.lineLength": 120
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
