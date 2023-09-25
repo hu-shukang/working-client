@@ -1,10 +1,12 @@
 <template>
-  <div class="alert alert-primary" role="alert">
-    A simple primary alert—check it out!
-  </div>
-  <HelloWorld msg="hello" />
+  <el-config-provider :locale="local">
+    <router-view />
+  </el-config-provider>
 </template>
 
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue';
+import { ElConfigProvider } from 'element-plus';
+import ja from 'element-plus/dist/locale/ja.mjs';
+
+const local = ja;
 </script>
