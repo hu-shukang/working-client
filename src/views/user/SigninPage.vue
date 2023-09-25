@@ -6,10 +6,29 @@
 
 <script setup lang="ts">
 import { googleAuthCodeLogin } from 'vue3-google-login';
+import { useHttp } from '@/hooks';
+import { TokenResponse } from '@/models/user.model';
+import { useGlobalStore } from '@/stores/global.store';
+import { useRouter } from 'vue-router';
+
+const globalStore = useGlobalStore();
+const { post } = useHttp();
+const router = useRouter();
 
 const login = async () => {
   const resp = await googleAuthCodeLogin();
-  const code = resp.code;
-  console.log(code);
+  const body = {
+    provider: 'google',
+    code: resp.code,
+  };
+  const tokenResp = await post<TokenResponse>('/user/token', body);
+  globalStore.info = tokenResp.data.info;
+  globalStore.accessToken = tokenResp.data.tokens.accessToken;
+  globalStore.refreshToken = tokenResp.data.tokens.refreshToken;
+  if (globalStore.info.signupStatus === '') {
+    router.replace('/');
+  } else {
+    router.replace('/user/sign-up');
+  }
 };
 </script>
