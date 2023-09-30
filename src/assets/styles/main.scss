@@ -2,3 +2,69 @@
   --header-height: 60px;
   --common-padding: 20px;
 }
+
+// =============================
+// overwrite start
+// =============================
+.el-breadcrumb {
+  padding-bottom: 15px;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.el-card__header {
+  .card-header {
+    --card-header-height: 32px;
+    height: var(--card-header-height);
+    line-height: var(--card-header-height);
+  }
+}
+.el-input-number .el-input__inner {
+  text-align: left !important;
+}
+.el-input-number .el-input__wrapper {
+  padding-left: 11px !important;
+  padding-right: 11px !important;
+}
+// =============================
+// overwrite end
+// =============================
+
+// =============================
+// util start
+// =============================
+.w-100 {
+  width: 100%;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+
+.ml-1 {
+  margin-left: 2px !important;
+}
+
+.ml-2 {
+  margin-left: 4px !important;
+}
+
+// =============================
+// util end
+// =============================
+
+// =============================
+// global start
+// =============================
+#app {
+  background-color: var(--el-color-info-light-9);
+}
+// =============================
+// global end
+// =============================

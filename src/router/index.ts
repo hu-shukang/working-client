@@ -3,6 +3,8 @@ import HomePage from '@/views/HomePage.vue';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import SigninPage from '@/views/user/SigninPage.vue';
 import SignupPage from '@/views/user/SignupPage.vue';
+import TrafficIndexPage from '@/views/traffic/TrafficIndexPage.vue';
+import TrafficAddPage from '@/views/traffic/TrafficAddPage.vue';
 import { signinGuard } from './signin.guard';
 import { signupStatusGuard } from './signup-status.guard';
 
@@ -14,6 +16,16 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         component: HomePage,
+        beforeEnter: signupStatusGuard,
+      },
+      {
+        path: 'traffic',
+        component: TrafficIndexPage,
+        beforeEnter: signupStatusGuard,
+      },
+      {
+        path: 'traffic/add',
+        component: TrafficAddPage,
         beforeEnter: signupStatusGuard,
       },
     ],

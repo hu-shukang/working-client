@@ -6,6 +6,10 @@ type HttpConfig = {
   withGlobalLoading?: boolean;
 };
 
+const defaultHttpConfig: HttpConfig = {
+  withGlobalLoading: true,
+};
+
 export function useHttp() {
   const globalStore = useGlobalStore();
   const loading = ref(false);
@@ -43,6 +47,7 @@ export function useHttp() {
     body?: any,
     config?: HttpConfig,
   ) => {
+    config = { ...defaultHttpConfig, ...config };
     setLoading(true, config);
     let authorization = undefined;
     if (globalStore.accessToken) {

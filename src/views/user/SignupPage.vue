@@ -68,9 +68,7 @@ const rules: FormRules<any> = {
 const submitForm = async () => {
   await formEl.value!.validate(async (valid, _fields) => {
     if (valid) {
-      const result = await post<{ accessToken: string }>('/user/signup', form, {
-        withGlobalLoading: true,
-      });
+      const result = await post<{ accessToken: string }>('/user/signup', form);
       globalStore.accessToken = result.data.accessToken;
       globalStore.info!.signupStatus = Const.FINISH;
       router.replace('/');

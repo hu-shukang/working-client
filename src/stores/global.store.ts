@@ -1,4 +1,4 @@
-import { EmployeeInfo } from '@/models/user.model';
+import { EmployeeInfo } from '@/models';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 

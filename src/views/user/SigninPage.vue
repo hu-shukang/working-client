@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { googleAuthCodeLogin } from 'vue3-google-login';
 import { useHttp } from '@/hooks';
-import { TokenResponse } from '@/models/user.model';
+import { TokenResponse } from '@/models';
 import { useGlobalStore } from '@/stores/global.store';
 import { useRouter } from 'vue-router';
 import { Const } from '@/utils';
@@ -22,9 +22,7 @@ const login = async () => {
     provider: 'google',
     code: resp.code,
   };
-  const tokenResp = await post<TokenResponse>('/user/token', body, {
-    withGlobalLoading: true,
-  });
+  const tokenResp = await post<TokenResponse>('/user/token', body);
   globalStore.info = tokenResp.data.info;
   globalStore.accessToken = tokenResp.data.tokens.accessToken;
   globalStore.refreshToken = tokenResp.data.tokens.refreshToken;

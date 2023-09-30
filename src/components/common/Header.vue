@@ -13,6 +13,8 @@
   padding: 0 var(--common-padding);
   box-shadow: 0 4px 8px #cccccc;
   background-color: #ffffff;
+  color: var(--el-color-primary);
+  font-weight: bolder;
   display: flex;
   align-items: center;
 }
