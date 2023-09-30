@@ -50,7 +50,7 @@ export function useHttp() {
     }
     try {
       return await axios.request<T>({
-        url: `${import.meta.env.VITE_API_URL}${url}`,
+        url: `/api${url}`,
         data: body,
         method: method,
         headers: {

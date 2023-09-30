@@ -10,6 +10,7 @@ import { useHttp } from '@/hooks';
 import { TokenResponse } from '@/models/user.model';
 import { useGlobalStore } from '@/stores/global.store';
 import { useRouter } from 'vue-router';
+import { Const } from '@/utils';
 
 const globalStore = useGlobalStore();
 const { post } = useHttp();
@@ -21,11 +22,13 @@ const login = async () => {
     provider: 'google',
     code: resp.code,
   };
-  const tokenResp = await post<TokenResponse>('/user/token', body);
+  const tokenResp = await post<TokenResponse>('/user/token', body, {
+    withGlobalLoading: true,
+  });
   globalStore.info = tokenResp.data.info;
   globalStore.accessToken = tokenResp.data.tokens.accessToken;
   globalStore.refreshToken = tokenResp.data.tokens.refreshToken;
-  if (globalStore.info.signupStatus === '') {
+  if (globalStore.info.signupStatus === Const.FINISH) {
     router.replace('/');
   } else {
     router.replace('/user/sign-up');

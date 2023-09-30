@@ -24,5 +24,11 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    proxy: {
+      '/api': {
+        target: 'https://hp2iyt81t4.execute-api.ap-northeast-1.amazonaws.com',
+        changeOrigin: true,
+      },
+    },
   },
 });
