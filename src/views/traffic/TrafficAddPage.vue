@@ -106,7 +106,7 @@ const form = reactive<TrafficAddUpdateForm>({
 const resetForm = () => {
   form.startStation = '';
   form.endStation = '';
-  form.tractStation = [];
+  form.tractStation = [''];
   form.roundTrip = undefined;
   form.monthTrainPass = undefined;
   form.comment = '';

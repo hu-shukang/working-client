@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import './assets/styles/reset.scss';
 import './assets/styles/main.scss';
 import 'element-plus/es/components/message-box/style/css';
+import 'element-plus/es/components/notification/style/css';
 import App from './App.vue';
 import { router } from './router';
 import vue3GoogleLogin from 'vue3-google-login';
