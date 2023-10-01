@@ -6,6 +6,7 @@ import SignupPage from '@/views/user/SignupPage.vue';
 import TrafficIndexPage from '@/views/traffic/TrafficIndexPage.vue';
 import TrafficAddPage from '@/views/traffic/TrafficAddPage.vue';
 import TrafficEditPage from '@/views/traffic/TrafficEditPage.vue';
+import AttendanceIndexPage from '@/views/attendance/AttendanceIndexPage.vue';
 import { signinGuard } from './signin.guard';
 import { signupStatusGuard } from './signup-status.guard';
 
@@ -32,6 +33,11 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'traffic/:routeId/edit',
         component: TrafficEditPage,
+        beforeEnter: signupStatusGuard,
+      },
+      {
+        path: 'attendance',
+        component: AttendanceIndexPage,
         beforeEnter: signupStatusGuard,
       },
     ],
