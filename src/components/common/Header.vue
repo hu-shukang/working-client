@@ -10,6 +10,7 @@
   position: sticky;
   top: 0;
   left: 0;
+  z-index: 4;
   padding: 0 var(--common-padding);
   box-shadow: 0 4px 8px #cccccc;
   background-color: #ffffff;

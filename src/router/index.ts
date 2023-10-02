@@ -7,8 +7,10 @@ import TrafficIndexPage from '@/views/traffic/TrafficIndexPage.vue';
 import TrafficAddPage from '@/views/traffic/TrafficAddPage.vue';
 import TrafficEditPage from '@/views/traffic/TrafficEditPage.vue';
 import AttendanceIndexPage from '@/views/attendance/AttendanceIndexPage.vue';
+import AttendanceAddEditPage from '@/views/attendance/AttendanceAddEditPage.vue';
 import { signinGuard } from './signin.guard';
 import { signupStatusGuard } from './signup-status.guard';
+import { MODE } from '@/utils';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -39,6 +41,22 @@ const routes: RouteRecordRaw[] = [
         path: 'attendance',
         component: AttendanceIndexPage,
         beforeEnter: signupStatusGuard,
+      },
+      {
+        path: 'attendance/:date/add',
+        component: AttendanceAddEditPage,
+        beforeEnter: signupStatusGuard,
+        meta: {
+          mode: MODE.ADD,
+        },
+      },
+      {
+        path: 'attendance/:date/edit',
+        component: AttendanceAddEditPage,
+        beforeEnter: signupStatusGuard,
+        meta: {
+          mode: MODE.EDIT,
+        },
       },
     ],
   },

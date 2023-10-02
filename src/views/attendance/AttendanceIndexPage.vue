@@ -7,11 +7,7 @@
     <template #header>
       <div class="card-header">
         <span>勤務表一覧</span>
-        <el-button
-          type="primary"
-          :icon="Plus"
-          @click="$router.push('/attendance/add')"
-        >
+        <el-button type="primary" :icon="Plus" @click="addDialogVisible = true">
           新規追加
         </el-button>
       </div>
@@ -64,23 +60,66 @@
       <el-empty v-else :image-size="200" description="勤務表は未登録です" />
     </div>
   </el-card>
+  <el-dialog v-model="addDialogVisible" title="ご確認">
+    <el-form
+      ref="yearMonthFormRef"
+      :model="yearMonthForm"
+      :rules="rules"
+      label-width="100px"
+    >
+      <el-form-item label="年月" prop="yearMonth">
+        <el-input v-model="yearMonthForm.yearMonth" placeholder="例: 2023-01" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取り消し</el-button>
+        <el-button type="primary" @click="addHandler"> 作成 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { useHttp } from '@/hooks';
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { AttendanceReportModel } from '@/models';
 import { Plus } from '@element-plus/icons-vue';
-import { Const, dateUtil } from '@/utils';
+import { Const, PATTERN, TRIGGERS, dateUtil } from '@/utils';
+import { FormInstance, FormRules } from 'element-plus';
+import { useRouter } from 'vue-router';
 
 const { get, loading } = useHttp();
 const list = ref<AttendanceReportModel[]>([]);
-
+const addDialogVisible = ref(false);
+const router = useRouter();
+const yearMonthFormRef = ref<FormInstance>();
+const yearMonthForm = reactive({
+  yearMonth: '',
+});
+const rules: FormRules<any> = {
+  yearMonth: [
+    { required: true, message: '年月は必須です', trigger: TRIGGERS.SUBMIT },
+    {
+      pattern: PATTERN.YYYY_MM,
+      message: '年月は不正です',
+      trigger: TRIGGERS.SUBMIT,
+    },
+  ],
+};
 const request = async () => {
   const result = await get<AttendanceReportModel[]>('/attendance', {
     withGlobalLoading: false,
   });
   list.value = result.data;
+};
+
+const addHandler = async () => {
+  await yearMonthFormRef.value!.validate(async (valid, _fields) => {
+    if (valid) {
+      router.replace(`attendance/${yearMonthForm.yearMonth}/add`);
+    }
+  });
 };
 
 onMounted(async () => {
