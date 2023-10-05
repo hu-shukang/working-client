@@ -1,4 +1,11 @@
 <template>
+  <el-breadcrumb separator="/">
+    <el-breadcrumb-item :to="{ path: '/' }">ホーム</el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '/attendance' }">
+      勤務表
+    </el-breadcrumb-item>
+    <el-breadcrumb-item>勤務表作成</el-breadcrumb-item>
+  </el-breadcrumb>
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
@@ -33,12 +40,42 @@
             <el-tag v-else>{{ scope.row.dateInfo.weekday }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="start" label="出勤時刻" width="84" />
-        <el-table-column prop="end" label="退勤時刻" width="84" />
-        <el-table-column prop="break" label="通常休憩" width="84" />
-        <el-table-column prop="nightBreak" label="深夜休憩" width="84" />
-        <el-table-column prop="timeOff" label="休暇" width="60" />
-        <el-table-column prop="remotely" label="在宅" width="60" />
+        <el-table-column
+          prop="start"
+          label="出勤時刻"
+          width="84"
+          align="center"
+        />
+        <el-table-column
+          prop="end"
+          label="退勤時刻"
+          width="84"
+          align="center"
+        />
+        <el-table-column
+          prop="break"
+          label="通常休憩"
+          width="84"
+          align="center"
+        />
+        <el-table-column
+          prop="nightBreak"
+          label="深夜休憩"
+          width="84"
+          align="center"
+        />
+        <el-table-column
+          prop="timeOff"
+          label="休暇"
+          width="60"
+          align="center"
+        />
+        <el-table-column
+          prop="remotely"
+          label="在宅"
+          width="60"
+          align="center"
+        />
         <el-table-column prop="roundTrip" width="90">
           <template #header>
             <div class="custom-table-header">

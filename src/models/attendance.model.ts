@@ -45,11 +45,13 @@ export type AttendanceItem = {
 export type DateInfo = {
   year: number;
   month: number;
-  day: number;
+  date: number;
   value: string;
-  date: string;
+  yyyyMMDD: string;
+  iso: string;
   isSaturday: boolean;
   isSunday: boolean;
   weekday: string;
+  day: number;
   holiday?: string;
 };

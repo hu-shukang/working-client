@@ -15,6 +15,10 @@ class DateUtil {
     dayjs.locale(ja);
   }
 
+  public get(origin?: DayjsDate) {
+    return dayjs(origin);
+  }
+
   public unix(origin?: DayjsDate) {
     return dayjs(origin).unix();
   }
@@ -34,10 +38,12 @@ class DateUtil {
       dateInfoList.push({
         year: currentDay.year(),
         month: currentDay.month(),
-        day: currentDay.date(),
+        date: currentDay.date(),
         value: currentDay.format(Const.FORMAT_MM_DD),
-        date: currentDay.toISOString(),
+        yyyyMMDD: currentDay.format(Const.FORMAT_YYYY_MM_DD),
+        iso: currentDay.toISOString(),
         weekday: WEEKDAY[currentDay.day()],
+        day: currentDay.day(),
         isSaturday: currentDay.day() === 6,
         isSunday: currentDay.day() === 0,
       });
@@ -45,6 +51,19 @@ class DateUtil {
     }
 
     return dateInfoList;
+  }
+
+  public getDateInfoListWithEmpty(date: string): Array<DateInfo | null> {
+    const list = this.getDateInfoList(date);
+    const result: Array<DateInfo | null> = [];
+    for (let i = 0; i < list[0].day; i++) {
+      result.push(null);
+    }
+    result.push(...list);
+    for (let i = list[list.length - 1].day; i < 6; i++) {
+      result.push(null);
+    }
+    return result;
   }
 }
 

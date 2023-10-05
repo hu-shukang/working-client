@@ -8,9 +8,13 @@ import TrafficAddPage from '@/views/traffic/TrafficAddPage.vue';
 import TrafficEditPage from '@/views/traffic/TrafficEditPage.vue';
 import AttendanceIndexPage from '@/views/attendance/AttendanceIndexPage.vue';
 import AttendanceAddEditPage from '@/views/attendance/AttendanceAddEditPage.vue';
+import AttendanceItemPage from '@/views/attendance/AttendanceItemPage.vue';
+import NotFoundPage from '@/views/NotFoundPage.vue';
 import { signinGuard } from './signin.guard';
 import { signupStatusGuard } from './signup-status.guard';
 import { MODE } from '@/utils';
+
+const PATTERN_YYYY_MM = '\\d{4}-0[1-9]|\\d{4}-1[0-2]';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -43,7 +47,7 @@ const routes: RouteRecordRaw[] = [
         beforeEnter: signupStatusGuard,
       },
       {
-        path: 'attendance/:date/add',
+        path: `attendance/:date(${PATTERN_YYYY_MM})/add`,
         component: AttendanceAddEditPage,
         beforeEnter: signupStatusGuard,
         meta: {
@@ -51,7 +55,12 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: 'attendance/:date/edit',
+        path: `attendance/:date(${PATTERN_YYYY_MM})/add/item`,
+        component: AttendanceItemPage,
+        beforeEnter: signupStatusGuard,
+      },
+      {
+        path: `attendance/(${PATTERN_YYYY_MM})/edit`,
         component: AttendanceAddEditPage,
         beforeEnter: signupStatusGuard,
         meta: {
@@ -68,6 +77,10 @@ const routes: RouteRecordRaw[] = [
     path: '/user/sign-up',
     component: SignupPage,
     beforeEnter: signinGuard,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: NotFoundPage,
   },
 ];
 
