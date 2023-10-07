@@ -63,7 +63,7 @@
         show-word-limit
       />
     </el-form-item>
-    <el-form-item>
+    <el-form-item v-if="submit && back">
       <el-button type="primary" @click="submit"> 保存 </el-button>
       <el-button @click="back">一覧に戻る</el-button>
     </el-form-item>
@@ -87,11 +87,13 @@ const props = defineProps({
   },
   submit: {
     type: Function,
-    required: true,
+    required: false,
+    default: undefined,
   },
   back: {
     type: Function,
-    required: true,
+    required: false,
+    default: undefined,
   },
 });
 
