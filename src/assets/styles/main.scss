@@ -28,6 +28,25 @@
   padding-left: 11px !important;
   padding-right: 11px !important;
 }
+
+.el-date-editor--daterange,
+.el-date-editor--timerange {
+  max-width: var(--el-date-editor-width);
+}
+
+.el-input {
+  --el-input-width: 220px !important;
+  &.el-input-group {
+    width: var(--el-input-width);
+    .el-input-group__append,
+    .el-input-group__prepend {
+      padding: 0 12px;
+    }
+  }
+  &.min-length {
+    --el-input-width: 120px !important;
+  }
+}
 // =============================
 // overwrite end
 // =============================
@@ -75,6 +94,16 @@
     padding-bottom: 2px;
   }
 }
+
+.el-form-item__content {
+  .comment {
+    width: 100%;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--el-color-info);
+  }
+}
+
 // =============================
 // global end
 // =============================

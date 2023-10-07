@@ -153,6 +153,7 @@ const selectHandler = (dateInfo: DateInfo) => {
     text-align: center;
     font-weight: bold;
     line-height: 1.5;
+    color: var(--el-color-primary);
   }
   .grid {
     display: grid;
