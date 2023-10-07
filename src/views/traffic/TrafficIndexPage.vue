@@ -20,12 +20,12 @@
       <el-table v-if="list.length !== 0" :data="list" border>
         <el-table-column type="index" width="40" align="center" />
         <el-table-column prop="startStation" label="出発駅" width="180" />
-        <el-table-column prop="endStation" label="到着駅" width="180" />
         <el-table-column prop="tractStation" label="経由駅">
           <template #default="scope">
             {{ scope.row.tractStation.join(', ') }}
           </template>
         </el-table-column>
+        <el-table-column prop="endStation" label="到着駅" width="180" />
         <el-table-column prop="roundTrip" label="往復実費(円)" width="110" />
         <el-table-column prop="monthTrainPass" label="定期券(円)" width="110" />
         <el-table-column prop="comment" label="備考" />

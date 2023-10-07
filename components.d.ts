@@ -40,6 +40,7 @@ declare module 'vue' {
     HelloWorld: (typeof import('./src/components/HelloWorld.vue'))['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TrafficForm: typeof import('./src/components/traffic/TrafficForm.vue')['default']
     TrafficItem: typeof import('./src/components/traffic/TrafficItem.vue')['default']
   }
   export interface ComponentCustomProperties {
