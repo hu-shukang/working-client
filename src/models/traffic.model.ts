@@ -38,14 +38,18 @@ export const trafficFormRules: FormRules<TrafficAddUpdateForm> = {
   roundTrip: [
     {
       type: 'integer',
-      message: '往復実費は数値です',
+      min: 0,
+      message: '往復実費は0以上です',
       trigger: TRIGGERS.SUBMIT,
     },
-    { min: 0, message: '往復実費は0以上です', trigger: TRIGGERS.SUBMIT },
   ],
   monthTrainPass: [
-    { type: 'integer', message: '定期券は数値です', trigger: TRIGGERS.SUBMIT },
-    { min: 0, message: '定期券は0以上です', trigger: TRIGGERS.SUBMIT },
+    {
+      type: 'integer',
+      min: 0,
+      message: '定期券は0以上です',
+      trigger: TRIGGERS.SUBMIT,
+    },
   ],
   comment: [{ max: 100, message: '100文字以下です', trigger: TRIGGERS.SUBMIT }],
 };

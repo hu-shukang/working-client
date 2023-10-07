@@ -25,7 +25,7 @@
 import { useHttp } from '@/hooks';
 import { TrafficAddUpdateForm, trafficFormRules } from '@/models';
 import TrafficForm from '@/components/traffic/TrafficForm.vue';
-import { ElMessageBox } from 'element-plus';
+import { ElMessageBox, FormInstance } from 'element-plus';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -50,24 +50,29 @@ const back = () => {
   router.push('/traffic');
 };
 
-const submit = async () => {
-  const body = JSON.parse(JSON.stringify(form)) as TrafficAddUpdateForm;
-  body.tractStation = body.tractStation?.filter((value) => value != '');
-  await post('/traffic', body);
-  ElMessageBox.confirm(
-    'ルートの登録は成功しました。続けて登録しますか？',
-    '成功',
-    {
-      confirmButtonText: '続けて登録',
-      cancelButtonText: '一覧に戻る',
-      type: 'success',
-    },
-  )
-    .then(() => {
-      resetForm();
-    })
-    .catch(() => {
-      back();
-    });
+const submit = async (formRef: FormInstance) => {
+  await formRef.validate(async (valid, _fields) => {
+    if (!valid) {
+      return;
+    }
+    const body = JSON.parse(JSON.stringify(form)) as TrafficAddUpdateForm;
+    body.tractStation = body.tractStation?.filter((value) => value != '');
+    await post('/traffic', body);
+    ElMessageBox.confirm(
+      'ルートの登録は成功しました。続けて登録しますか？',
+      '成功',
+      {
+        confirmButtonText: '続けて登録',
+        cancelButtonText: '一覧に戻る',
+        type: 'success',
+      },
+    )
+      .then(() => {
+        resetForm();
+      })
+      .catch(() => {
+        back();
+      });
+  });
 };
 </script>

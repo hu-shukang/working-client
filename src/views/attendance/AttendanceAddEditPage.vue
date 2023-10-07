@@ -12,7 +12,13 @@
         <span>勤務表【{{ date }}】</span>
         <div>
           <el-button type="danger" :icon="Delete"> クリア </el-button>
-          <el-button type="primary" :icon="Plus"> 書き込み </el-button>
+          <el-button
+            type="primary"
+            :icon="Plus"
+            @click="$router.push(`${$route.path}/item`)"
+          >
+            書き込み
+          </el-button>
         </div>
       </div>
     </template>
@@ -118,6 +124,7 @@ const getAttendanceList = (dateInfoList: DateInfo[]): AttendanceItem[] => {
 
 onMounted(() => {
   // const mode = route.meta.mode as string;
+
   const dateInfoList = dateUtil.getDateInfoList(date);
   attendanceList.value = getAttendanceList(dateInfoList);
 });

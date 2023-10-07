@@ -29,7 +29,7 @@ import {
   TrafficItemModel,
   trafficFormRules,
 } from '@/models';
-import { ElNotification } from 'element-plus';
+import { ElNotification, FormInstance } from 'element-plus';
 import { onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import TrafficForm from '@/components/traffic/TrafficForm.vue';
@@ -48,16 +48,21 @@ const back = () => {
   router.push('/traffic');
 };
 
-const submit = async () => {
-  const body = JSON.parse(JSON.stringify(form)) as TrafficAddUpdateForm;
-  body.tractStation = body.tractStation?.filter((value) => value != '');
-  await put(`/traffic/${tmpModel!.routeId}`, body);
-  ElNotification({
-    title: '成功',
-    message: '更新しました。',
-    type: 'success',
+const submit = async (formRef: FormInstance) => {
+  await formRef.validate(async (valid, _fields) => {
+    if (!valid) {
+      return;
+    }
+    const body = JSON.parse(JSON.stringify(form)) as TrafficAddUpdateForm;
+    body.tractStation = body.tractStation?.filter((value) => value != '');
+    await put(`/traffic/${tmpModel!.routeId}`, body);
+    ElNotification({
+      title: '成功',
+      message: '更新しました。',
+      type: 'success',
+    });
+    back();
   });
-  back();
 };
 
 const loadTraffic = async (routeId: string) => {

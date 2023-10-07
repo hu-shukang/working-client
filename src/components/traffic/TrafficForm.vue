@@ -1,5 +1,6 @@
 <template>
   <el-form
+    ref="formRef"
     class="traffic-form"
     :model="form"
     :rules="rules"
@@ -64,7 +65,7 @@
       />
     </el-form-item>
     <el-form-item v-if="submit && back">
-      <el-button type="primary" @click="submit"> 保存 </el-button>
+      <el-button type="primary" @click="submit(formRef)"> 保存 </el-button>
       <el-button @click="back">一覧に戻る</el-button>
     </el-form-item>
   </el-form>
@@ -73,7 +74,7 @@
 <script setup lang="ts">
 import { TrafficAddUpdateForm } from '@/models';
 import { FormRules } from 'element-plus';
-import { PropType, computed } from 'vue';
+import { PropType, computed, ref } from 'vue';
 import { Delete, Plus } from '@element-plus/icons-vue';
 
 const props = defineProps({
@@ -98,7 +99,7 @@ const props = defineProps({
 });
 
 const emits = defineEmits(['update:modelValue']);
-
+const formRef = ref();
 const form = computed({
   get: () => props.modelValue,
   set: (value: any) => emits('update:modelValue', value),

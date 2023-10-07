@@ -15,8 +15,12 @@
         <span>勤務表【{{ date }}】の書き込み</span>
       </div>
     </template>
-    <!-- <Calendar v-model="range" year-month="2023-09" type="range" /> -->
-    <el-form class="attendance-write-form" :model="form" label-width="100px">
+    <el-form
+      v-loading="loading"
+      class="attendance-write-form"
+      :model="form"
+      label-width="100px"
+    >
       <el-form-item label="日付選択方式" prop="type">
         <el-radio-group :model-value="type" @change="typeHandler">
           <el-radio label="date">単一</el-radio>
@@ -91,20 +95,65 @@
           inline-prompt
         />
       </el-form-item>
+      <el-form-item label="交通ルート" prop="routeId">
+        <el-select v-model="form.routeId" clearable placeholder="交通ルート">
+          <el-option
+            v-for="traffic in trafficList"
+            :key="traffic.routeId"
+            :label="traffic.startStation + ' - ' + traffic.endStation"
+            :value="traffic.routeId"
+          >
+            <span style="float: left">
+              {{ traffic.startStation + ' - ' + traffic.endStation }}
+            </span>
+            <span
+              style="
+                float: right;
+                color: var(--el-text-color-secondary);
+                font-size: 13px;
+              "
+            >
+              {{ traffic.roundTrip + '円' }}
+            </span>
+          </el-option>
+        </el-select>
+        <el-button
+          type="primary"
+          :icon="Plus"
+          plain
+          style="margin-left: 10px"
+          @click="trafficFormDialogVisible = true"
+        >
+          交通ルート追加
+        </el-button>
+      </el-form-item>
     </el-form>
   </el-card>
+  <TrafficFormDialog
+    v-model:visible="trafficFormDialogVisible"
+    @submited="requestTraffic"
+  />
 </template>
 
 <script setup lang="ts">
 import { Const, dateUtil } from '@/utils';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { Check, Close } from '@element-plus/icons-vue';
+import { Check, Close, Plus } from '@element-plus/icons-vue';
+import { useTrafficStore } from '@/stores/traffic.store';
+import { storeToRefs } from 'pinia';
+import { useHttp } from '@/hooks';
+import { TrafficItemModel } from '@/models';
+import TrafficFormDialog from '@/components/traffic/TrafficFormDialog.vue';
 
+const trafficStore = useTrafficStore();
+const { trafficList } = storeToRefs(trafficStore);
 const route = useRoute();
+const { get, loading } = useHttp();
 const date = route.params.date as string;
 const defaultDate = dateUtil.get(`${date}-01`).toDate();
 const type = ref('date');
+const trafficFormDialogVisible = ref(false);
 const placeholder: { [key: string]: string } = {
   date: '単一の日付を選択',
   dates: '複数の日付を選択',
@@ -120,12 +169,13 @@ const form = reactive({
   timeOff: undefined,
   remotely: false,
   comment: undefined,
-  withTraffic: false,
-  startStation: undefined,
-  endStation: undefined,
-  tractStation: [],
-  roundTrip: undefined,
-  trafficComment: undefined,
+  routeId: undefined,
+  // withTraffic: false,
+  // startStation: undefined,
+  // endStation: undefined,
+  // tractStation: [],
+  // roundTrip: undefined,
+  // trafficComment: undefined,
 });
 
 const typeHandler = (value: string) => {
@@ -137,5 +187,16 @@ const disabledDate = (value: Date): boolean => {
   return date != dateUtil.get(value).format(Const.FORMAT_YYYY_MM);
 };
 
-onMounted(() => {});
+const requestTraffic = async () => {
+  const result = await get<TrafficItemModel[]>('/traffic', {
+    withGlobalLoading: false,
+  });
+  trafficList.value = result.data;
+};
+
+onMounted(async () => {
+  if (trafficList.value.length === 0) {
+    await requestTraffic();
+  }
+});
 </script>

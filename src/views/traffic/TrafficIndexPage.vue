@@ -17,7 +17,7 @@
       </div>
     </template>
     <div v-loading="loading">
-      <el-table v-if="list.length !== 0" :data="list" border>
+      <el-table v-if="trafficList.length !== 0" :data="trafficList" border>
         <el-table-column type="index" width="40" align="center" />
         <el-table-column prop="startStation" label="出発駅" width="180" />
         <el-table-column prop="tractStation" label="経由駅">
@@ -57,20 +57,23 @@
 
 <script setup lang="ts">
 import { useHttp } from '@/hooks';
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { TrafficItemModel } from '@/models';
 import { Plus } from '@element-plus/icons-vue';
 import { ElMessageBox, ElNotification } from 'element-plus';
 import { router } from '@/router';
+import { useTrafficStore } from '@/stores/traffic.store';
+import { storeToRefs } from 'pinia';
 
+const trafficStore = useTrafficStore();
+const { trafficList } = storeToRefs(trafficStore);
 const { get, del, loading } = useHttp();
-const list = ref<TrafficItemModel[]>([]);
 
 const request = async () => {
   const result = await get<TrafficItemModel[]>('/traffic', {
     withGlobalLoading: false,
   });
-  list.value = result.data;
+  trafficList.value = result.data;
 };
 
 const deleteHandler = async (index: number) => {
@@ -84,10 +87,10 @@ const deleteHandler = async (index: number) => {
         type: 'warning',
       },
     );
-    await del(`/traffic/${list.value[index].routeId}`, {
+    await del(`/traffic/${trafficList.value[index].routeId}`, {
       withGlobalLoading: false,
     });
-    list.value.splice(index, 1);
+    trafficList.value.splice(index, 1);
     ElNotification({
       title: '成功',
       message: '削除しました。',
@@ -99,7 +102,7 @@ const deleteHandler = async (index: number) => {
 };
 
 const editHandler = (index: number) => {
-  router.push(`/traffic/${list.value[index].routeId}/edit`);
+  router.push(`/traffic/${trafficList.value[index].routeId}/edit`);
 };
 
 onMounted(async () => {
