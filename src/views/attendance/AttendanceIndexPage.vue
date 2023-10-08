@@ -15,11 +15,7 @@
     <div v-loading="loading">
       <el-table v-if="list.length !== 0" :data="list" border>
         <el-table-column type="index" width="40" align="center" />
-        <el-table-column prop="date" label="年月" width="180">
-          <template #default="scope">
-            {{ dateUtil.format(scope.row.date) }}
-          </template>
-        </el-table-column>
+        <el-table-column prop="date" label="年月" width="180" />
         <el-table-column prop="reportDate" label="提出日時" width="180">
           <template #default="scope">
             {{
@@ -51,8 +47,15 @@
         </el-table-column>
         <el-table-column prop="comment" label="備考" />
         <el-table-column label="操作" width="100" align="center">
-          <template #default>
-            <el-button link type="warning" size="small"> 編集 </el-button>
+          <template #default="scope">
+            <el-button
+              link
+              type="warning"
+              size="small"
+              @click="edit(scope.row)"
+            >
+              編集
+            </el-button>
             <el-button link type="danger" size="small"> 削除 </el-button>
           </template>
         </el-table-column>
@@ -120,6 +123,10 @@ const addHandler = async () => {
       router.replace(`attendance/${yearMonthForm.yearMonth}/add`);
     }
   });
+};
+
+const edit = (model: AttendanceReportModel) => {
+  router.push(`attendance/${model.date}/add`);
 };
 
 onMounted(async () => {

@@ -15,7 +15,11 @@
 </template>
 
 <script setup lang="ts">
-import { TrafficAddUpdateForm, trafficFormRules } from '@/models';
+import {
+  TrafficAddUpdateForm,
+  TrafficItemModel,
+  trafficFormRules,
+} from '@/models';
 import { computed, reactive } from 'vue';
 import TrafficForm from '@/components/traffic/TrafficForm.vue';
 import { FormInstance } from 'element-plus';
@@ -49,9 +53,9 @@ const submit = async (formRef: FormInstance) => {
     }
     const body = JSON.parse(JSON.stringify(form)) as TrafficAddUpdateForm;
     body.tractStation = body.tractStation?.filter((value) => value != '');
-    await post('/traffic', body);
+    const resp = await post<TrafficItemModel>('/traffic', body);
     dialogVisible.value = false;
-    emits('submited');
+    emits('submited', resp.data);
   });
 };
 

@@ -7,7 +7,7 @@
     label-width="100px"
   >
     <el-form-item label="出発駅" prop="startStation">
-      <el-input v-model="form.startStation" class="w-250px" />
+      <el-input v-model="form.startStation" />
     </el-form-item>
     <el-form-item
       v-for="(domain, index) in form.tractStation"
@@ -16,7 +16,7 @@
       :prop="'tractStation.' + index"
     >
       <div class="d-flex w-100">
-        <el-input v-model="form.tractStation![index]" class="w-250px" />
+        <el-input v-model="form.tractStation![index]" />
         <el-button
           v-if="index === form.tractStation!.length - 1"
           class="ml-2"
@@ -36,28 +36,21 @@
       </div>
     </el-form-item>
     <el-form-item label="到着駅" prop="endStation">
-      <el-input v-model="form.endStation" class="w-250px" />
+      <el-input v-model="form.endStation" />
     </el-form-item>
     <el-form-item label="往復実費" prop="roundTrip">
-      <el-input-number
-        v-model="form.roundTrip"
-        :min="0"
-        class="w-150px"
-        :controls="false"
-      />
+      <el-input-number v-model="form.roundTrip" :min="0" :controls="false" />
     </el-form-item>
     <el-form-item label="定期券" prop="monthTrainPass">
       <el-input-number
         v-model="form.monthTrainPass"
         :min="0"
-        class="w-150px"
         :controls="false"
       />
     </el-form-item>
     <el-form-item label="備考">
       <el-input
         v-model="form.comment"
-        class="w-250px"
         type="textarea"
         :rows="3"
         maxlength="100"

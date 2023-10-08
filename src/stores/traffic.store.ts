@@ -1,10 +1,14 @@
 import { TrafficItemModel } from '@/models';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useTrafficStore = defineStore('traffic', () => {
   const trafficList = ref<TrafficItemModel[]>([]);
   const $reset = () => {};
 
-  return { $reset, trafficList };
+  const trafficListOnlyRoundTrip = computed(() =>
+    trafficList.value.filter((item) => item.roundTrip),
+  );
+
+  return { $reset, trafficList, trafficListOnlyRoundTrip };
 });

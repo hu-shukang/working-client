@@ -15,9 +15,46 @@ export type AttendanceReportModel = {
   comment?: string;
 };
 
+export type AttendanceItemFormModel = {
+  withWeekend: boolean;
+  dateRange: Date[];
+  start: string;
+  end: string;
+  break?: number;
+  nightBreak?: number;
+  timeOff?: number;
+  remotely: boolean;
+  comment?: string;
+  routeIds: string[];
+};
+
+/**
+ * 日常交通ルート
+ */
+export type AttendanceTraffic = {
+  /** 出発駅 */
+  startStation: string;
+  /** 終点駅 */
+  endStation: string;
+  /** 経由駅 */
+  tractStation?: string[];
+  /** 往復実費 */
+  roundTrip: number;
+  /** 備考 */
+  comment?: string;
+};
+
+export type AttendanceRespItem = {
+  /** yyyy-mm-dd */
+  date: string;
+} & AttendanceItem;
+
+export type AttendanceViewItem = {
+  /** yyyy-mm-dd */
+  date: DateInfo;
+} & AttendanceItem;
+
 export type AttendanceItem = {
-  /** 日付 */
-  dateInfo: DateInfo;
   /** 出勤時刻 HH:mm */
   start: string;
   /** 退勤時刻 HH:mm */
@@ -30,16 +67,10 @@ export type AttendanceItem = {
   timeOff?: string;
   /** 在宅 */
   remotely?: boolean;
-  /** 出発駅 */
-  startStation?: string;
-  /** 終点駅 */
-  endStation?: string;
-  /** 経由駅 */
-  tractStation?: string[];
-  /** 往復実費 */
-  roundTrip?: number;
   /** 備考 */
   comment?: string;
+  /** 日常交通 */
+  trafficList: AttendanceTraffic[];
 };
 
 export type DateInfo = {

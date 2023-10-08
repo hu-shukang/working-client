@@ -47,6 +47,14 @@
     --el-input-width: 120px !important;
   }
 }
+.multiple-select {
+  .el-input {
+    --el-input-width: 380px !important;
+  }
+}
+.el-textarea {
+  width: 380px !important;
+}
 // =============================
 // overwrite end
 // =============================
@@ -97,6 +105,7 @@
 
 .el-form-item__content {
   .comment {
+    margin-top: 4px;
     width: 100%;
     font-size: 11px;
     line-height: 1.2;
