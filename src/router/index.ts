@@ -7,12 +7,12 @@ import TrafficIndexPage from '@/views/traffic/TrafficIndexPage.vue';
 import TrafficAddPage from '@/views/traffic/TrafficAddPage.vue';
 import TrafficEditPage from '@/views/traffic/TrafficEditPage.vue';
 import AttendanceIndexPage from '@/views/attendance/AttendanceIndexPage.vue';
-import AttendanceAddEditPage from '@/views/attendance/AttendanceAddEditPage.vue';
-import AttendanceItemPage from '@/views/attendance/AttendanceItemPage.vue';
+import AttendancePage from '@/views/attendance/AttendancePage.vue';
+import AttendanceWritePage from '@/views/attendance/AttendanceWritePage.vue';
 import NotFoundPage from '@/views/NotFoundPage.vue';
 import { signinGuard } from './signin.guard';
 import { signupStatusGuard } from './signup-status.guard';
-import { MODE } from '@/utils';
+import { MODE, ROUTE_NAMES } from '@/utils';
 
 const PATTERN_YYYY_MM = '\\d{4}-0[1-9]|\\d{4}-1[0-2]';
 
@@ -47,25 +47,19 @@ const routes: RouteRecordRaw[] = [
         beforeEnter: signupStatusGuard,
       },
       {
-        path: `attendance/:date(${PATTERN_YYYY_MM})/add`,
-        component: AttendanceAddEditPage,
+        path: `attendance/:date(${PATTERN_YYYY_MM})`,
+        name: ROUTE_NAMES.ATTENDANCE_PAGE,
+        component: AttendancePage,
         beforeEnter: signupStatusGuard,
         meta: {
           mode: MODE.ADD,
         },
       },
       {
-        path: `attendance/:date(${PATTERN_YYYY_MM})/add/item`,
-        component: AttendanceItemPage,
+        path: `attendance/:date(${PATTERN_YYYY_MM})/write`,
+        name: 'AttendanceWritePage',
+        component: AttendanceWritePage,
         beforeEnter: signupStatusGuard,
-      },
-      {
-        path: `attendance/(${PATTERN_YYYY_MM})/edit`,
-        component: AttendanceAddEditPage,
-        beforeEnter: signupStatusGuard,
-        meta: {
-          mode: MODE.EDIT,
-        },
       },
     ],
   },

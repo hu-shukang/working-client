@@ -33,3 +33,8 @@ export const WEEKDAY: any = {
   5: '金',
   6: '土',
 };
+
+export const ROUTE_NAMES = {
+  ATTENDANCE_PAGE: 'AttendancePage',
+  ATTENDANCE_WRITE_PAGE: 'AttendanceWritePage',
+};

@@ -88,7 +88,7 @@ import { useHttp } from '@/hooks';
 import { onMounted, reactive, ref } from 'vue';
 import { AttendanceReportModel } from '@/models';
 import { Plus } from '@element-plus/icons-vue';
-import { Const, PATTERN, TRIGGERS, dateUtil } from '@/utils';
+import { Const, PATTERN, ROUTE_NAMES, TRIGGERS, dateUtil } from '@/utils';
 import { FormInstance, FormRules } from 'element-plus';
 import { useRouter } from 'vue-router';
 
@@ -120,13 +120,19 @@ const request = async () => {
 const addHandler = async () => {
   await yearMonthFormRef.value!.validate(async (valid, _fields) => {
     if (valid) {
-      router.replace(`attendance/${yearMonthForm.yearMonth}/add`);
+      router.push({
+        name: ROUTE_NAMES.ATTENDANCE_PAGE,
+        params: { date: yearMonthForm.yearMonth },
+      });
     }
   });
 };
 
 const edit = (model: AttendanceReportModel) => {
-  router.push(`attendance/${model.date}/add`);
+  router.push({
+    name: ROUTE_NAMES.ATTENDANCE_PAGE,
+    params: { date: model.date },
+  });
 };
 
 onMounted(async () => {

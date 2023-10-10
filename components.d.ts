@@ -7,7 +7,9 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AttendanceForm: typeof import('./src/components/attendance/AttendanceForm.vue')['default']
     AttendanceItemForm: typeof import('./src/components/attendance/AttendanceItemForm.vue')['default']
+    AttendanceTable: typeof import('./src/components/attendance/AttendanceTable.vue')['default']
     Calendar: typeof import('./src/components/common/Calendar/Calendar.vue')['default']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']

@@ -55,6 +55,9 @@
 .el-textarea {
   width: 380px !important;
 }
+.el-table .cell {
+  padding: 0px 8px !important;
+}
 // =============================
 // overwrite end
 // =============================
@@ -112,7 +115,9 @@
     color: var(--el-color-info);
   }
 }
-
+.loading {
+  min-height: 200px;
+}
 // =============================
 // global end
 // =============================
