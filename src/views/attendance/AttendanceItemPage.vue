@@ -202,9 +202,13 @@ const disabledDate = (value: Date): boolean => {
   return date != dateUtil.get(value).format(Const.FORMAT_YYYY_MM);
 };
 
-const routeChangeHandler = (value: string) => {
-  const traffic = trafficList.value.find((item) => item.routeId === value);
-  form.comment = traffic?.comment;
+const routeChangeHandler = (ids: string[]) => {
+  const comment = trafficList.value
+    .filter((item) => ids.includes(item.routeId))
+    .map((item) => item.comment)
+    .filter((item) => item != undefined)
+    .join(',');
+  form.comment = comment;
 };
 
 const submitHandler = async (traffic: TrafficItemModel) => {
@@ -227,7 +231,7 @@ const save = async () => {
     if (!form.withWeekend && [6, 0].includes(d.day())) {
       continue;
     }
-    const attendanceBody = {
+    const body: any = {
       date: d.format(Const.FORMAT_YYYY_MM_DD),
       start: form.start,
       end: form.end,
@@ -236,8 +240,8 @@ const save = async () => {
       timeOff: form.timeOff,
       remotely: form.remotely,
       comment: form.comment,
+      trafficList: [],
     };
-    await post('/attendance', attendanceBody, { withGlobalLoading: false });
     for (let j = 0; j < form.routeIds.length; j++) {
       const traffic = trafficList.value.find(
         (item) => item.routeId === form.routeIds[j],
@@ -250,15 +254,10 @@ const save = async () => {
           roundTrip: traffic.roundTrip,
           comment: traffic.comment,
         };
-        await post(
-          `/attendance/${d.format(Const.FORMAT_YYYY_MM_DD)}/traffic`,
-          trafficBody,
-          {
-            withGlobalLoading: false,
-          },
-        );
+        body.trafficList.push(trafficBody);
       }
     }
+    await post('/attendance', body, { withGlobalLoading: false });
   }
 };
 

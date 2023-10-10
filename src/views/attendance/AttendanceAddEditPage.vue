@@ -11,7 +11,9 @@
       <div class="card-header">
         <span>勤務表【{{ date }}】</span>
         <div>
-          <el-button type="danger" :icon="Delete"> クリア </el-button>
+          <el-button type="danger" :icon="Delete" @click="clear">
+            クリア
+          </el-button>
           <el-button
             type="primary"
             :icon="Plus"
@@ -27,6 +29,7 @@
         v-if="attendanceList.length !== 0"
         :data="attendanceList"
         border
+        @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="44" align="center" />
         <el-table-column
@@ -128,11 +131,13 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { QuestionFilled, Plus, Delete, Select } from '@element-plus/icons-vue';
 import { useHttp } from '@/hooks';
+import { ElMessageBox, ElNotification } from 'element-plus';
 
 const route = useRoute();
 const date = route.params.date as string;
 const attendanceList = ref<AttendanceViewItem[]>([]);
-const { get, loading } = useHttp();
+const selection = ref<DateInfo[]>([]);
+const { get, del, loading } = useHttp();
 
 const initAttendanceItem = (dateInfo: DateInfo) => {
   return { date: dateInfo, start: '', end: '', trafficList: [] };
@@ -157,12 +162,52 @@ const getAttendanceList = (
   return result;
 };
 
-onMounted(async () => {
-  // const mode = route.meta.mode as string;
+const handleSelectionChange = (val: AttendanceViewItem[]) => {
+  selection.value = val.map((item) => item.date);
+};
+
+const requestAttendance = async () => {
   const resp = await get<AttendanceRespItem[]>(`/attendance/${date}`, {
     withGlobalLoading: false,
   });
   attendanceList.value = getAttendanceList(resp.data);
+};
+
+const clear = async () => {
+  if (selection.value.length === 0) {
+    ElNotification({
+      title: '警告',
+      message: '一つ以上を選択する必要があります。',
+      type: 'warning',
+    });
+    return;
+  }
+  const target = selection.value
+    .map((item) => `<li>・${item.yyyyMMDD}</li>`)
+    .join('');
+  try {
+    await ElMessageBox.confirm(
+      `<div>下記の日付の勤務記録を削除してよろしいですか？</div><ul>${target}</ul>`,
+      'ご確認',
+      {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+        dangerouslyUseHTMLString: true,
+      },
+    );
+    for (const item of selection.value) {
+      await del(`/attendance/${item.yyyyMMDD}`, { withGlobalLoading: false });
+    }
+    await requestAttendance();
+  } catch (e: any) {
+    console.log(e);
+  }
+};
+
+onMounted(async () => {
+  // const mode = route.meta.mode as string;
+  await requestAttendance();
 });
 </script>
 
