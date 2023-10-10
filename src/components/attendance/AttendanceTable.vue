@@ -37,9 +37,21 @@
         </span>
       </template>
     </el-table-column>
-    <el-table-column prop="start" label="実働時間" width="76" align="center" />
-    <el-table-column prop="start" label="精算時間" width="76" align="center" />
-    <el-table-column prop="start" label="深夜残業" width="76" align="center" />
+    <el-table-column label="実働時間" width="76" align="center">
+      <template #default="scope">
+        {{ getActualWorkingTime(scope.row) }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="start" label="精算時間" width="76" align="center">
+      <template #default="scope">
+        {{ getCalculateWorkingTime(scope.row) }}
+      </template>
+    </el-table-column>
+    <el-table-column label="深夜残業" width="76" align="center">
+      <template #default="scope">
+        {{ getNightOvertime(scope.row) }}
+      </template>
+    </el-table-column>
     <el-table-column prop="timeOff" label="休暇" width="60" align="center" />
     <el-table-column label="在宅" width="60" align="center">
       <template #default="scope">
@@ -78,6 +90,7 @@
 import { QuestionFilled, Select } from '@element-plus/icons-vue';
 import { AttendanceViewItem } from '@/models';
 import { PropType } from 'vue';
+import { dateUtil } from '@/utils';
 
 defineProps({
   list: {
@@ -97,15 +110,39 @@ const handleSelectionChange = (val: AttendanceViewItem[]) => {
   emits('selection-change', val);
 };
 
-// const getNightOvertime = (item: AttendanceViewItem) => {
+const getNightOvertime = (item: AttendanceViewItem) => {
+  const { start, end, nightBreak } = item;
+  if (start === '' || end === '') {
+    return '';
+  }
+  const earlyMorningOvertime = dateUtil.calcMinutesInRange(start, end, [
+    '00:00',
+    '05:00',
+  ]);
+  const nightOvertime = dateUtil.calcMinutesInRange(start, end, [
+    '22:00',
+    '24:00',
+  ]);
+  const minutes = earlyMorningOvertime + nightOvertime - (nightBreak ?? 0);
+  return dateUtil.formatMinutes(minutes);
+};
 
-// }
+const getCalculateWorkingTime = (item: AttendanceViewItem) => {
+  if (item.start === '' || item.end === '') {
+    return '';
+  }
+  let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
+  minutes = minutes - (item.break ?? 0) - (item.nightBreak ?? 0);
+  minutes = Math.floor(minutes / 15) * 15;
+  return dateUtil.formatMinutes(minutes);
+};
 
-// const getCalculateWorkingTime = (item: AttendanceViewItem) => {
-
-// }
-
-// const getActualWorkingTime = (item: AttendanceViewItem) => {
-
-// }
+const getActualWorkingTime = (item: AttendanceViewItem) => {
+  if (item.start === '' || item.end === '') {
+    return '';
+  }
+  let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
+  minutes = minutes - (item.break ?? 0) - (item.nightBreak ?? 0);
+  return dateUtil.formatMinutes(minutes);
+};
 </script>

@@ -76,37 +76,29 @@ class DateUtil {
     return result;
   }
 
-  public calcMinutesInTimeRange(start: string, end: string) {
+  public calcMinutesInRange(
+    start: string,
+    end: string,
+    range: string[] = ['00:00', '24:00'],
+  ) {
+    if (range.length != 2) {
+      throw new Error('invalid arguments!');
+    }
     const startTime = dayjs(`2023-10-05T${start}`);
     const endTime = dayjs(`2023-10-05T${end}`);
-    const midnight = dayjs('2023-10-05T00:00');
-    const earlyMorning = dayjs(`2023-10-05T${this.nightEnd}`);
-    const lateNight = dayjs(`2023-10-05T${this.nightStart}`);
-    const nextMidnight = dayjs('2023-10-06T00:00');
+    const rangeStart = dayjs(`2023-10-05T${range[0]}`);
+    const rangeEnd = dayjs(`2023-10-05T${range[1]}`);
 
-    const earlyMorningOverlapStart = startTime.isAfter(midnight)
-      ? startTime
-      : midnight;
-    const earlyMorningOverlapEnd = endTime.isBefore(earlyMorning)
-      ? endTime
-      : earlyMorning;
-    const lateNightOverlapStart = startTime.isAfter(lateNight)
-      ? startTime
-      : lateNight;
-    const lateNightOverlapEnd = endTime.isBefore(nextMidnight)
-      ? endTime
-      : nextMidnight;
+    const overlapStart = startTime.isAfter(rangeStart) ? startTime : rangeStart;
+    const overlapEnd = endTime.isBefore(rangeEnd) ? endTime : rangeEnd;
 
-    const earlyMorningMinutes = earlyMorningOverlapEnd.diff(
-      earlyMorningOverlapStart,
-      'minute',
-    );
-    const lateNightMinutes = lateNightOverlapEnd.diff(
-      lateNightOverlapStart,
-      'minute',
-    );
+    const minutes = overlapEnd.diff(overlapStart, 'minute');
+    return Math.max(0, minutes);
+  }
 
-    return Math.max(0, earlyMorningMinutes) + Math.max(0, lateNightMinutes);
+  public formatMinutes(minutes: number) {
+    const time = dayjs().startOf('day').add(minutes, 'minute');
+    return time.format('HH:mm');
   }
 }
 
