@@ -1,5 +1,10 @@
 <template>
-  <el-form class="attendance-write-form" :model="form" label-width="100px">
+  <el-form
+    class="attendance-write-form"
+    :model="form"
+    :rules="rules"
+    label-width="100px"
+  >
     <el-form-item label="日付選択方式" prop="type">
       <el-radio-group :model-value="type" @change="typeHandler">
         <el-radio label="date">単一</el-radio>
@@ -24,21 +29,17 @@
       />
     </el-form-item>
     <el-form-item label="出勤時刻" prop="start">
-      <el-time-select
+      <el-input
         v-model="form.start"
-        start="00:00"
-        end="23:45"
-        step="00:15"
-        placeholder="出勤時刻"
+        :prefix-icon="Timer"
+        placeholder="出勤時刻(HH:mm)"
       />
     </el-form-item>
     <el-form-item label="退勤時刻" prop="end">
-      <el-time-select
+      <el-input
         v-model="form.end"
-        start="00:00"
-        end="23:45"
-        step="00:15"
-        placeholder="退勤時刻"
+        :prefix-icon="Timer"
+        placeholder="退勤時刻(HH:mm)"
       />
     </el-form-item>
     <el-form-item label="昼間休憩" prop="break">
@@ -133,10 +134,12 @@
 
 <script setup lang="ts">
 import { AttendanceItemFormModel, TrafficItemModel } from '@/models';
-import { Const, dateUtil } from '@/utils';
+import { Const, TRIGGERS, dateUtil } from '@/utils';
 import { PropType, computed, ref } from 'vue';
-import { Check, Close, Plus } from '@element-plus/icons-vue';
+import { Check, Close, Plus, Timer } from '@element-plus/icons-vue';
 import TrafficFormDialog from '@/components/traffic/TrafficFormDialog.vue';
+import { useVModel } from '@/hooks';
+import { FormRules } from 'element-plus';
 
 const props = defineProps({
   modelValue: {
@@ -155,14 +158,38 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'addTraffic', 'save', 'back']);
 
-const form = computed({
-  get: () => props.modelValue,
-  set: (newValue) => emits('update:modelValue', newValue),
-});
-
+const form = useVModel<AttendanceItemFormModel>(props, 'modelValue', emits);
 const trafficFormDialogVisible = ref(false);
 const defaultDate = computed(() => dateUtil.get(`${props.yyyymm}-01`).toDate());
 const type = ref('date');
+const rules: FormRules<AttendanceItemFormModel> = {
+  dateRange: [
+    {
+      required: true,
+      message: '日付を選択してください',
+      trigger: TRIGGERS.BLUR,
+    },
+  ],
+  start: [
+    { required: true, message: '出勤時刻は必須です', trigger: TRIGGERS.BLUR },
+    {
+      type: 'string',
+      pattern: /^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$|^24:00$/,
+      message: '出勤時刻のフォーマットは不正です',
+      trigger: TRIGGERS.BLUR,
+    },
+  ],
+  end: [
+    { required: true, message: '退勤時刻は必須です', trigger: TRIGGERS.BLUR },
+    {
+      type: 'string',
+      pattern: /^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$|^24:00$/,
+      message: '退勤時刻のフォーマットは不正です',
+      trigger: TRIGGERS.BLUR,
+    },
+  ],
+};
+
 const placeholder: { [key: string]: string } = {
   date: '単一の日付を選択',
   dates: '複数の日付を選択',

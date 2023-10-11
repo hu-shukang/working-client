@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { Const, ROUTE_NAMES, dateUtil } from '@/utils';
-import { onMounted, reactive } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useTrafficStore } from '@/stores/traffic.store';
 import { storeToRefs } from 'pinia';
@@ -49,7 +49,7 @@ const backRoute = {
   },
 };
 
-const form = reactive<AttendanceItemFormModel>({
+const form = ref<AttendanceItemFormModel>({
   withWeekend: false,
   dateRange: [],
   start: '09:00',
@@ -64,8 +64,8 @@ const form = reactive<AttendanceItemFormModel>({
 
 const addTrafficHandler = async (traffic: TrafficItemModel) => {
   trafficList.value.push(traffic);
-  form.routeIds.push(traffic.routeId);
-  form.comment = traffic.comment;
+  form.value.routeIds.push(traffic.routeId);
+  form.value.comment = traffic.comment;
 };
 
 const back = () => {
@@ -73,29 +73,29 @@ const back = () => {
 };
 
 const save = async () => {
-  let dateRange = form.dateRange;
+  let dateRange = form.value.dateRange;
   if (!Array.isArray(dateRange)) {
     dateRange = [dateRange];
   }
   for (let i = 0; i < dateRange.length; i++) {
     const d = dateUtil.get(dateRange[i]);
-    if (!form.withWeekend && [6, 0].includes(d.day())) {
+    if (!form.value.withWeekend && [6, 0].includes(d.day())) {
       continue;
     }
     const body: any = {
       date: d.format(Const.FORMAT_YYYY_MM_DD),
-      start: form.start,
-      end: form.end,
-      break: form.break,
-      nightBreak: form.nightBreak,
-      timeOff: form.timeOff,
-      remotely: form.remotely,
-      comment: form.comment,
+      start: form.value.start,
+      end: form.value.end,
+      break: form.value.break,
+      nightBreak: form.value.nightBreak,
+      timeOff: form.value.timeOff,
+      remotely: form.value.remotely,
+      comment: form.value.comment,
       trafficList: [],
     };
-    for (let j = 0; j < form.routeIds.length; j++) {
+    for (let j = 0; j < form.value.routeIds.length; j++) {
       const traffic = trafficList.value.find(
-        (item) => item.routeId === form.routeIds[j],
+        (item) => item.routeId === form.value.routeIds[j],
       );
       if (traffic) {
         const trafficBody = {

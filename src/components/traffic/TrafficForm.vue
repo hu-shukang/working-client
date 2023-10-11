@@ -67,8 +67,9 @@
 <script setup lang="ts">
 import { TrafficAddUpdateForm } from '@/models';
 import { FormRules } from 'element-plus';
-import { PropType, computed, ref } from 'vue';
+import { PropType, ref } from 'vue';
 import { Delete, Plus } from '@element-plus/icons-vue';
+import { useVModel } from '@/hooks';
 
 const props = defineProps({
   modelValue: {
@@ -93,10 +94,7 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue']);
 const formRef = ref();
-const form = computed({
-  get: () => props.modelValue,
-  set: (value: any) => emits('update:modelValue', value),
-});
+const form = useVModel<TrafficAddUpdateForm>(props, 'modelValue', emits);
 
 const addTractStation = () => {
   form.value.tractStation?.push('');

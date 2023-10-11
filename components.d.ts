@@ -42,6 +42,7 @@ declare module 'vue' {
     HelloWorld: (typeof import('./src/components/HelloWorld.vue'))['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TimeInput: typeof import('./src/components/form/TimeInput.vue')['default']
     TrafficForm: typeof import('./src/components/traffic/TrafficForm.vue')['default']
     TrafficFormDialog: typeof import('./src/components/traffic/TrafficFormDialog.vue')['default']
     TrafficItem: typeof import('./src/components/traffic/TrafficItem.vue')['default']
