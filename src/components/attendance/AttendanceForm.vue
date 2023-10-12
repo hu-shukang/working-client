@@ -158,7 +158,7 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'addTraffic', 'save', 'back']);
 
-const form = useVModel<AttendanceItemFormModel>(props, 'modelValue', emits);
+const form = useVModel(props, 'modelValue', emits);
 const trafficFormDialogVisible = ref(false);
 const defaultDate = computed(() => dateUtil.get(`${props.yyyymm}-01`).toDate());
 const type = ref('date');

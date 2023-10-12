@@ -20,10 +20,10 @@ import {
   TrafficItemModel,
   trafficFormRules,
 } from '@/models';
-import { computed, reactive } from 'vue';
+import { reactive } from 'vue';
 import TrafficForm from '@/components/traffic/TrafficForm.vue';
 import { FormInstance } from 'element-plus';
-import { useHttp } from '@/hooks';
+import { useHttp, useVModel } from '@/hooks';
 
 const props = defineProps({
   visible: {
@@ -40,10 +40,7 @@ const form = reactive<TrafficAddUpdateForm>({
   tractStation: [''],
 });
 
-const dialogVisible = computed({
-  get: () => props.visible,
-  set: (newValue) => emits('update:visible', newValue),
-});
+const dialogVisible = useVModel(props, 'visible', emits);
 
 const submit = async (formRef: FormInstance) => {
   await formRef.validate(async (valid, _fields) => {

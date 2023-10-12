@@ -1,33 +1,42 @@
+import { StringKey, isObject } from '@/utils';
 import { computed } from 'vue';
 
-const cacheMap = new WeakMap();
+const cacheMap = new WeakMap<any, any>();
 
-export function useVModel<T extends object>(
-  props: any,
-  propName: string,
+export function useVModel<P extends object, K extends StringKey<P>>(
+  props: P,
+  propName: K,
   emits: any,
 ) {
-  return computed({
-    get: () => {
-      if (cacheMap.has(props[propName])) {
-        return cacheMap.get(props[propName]);
-      }
+  const getProxy = (prop: object) => {
+    return new Proxy<typeof prop>(prop, {
+      get: (target, key) => {
+        return Reflect.get(target, key);
+      },
+      set: (target, key, value) => {
+        const newValue = {
+          ...target,
+          [key]: value,
+        };
+        emits(`update:${propName}`, newValue);
+        return true;
+      },
+    });
+  };
 
-      const proxy = new Proxy<T>(props[propName], {
-        get: (target, key) => {
-          return Reflect.get(target, key);
-        },
-        set: (target, key, value) => {
-          const newValue = {
-            ...target,
-            [key]: value,
-          };
-          emits('update:' + propName, newValue);
-          return true;
-        },
-      });
-      cacheMap.set(props[propName], proxy);
-      return proxy;
+  return computed<P[K]>({
+    get: () => {
+      const prop = props[propName];
+      if (isObject(prop)) {
+        if (cacheMap.has(prop)) {
+          return cacheMap.get(prop);
+        }
+        const proxy = getProxy(prop);
+        cacheMap.set(props[propName], proxy);
+        return proxy;
+      } else {
+        return prop;
+      }
     },
     set: (newValue) => {
       emits(`update:${propName}`, newValue);
