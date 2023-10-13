@@ -73,25 +73,13 @@
         </div>
       </template>
       <template #default="scope">
-        <el-link v-if="scope.row.trafficList.length > 0" type="primary">
-          {{ getTrafficTotalCoust(scope.row.trafficList) }}円
+        <el-link
+          v-if="scope.row.trafficList.length > 0"
+          type="primary"
+          @click="trafficClickHandler(scope.row)"
+        >
+          {{ getTrafficTotalCoust(scope.row.trafficList) }}
         </el-link>
-        <!-- <el-popover placement="top-end" :width="800" trigger="click">
-          <template #reference>
-            <el-link v-if="scope.row.trafficList.length > 0" type="primary">
-              {{ getTrafficTotalCoust(scope.row.trafficList) }}円
-            </el-link>
-          </template>
-          <el-table :data="scope.row.trafficList">
-            <el-table-column property="startStation" label="出発駅" />
-            <el-table-column property="tractStation" label="経由駅" />
-            <el-table-column property="endStation" label="到着駅" />
-            <el-table-column property="roundTrip" label="往復実費">
-              <template #default="s"> {{ s.row.roundTrip }}円 </template>
-            </el-table-column>
-            <el-table-column property="comment" label="備考" />
-          </el-table>
-        </el-popover> -->
       </template>
     </el-table-column>
     <el-table-column label="備考">
@@ -102,13 +90,26 @@
       </template>
     </el-table-column>
   </el-table>
+  <el-dialog v-model="dialogVisible" title="交通費明細" width="1100px">
+    <TrafficTable
+      :traffic-list="trafficList"
+      :with-control="false"
+      :with-month-train-pass="false"
+    />
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">OK</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { QuestionFilled, Select } from '@element-plus/icons-vue';
 import { AttendanceTraffic, AttendanceViewItem } from '@/models';
-import { PropType } from 'vue';
-import { dateUtil } from '@/utils';
+import { PropType, ref } from 'vue';
+import { dateUtil, stringUtil } from '@/utils';
+import TrafficTable from '../traffic/TrafficTable.vue';
 
 defineProps({
   list: {
@@ -121,9 +122,10 @@ defineProps({
     default: false,
   },
 });
-
 const emits = defineEmits(['selection-change']);
 
+const trafficList = ref<AttendanceTraffic[]>([]);
+const dialogVisible = ref(false);
 const handleSelectionChange = (val: AttendanceViewItem[]) => {
   emits('selection-change', val);
 };
@@ -165,8 +167,14 @@ const getActualWorkingTime = (item: AttendanceViewItem) => {
 };
 
 const getTrafficTotalCoust = (trafficList: AttendanceTraffic[]) => {
-  return trafficList
+  const result = trafficList
     .map((item: any) => item.roundTrip)
     .reduce((x: number, y: number) => x + y, 0);
+  return stringUtil.formatMoney(result);
+};
+
+const trafficClickHandler = (item: AttendanceViewItem) => {
+  trafficList.value = item.trafficList;
+  dialogVisible.value = true;
 };
 </script>

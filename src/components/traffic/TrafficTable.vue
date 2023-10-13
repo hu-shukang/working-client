@@ -43,13 +43,13 @@
 </template>
 
 <script setup lang="ts">
-import { TrafficItemModel } from '@/models';
+import { TrafficAddUpdateForm } from '@/models';
 import { stringUtil } from '@/utils';
 import { PropType } from 'vue';
 
 defineProps({
   trafficList: {
-    type: Array as PropType<TrafficItemModel[]>,
+    type: Array as PropType<TrafficAddUpdateForm[]>,
     required: true,
   },
   withMonthTrainPass: {
