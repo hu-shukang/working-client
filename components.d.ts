@@ -28,6 +28,7 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSelect: typeof import('element-plus/es')['ElSelect']
@@ -46,6 +47,7 @@ declare module 'vue' {
     TrafficForm: typeof import('./src/components/traffic/TrafficForm.vue')['default']
     TrafficFormDialog: typeof import('./src/components/traffic/TrafficFormDialog.vue')['default']
     TrafficItem: typeof import('./src/components/traffic/TrafficItem.vue')['default']
+    TrafficTable: typeof import('./src/components/traffic/TrafficTable.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

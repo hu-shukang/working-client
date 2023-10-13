@@ -118,6 +118,12 @@
 .loading {
   min-height: 200px;
 }
+
+.auto-font-size {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 // =============================
 // global end
 // =============================

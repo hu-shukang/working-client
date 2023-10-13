@@ -8,6 +8,7 @@ import { router } from './router';
 import vue3GoogleLogin from 'vue3-google-login';
 import { createPinia } from 'pinia';
 import { createPersistedState } from 'pinia-plugin-persistedstate';
+import { useAutoFontSize } from '@/hooks';
 
 const pinia = createPinia();
 pinia.use(
@@ -22,4 +23,5 @@ app.use(pinia);
 app.use(vue3GoogleLogin, {
   clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
 });
+app.directive('auto-font-size', useAutoFontSize().directive);
 app.mount('#app');

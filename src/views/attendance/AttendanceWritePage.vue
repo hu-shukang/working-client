@@ -110,6 +110,7 @@ const save = async () => {
     }
     await post('/attendance', body, { withGlobalLoading: false });
   }
+  back();
 };
 
 onMounted(async () => {

@@ -17,39 +17,12 @@
       </div>
     </template>
     <div v-loading="loading">
-      <el-table v-if="trafficList.length !== 0" :data="trafficList" border>
-        <el-table-column type="index" width="40" align="center" />
-        <el-table-column prop="startStation" label="出発駅" width="180" />
-        <el-table-column prop="tractStation" label="経由駅">
-          <template #default="scope">
-            {{ scope.row.tractStation.join(', ') }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="endStation" label="到着駅" width="180" />
-        <el-table-column prop="roundTrip" label="往復実費(円)" width="110" />
-        <el-table-column prop="monthTrainPass" label="定期券(円)" width="110" />
-        <el-table-column prop="comment" label="備考" />
-        <el-table-column label="操作" width="100" align="center">
-          <template #default="scope">
-            <el-button
-              link
-              type="warning"
-              size="small"
-              @click="editHandler(scope.$index)"
-            >
-              編集
-            </el-button>
-            <el-button
-              link
-              type="danger"
-              size="small"
-              @click="deleteHandler(scope.$index)"
-            >
-              削除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <TrafficTable
+        v-if="trafficList.length > 0"
+        :traffic-list="trafficList"
+        @edit="editHandler"
+        @delete="deleteHandler"
+      />
       <el-empty v-else :image-size="200" description="交通ルートは未登録です" />
     </div>
   </el-card>
@@ -64,6 +37,7 @@ import { ElMessageBox, ElNotification } from 'element-plus';
 import { router } from '@/router';
 import { useTrafficStore } from '@/stores/traffic.store';
 import { storeToRefs } from 'pinia';
+import TrafficTable from '@/components/traffic/TrafficTable.vue';
 
 const trafficStore = useTrafficStore();
 const { trafficList } = storeToRefs(trafficStore);

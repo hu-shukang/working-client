@@ -215,7 +215,9 @@ const routeChangeHandler = (ids: string[]) => {
     .map((item) => item.comment)
     .filter((item) => item != undefined)
     .join(',');
-  form.value.comment = comment;
+  setTimeout(() => {
+    form.value.comment = comment;
+  }, 0);
 };
 
 const trafficFormSubmitHandler = (traffic: TrafficItemModel) => {

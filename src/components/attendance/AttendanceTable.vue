@@ -22,7 +22,7 @@
     <el-table-column prop="end" label="退勤時刻" width="76" align="center" />
     <el-table-column prop="break" label="通常休憩" width="76" align="center">
       <template #default="scope">
-        <span v-if="scope.row.break">{{ scope.row.break + '(分)' }}</span>
+        <span v-if="scope.row.break">{{ scope.row.break + '分' }}</span>
       </template>
     </el-table-column>
     <el-table-column
@@ -33,7 +33,7 @@
     >
       <template #default="scope">
         <span v-if="scope.row.nightBreak">
-          {{ scope.row.nightBreak + '(分)' }}
+          {{ scope.row.nightBreak + '分' }}
         </span>
       </template>
     </el-table-column>
@@ -65,7 +65,7 @@
           <el-tooltip
             class="box-item"
             effect="dark"
-            content="交通費の金額にフォーカスすれば、詳細をご確認できます。"
+            content="交通費の金額を押下すれば、詳細をご確認できます。"
             placement="top"
           >
             <el-icon><QuestionFilled /></el-icon>
@@ -73,22 +73,40 @@
         </div>
       </template>
       <template #default="scope">
-        <span v-if="scope.row.trafficList.length > 0">
-          {{
-            scope.row.trafficList
-              .map((item: any) => item.roundTrip)
-              .reduce((x: number, y: number) => x + y, 0)
-          }}(円)
-        </span>
+        <el-link v-if="scope.row.trafficList.length > 0" type="primary">
+          {{ getTrafficTotalCoust(scope.row.trafficList) }}円
+        </el-link>
+        <!-- <el-popover placement="top-end" :width="800" trigger="click">
+          <template #reference>
+            <el-link v-if="scope.row.trafficList.length > 0" type="primary">
+              {{ getTrafficTotalCoust(scope.row.trafficList) }}円
+            </el-link>
+          </template>
+          <el-table :data="scope.row.trafficList">
+            <el-table-column property="startStation" label="出発駅" />
+            <el-table-column property="tractStation" label="経由駅" />
+            <el-table-column property="endStation" label="到着駅" />
+            <el-table-column property="roundTrip" label="往復実費">
+              <template #default="s"> {{ s.row.roundTrip }}円 </template>
+            </el-table-column>
+            <el-table-column property="comment" label="備考" />
+          </el-table>
+        </el-popover> -->
       </template>
     </el-table-column>
-    <el-table-column prop="comment" label="備考" />
+    <el-table-column label="備考">
+      <template #default="scope">
+        <div v-auto-font-size class="auto-font-size">
+          {{ scope.row.comment }}
+        </div>
+      </template>
+    </el-table-column>
   </el-table>
 </template>
 
 <script setup lang="ts">
 import { QuestionFilled, Select } from '@element-plus/icons-vue';
-import { AttendanceViewItem } from '@/models';
+import { AttendanceTraffic, AttendanceViewItem } from '@/models';
 import { PropType } from 'vue';
 import { dateUtil } from '@/utils';
 
@@ -144,5 +162,11 @@ const getActualWorkingTime = (item: AttendanceViewItem) => {
   let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
   minutes = minutes - (item.break ?? 0) - (item.nightBreak ?? 0);
   return dateUtil.formatMinutes(minutes);
+};
+
+const getTrafficTotalCoust = (trafficList: AttendanceTraffic[]) => {
+  return trafficList
+    .map((item: any) => item.roundTrip)
+    .reduce((x: number, y: number) => x + y, 0);
 };
 </script>
