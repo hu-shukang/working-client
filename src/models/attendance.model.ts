@@ -52,6 +52,14 @@ export type AttendanceRespItem = {
 export type AttendanceViewItem = {
   /** yyyy-mm-dd */
   date: DateInfo;
+  /** トータル交通費 */
+  totalTraffic?: number;
+  /** 実働時間(単位:分) */
+  actualWorkingTime?: number;
+  /** 精算時間(単位:分) */
+  calculateWorkingTime?: number;
+  /** 深夜残業(単位:分) */
+  nightOvertime?: number;
 } & AttendanceItem;
 
 export type AttendanceItem = {

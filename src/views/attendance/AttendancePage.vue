@@ -52,6 +52,20 @@ const initAttendanceItem = (dateInfo: DateInfo) => {
   return { date: dateInfo, start: '', end: '', trafficList: [] };
 };
 
+const toAttendanceItem = (dateInfo: DateInfo, respItem: AttendanceRespItem) => {
+  const result: AttendanceViewItem = {
+    ...respItem,
+    date: dateInfo,
+    actualWorkingTime: dateUtil.getActualWorkingTime(respItem),
+    calculateWorkingTime: dateUtil.getCalculateWorkingTime(respItem),
+    nightOvertime: dateUtil.getNightOvertime(respItem),
+    totalTraffic: respItem.trafficList
+      .map((item: any) => item.roundTrip)
+      .reduce((x: number, y: number) => x + y, 0),
+  };
+  return result;
+};
+
 const getAttendanceList = (
   items: AttendanceRespItem[],
 ): AttendanceViewItem[] => {
@@ -62,10 +76,7 @@ const getAttendanceList = (
     if (idx === items.length || dateInfo.yyyyMMDD !== items[idx].date) {
       result.push(initAttendanceItem(dateInfo));
     } else {
-      result.push({
-        ...items[idx++],
-        date: dateInfo,
-      });
+      result.push(toAttendanceItem(dateInfo, items[idx++]));
     }
   }
   return result;

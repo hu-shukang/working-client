@@ -39,17 +39,17 @@
     </el-table-column>
     <el-table-column label="実働時間" width="76" align="center">
       <template #default="scope">
-        {{ getActualWorkingTime(scope.row) }}
+        {{ dateUtil.formatMinutes(scope.row.actualWorkingTime) }}
       </template>
     </el-table-column>
-    <el-table-column prop="start" label="精算時間" width="76" align="center">
+    <el-table-column label="精算時間" width="76" align="center">
       <template #default="scope">
-        {{ getCalculateWorkingTime(scope.row) }}
+        {{ dateUtil.formatMinutes(scope.row.calculateWorkingTime) }}
       </template>
     </el-table-column>
     <el-table-column label="深夜残業" width="76" align="center">
       <template #default="scope">
-        {{ getNightOvertime(scope.row) }}
+        {{ dateUtil.formatMinutes(scope.row.nightOvertime) }}
       </template>
     </el-table-column>
     <el-table-column prop="timeOff" label="休暇" width="60" align="center" />
@@ -78,7 +78,7 @@
           type="primary"
           @click="trafficClickHandler(scope.row)"
         >
-          {{ getTrafficTotalCoust(scope.row.trafficList) }}
+          {{ stringUtil.formatMoney(scope.row.totalTraffic) }}
         </el-link>
       </template>
     </el-table-column>
@@ -90,9 +90,14 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-dialog v-model="dialogVisible" title="交通費明細" width="1100px">
+  <el-dialog
+    v-if="itemTemp"
+    v-model="dialogVisible"
+    :title="dialogTitle"
+    width="1100px"
+  >
     <TrafficTable
-      :traffic-list="trafficList"
+      :traffic-list="itemTemp.trafficList"
       :with-control="false"
       :with-month-train-pass="false"
     />
@@ -106,10 +111,11 @@
 
 <script setup lang="ts">
 import { QuestionFilled, Select } from '@element-plus/icons-vue';
-import { AttendanceTraffic, AttendanceViewItem } from '@/models';
+import { AttendanceViewItem } from '@/models';
 import { PropType, ref } from 'vue';
 import { dateUtil, stringUtil } from '@/utils';
-import TrafficTable from '../traffic/TrafficTable.vue';
+import TrafficTable from '@/components/traffic/TrafficTable.vue';
+import { computed } from 'vue';
 
 defineProps({
   list: {
@@ -124,57 +130,17 @@ defineProps({
 });
 const emits = defineEmits(['selection-change']);
 
-const trafficList = ref<AttendanceTraffic[]>([]);
+const itemTemp = ref<AttendanceViewItem>();
 const dialogVisible = ref(false);
+const dialogTitle = computed(
+  () => `【${itemTemp.value?.date.yyyyMMDD}】分の交通費明細`,
+);
 const handleSelectionChange = (val: AttendanceViewItem[]) => {
   emits('selection-change', val);
 };
 
-const getNightOvertime = (item: AttendanceViewItem) => {
-  const { start, end, nightBreak } = item;
-  if (start === '' || end === '') {
-    return '';
-  }
-  const earlyMorningOvertime = dateUtil.calcMinutesInRange(start, end, [
-    '00:00',
-    '05:00',
-  ]);
-  const nightOvertime = dateUtil.calcMinutesInRange(start, end, [
-    '22:00',
-    '24:00',
-  ]);
-  const minutes = earlyMorningOvertime + nightOvertime - (nightBreak ?? 0);
-  return dateUtil.formatMinutes(minutes);
-};
-
-const getCalculateWorkingTime = (item: AttendanceViewItem) => {
-  if (item.start === '' || item.end === '') {
-    return '';
-  }
-  let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
-  minutes = minutes - (item.break ?? 0) - (item.nightBreak ?? 0);
-  minutes = Math.floor(minutes / 15) * 15;
-  return dateUtil.formatMinutes(minutes);
-};
-
-const getActualWorkingTime = (item: AttendanceViewItem) => {
-  if (item.start === '' || item.end === '') {
-    return '';
-  }
-  let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
-  minutes = minutes - (item.break ?? 0) - (item.nightBreak ?? 0);
-  return dateUtil.formatMinutes(minutes);
-};
-
-const getTrafficTotalCoust = (trafficList: AttendanceTraffic[]) => {
-  const result = trafficList
-    .map((item: any) => item.roundTrip)
-    .reduce((x: number, y: number) => x + y, 0);
-  return stringUtil.formatMoney(result);
-};
-
 const trafficClickHandler = (item: AttendanceViewItem) => {
-  trafficList.value = item.trafficList;
+  itemTemp.value = item;
   dialogVisible.value = true;
 };
 </script>

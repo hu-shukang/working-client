@@ -4,7 +4,7 @@ import utc from 'dayjs/plugin/utc';
 import ja from 'dayjs/locale/ja';
 import isBetween from 'dayjs/plugin/isBetween';
 import { Const, WEEKDAY } from './const.util';
-import { DateInfo } from '@/models';
+import { AttendanceItem, AttendanceViewItem, DateInfo } from '@/models';
 
 type DayjsDate = string | number | dayjs.Dayjs | Date | null | undefined;
 
@@ -96,9 +96,48 @@ class DateUtil {
     return Math.max(0, minutes);
   }
 
-  public formatMinutes(minutes: number) {
+  public formatMinutes(minutes: number | undefined) {
+    if (!minutes) {
+      return '';
+    }
     const time = dayjs().startOf('day').add(minutes, 'minute');
     return time.format('HH:mm');
+  }
+
+  public getNightOvertime(item: AttendanceItem) {
+    const { start, end, nightBreak } = item;
+    if (start === '' || end === '') {
+      return undefined;
+    }
+    const earlyMorningOvertime = dateUtil.calcMinutesInRange(start, end, [
+      '00:00',
+      '05:00',
+    ]);
+    const nightOvertime = dateUtil.calcMinutesInRange(start, end, [
+      '22:00',
+      '24:00',
+    ]);
+    const minutes = earlyMorningOvertime + nightOvertime - (nightBreak ?? 0);
+    return minutes;
+  }
+
+  public getCalculateWorkingTime(item: AttendanceItem) {
+    if (item.start === '' || item.end === '') {
+      return undefined;
+    }
+    let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
+    minutes = minutes - (item.break ?? 0) - (item.nightBreak ?? 0);
+    minutes = Math.floor(minutes / 15) * 15;
+    return minutes;
+  }
+
+  public getActualWorkingTime(item: AttendanceItem) {
+    if (item.start === '' || item.end === '') {
+      return undefined;
+    }
+    let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
+    minutes = minutes - (item.break ?? 0) - (item.nightBreak ?? 0);
+    return minutes;
   }
 }
 
