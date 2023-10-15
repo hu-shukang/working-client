@@ -4,14 +4,11 @@ import utc from 'dayjs/plugin/utc';
 import ja from 'dayjs/locale/ja';
 import isBetween from 'dayjs/plugin/isBetween';
 import { Const, WEEKDAY } from './const.util';
-import { AttendanceItem, AttendanceViewItem, DateInfo } from '@/models';
+import { AttendanceItem, DateInfo } from '@/models';
 
 type DayjsDate = string | number | dayjs.Dayjs | Date | null | undefined;
 
 class DateUtil {
-  private readonly nightStart = '22:00';
-  private readonly nightEnd = '05:00';
-
   constructor() {
     dayjs.extend(timezone);
     dayjs.extend(utc);
@@ -138,6 +135,14 @@ class DateUtil {
     let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
     minutes = minutes - (item.break ?? 0) - (item.nightBreak ?? 0);
     return minutes;
+  }
+
+  public async getHoliday(year: string): Promise<Record<string, string>> {
+    const resp = await fetch(`/public/holidays/${year}.json`);
+    if (resp.ok) {
+      return await resp.json();
+    }
+    return {};
   }
 }
 

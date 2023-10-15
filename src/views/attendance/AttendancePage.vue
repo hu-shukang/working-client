@@ -24,6 +24,7 @@
       <AttendanceTable
         v-if="attendanceList.length !== 0"
         :list="attendanceList"
+        :holiday="holiday"
         :with-check="true"
         @selection-change="handleSelectionChange"
       />
@@ -46,6 +47,7 @@ const route = useRoute();
 const date = route.params.date as string;
 const attendanceList = ref<AttendanceViewItem[]>([]);
 const selection = ref<DateInfo[]>([]);
+const holiday = ref<Record<string, string>>({});
 const { get, del, loading } = useHttp();
 
 const initAttendanceItem = (dateInfo: DateInfo) => {
@@ -136,5 +138,6 @@ const toWritePage = () => {
 
 onMounted(async () => {
   await requestAttendance();
+  holiday.value = await dateUtil.getHoliday(date.split('-')[0]);
 });
 </script>

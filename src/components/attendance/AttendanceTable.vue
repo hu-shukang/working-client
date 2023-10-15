@@ -9,7 +9,15 @@
     <el-table-column prop="date.value" label="日付" width="66" align="center" />
     <el-table-column label="曜日" width="60" align="center">
       <template #default="scope">
-        <el-tag v-if="scope.row.date.isSaturday" type="warning">
+        <el-tooltip
+          v-if="holiday[scope.row.date.yyyyMMDD]"
+          effect="dark"
+          :content="holiday[scope.row.date.yyyyMMDD]"
+          placement="top"
+        >
+          <el-tag class="holiday" type="danger"> 祝 </el-tag>
+        </el-tooltip>
+        <el-tag v-else-if="scope.row.date.isSaturday" type="warning">
           {{ scope.row.date.weekday }}
         </el-tag>
         <el-tag v-else-if="scope.row.date.isSunday" type="danger">
@@ -85,7 +93,7 @@
     <el-table-column label="備考">
       <template #default="scope">
         <div v-auto-font-size class="auto-font-size">
-          {{ scope.row.comment }}
+          {{ scope.row.comment ?? holiday[scope.row.date.yyyyMMDD] }}
         </div>
       </template>
     </el-table-column>
@@ -126,6 +134,11 @@ defineProps({
     type: Boolean,
     required: false,
     default: false,
+  },
+  holiday: {
+    type: Object as PropType<Record<string, string>>,
+    required: false,
+    default: () => ({}),
   },
 });
 const emits = defineEmits(['selection-change']);
