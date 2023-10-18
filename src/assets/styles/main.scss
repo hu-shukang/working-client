@@ -3,6 +3,11 @@
   --common-padding: 20px;
 }
 
+* {
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif !important;
+}
+
 // =============================
 // overwrite start
 // =============================
@@ -77,12 +82,19 @@
   flex-grow: 1 !important;
 }
 
-.ml-1 {
-  margin-left: 2px !important;
-}
-
-.ml-2 {
-  margin-left: 4px !important;
+$base-margin: 6px !default;
+$directions: (
+  'l': 'left',
+  'r': 'right',
+  't': 'top',
+  'b': 'bottom',
+);
+@each $abbr, $dir in $directions {
+  @for $i from 1 through 4 {
+    .m#{$abbr}-#{$i} {
+      margin-#{$dir}: $base-margin * $i !important;
+    }
+  }
 }
 
 // =============================
@@ -123,6 +135,10 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.desc-label {
+  width: 200px;
 }
 // =============================
 // global end

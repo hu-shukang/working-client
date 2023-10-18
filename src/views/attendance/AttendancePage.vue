@@ -28,19 +28,26 @@
         :with-check="true"
         @selection-change="handleSelectionChange"
       />
+      <AttendanceSummary :data="attendanceSummaryModel" />
     </div>
   </el-card>
 </template>
 
 <script setup lang="ts">
-import { AttendanceRespItem, AttendanceViewItem, DateInfo } from '@/models';
+import {
+  AttendanceRespItem,
+  AttendanceSummaryModel,
+  AttendanceViewItem,
+  DateInfo,
+} from '@/models';
 import { ROUTE_NAMES, dateUtil } from '@/utils';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Plus, Delete } from '@element-plus/icons-vue';
 import { useHttp } from '@/hooks';
 import { ElMessageBox, ElNotification } from 'element-plus';
 import AttendanceTable from '@/components/attendance/AttendanceTable.vue';
+import AttendanceSummary from '@/components/attendance/AttendanceSummary.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -49,6 +56,29 @@ const attendanceList = ref<AttendanceViewItem[]>([]);
 const selection = ref<DateInfo[]>([]);
 const holiday = ref<Record<string, string>>({});
 const { get, del, loading } = useHttp();
+
+const attendanceSummaryModel = computed<AttendanceSummaryModel>(() => {
+  let totalActualWorkingTime = 0;
+  let totalCalculateWorkingTime = 0;
+  let totalNightOvertime = 0;
+  let remotelyCount = 0;
+  let totalRoundTrip = 0;
+  for (const item of attendanceList.value) {
+    totalActualWorkingTime += item.actualWorkingTime ?? 0;
+    totalCalculateWorkingTime += item.calculateWorkingTime ?? 0;
+    totalNightOvertime += item.nightOvertime ?? 0;
+    remotelyCount += item.remotely ? 1 : 0;
+    totalRoundTrip += item.totalTraffic ?? 0;
+  }
+  return {
+    date: route.params.date as string,
+    totalActualWorkingTime: totalActualWorkingTime,
+    totalCalculateWorkingTime: totalCalculateWorkingTime,
+    totalNightOvertime: totalNightOvertime,
+    remotelyCount: remotelyCount,
+    totalRoundTrip: totalRoundTrip,
+  };
+});
 
 const initAttendanceItem = (dateInfo: DateInfo) => {
   return { date: dateInfo, start: '', end: '', trafficList: [] };

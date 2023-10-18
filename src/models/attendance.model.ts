@@ -44,6 +44,21 @@ export type AttendanceTraffic = {
   comment?: string;
 };
 
+export type AttendanceSummaryModel = {
+  /** yyyy-mm */
+  date: string;
+  /** 実働時間合計 */
+  totalActualWorkingTime: number;
+  /** 精算時間合計 */
+  totalCalculateWorkingTime: number;
+  /** 深夜残業時間合計 */
+  totalNightOvertime: number;
+  /** 在宅日数 */
+  remotelyCount: number;
+  /** 交通費実費合計 */
+  totalRoundTrip: number;
+};
+
 export type AttendanceRespItem = {
   /** yyyy-mm-dd */
   date: string;

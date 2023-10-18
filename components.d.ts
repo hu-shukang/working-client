@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AttendanceForm: typeof import('./src/components/attendance/AttendanceForm.vue')['default']
     AttendanceItemForm: typeof import('./src/components/attendance/AttendanceItemForm.vue')['default']
+    AttendanceSummary: typeof import('./src/components/attendance/AttendanceSummary.vue')['default']
     AttendanceTable: typeof import('./src/components/attendance/AttendanceTable.vue')['default']
     Calendar: typeof import('./src/components/common/Calendar/Calendar.vue')['default']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -17,6 +18,8 @@ declare module 'vue' {
     ElCard: typeof import('element-plus/es')['ElCard']
     ElConfigProvider: (typeof import('element-plus/es'))['ElConfigProvider']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
+    ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
+    ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElForm: typeof import('element-plus/es')['ElForm']
