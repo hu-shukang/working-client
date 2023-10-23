@@ -38,3 +38,22 @@ export const ROUTE_NAMES = {
   ATTENDANCE_PAGE: 'AttendancePage',
   ATTENDANCE_WRITE_PAGE: 'AttendanceWritePage',
 };
+
+export const PROCESS_INFOS = {
+  finish: {
+    color: '#67c23a',
+    message: '作成完了',
+  },
+  processing: {
+    color: '#409eff',
+    message: '作成中',
+  },
+  waiting: {
+    color: '#909399',
+    message: '作成待ち',
+  },
+  error: {
+    color: '#f56c6c',
+    message: '作成失敗',
+  },
+};

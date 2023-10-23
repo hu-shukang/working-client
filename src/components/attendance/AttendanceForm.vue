@@ -28,6 +28,18 @@
         end-placeholder="終了日"
       />
     </el-form-item>
+    <el-form-item
+      v-if="type !== 'date'"
+      label="週末休日除外"
+      prop="skipHoliday"
+    >
+      <el-switch
+        v-model="form.skipHoliday"
+        :active-icon="Check"
+        :inactive-icon="Close"
+        inline-prompt
+      />
+    </el-form-item>
     <el-form-item label="出勤時刻" prop="start">
       <el-input
         v-model="form.start"
@@ -225,7 +237,7 @@ const trafficFormSubmitHandler = (traffic: TrafficItemModel) => {
 };
 
 const save = () => {
-  emits('save');
+  emits('save', type.value);
 };
 
 const back = () => {

@@ -24,11 +24,14 @@
       <AttendanceTable
         v-if="attendanceList.length !== 0"
         :list="attendanceList"
-        :holiday="holiday"
+        :holiday="attendanceStore.holiday[year]"
         :with-check="true"
         @selection-change="handleSelectionChange"
       />
-      <AttendanceSummary :data="attendanceSummaryModel" />
+      <AttendanceSummary
+        v-if="attendanceList.length !== 0"
+        :data="attendanceSummaryModel"
+      />
     </div>
   </el-card>
 </template>
@@ -48,13 +51,15 @@ import { useHttp } from '@/hooks';
 import { ElMessageBox, ElNotification } from 'element-plus';
 import AttendanceTable from '@/components/attendance/AttendanceTable.vue';
 import AttendanceSummary from '@/components/attendance/AttendanceSummary.vue';
+import { useAttendanceStore } from '@/stores/attendance.store';
 
 const router = useRouter();
 const route = useRoute();
 const date = route.params.date as string;
+const year = date.split('-')[0];
 const attendanceList = ref<AttendanceViewItem[]>([]);
 const selection = ref<DateInfo[]>([]);
-const holiday = ref<Record<string, string>>({});
+const attendanceStore = useAttendanceStore();
 const { get, del, loading } = useHttp();
 
 const attendanceSummaryModel = computed<AttendanceSummaryModel>(() => {
@@ -168,6 +173,9 @@ const toWritePage = () => {
 
 onMounted(async () => {
   await requestAttendance();
-  holiday.value = await dateUtil.getHoliday(date.split('-')[0]);
+  if (!attendanceStore.holiday[year]) {
+    const holidayList = await dateUtil.getHoliday(year);
+    attendanceStore.holiday = { [year]: holidayList };
+  }
 });
 </script>

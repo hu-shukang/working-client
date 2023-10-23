@@ -97,8 +97,9 @@ class DateUtil {
     if (!minutes) {
       return '';
     }
-    const time = dayjs().startOf('day').add(minutes, 'minute');
-    return time.format('HH:mm');
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return `${h}:${m >= 10 ? m : '0' + m}`;
   }
 
   public getNightOvertime(item: AttendanceItem) {

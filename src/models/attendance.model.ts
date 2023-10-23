@@ -16,8 +16,8 @@ export type AttendanceReportModel = {
 };
 
 export type AttendanceItemFormModel = {
-  withWeekend: boolean;
   dateRange: Date[];
+  skipHoliday: boolean;
   start: string;
   end: string;
   break?: number;
@@ -108,4 +108,9 @@ export type DateInfo = {
   weekday: string;
   day: number;
   holiday?: string;
+};
+
+export type Process = {
+  date: string;
+  process: 'finish' | 'processing' | 'waiting' | 'error';
 };
