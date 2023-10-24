@@ -60,7 +60,14 @@
         {{ dateUtil.formatMinutes(scope.row.nightOvertime) }}
       </template>
     </el-table-column>
-    <el-table-column prop="timeOff" label="休暇" width="60" align="center" />
+    <el-table-column label="休暇" width="60" align="center">
+      <template #default="scope">
+        {{
+          TIME_OFF_LIST.find((item) => item.value == scope.row.timeOff)
+            ?.label ?? ''
+        }}
+      </template>
+    </el-table-column>
     <el-table-column label="在宅" width="60" align="center">
       <template #default="scope">
         <el-icon v-if="scope.row.remotely"><Select /></el-icon>
@@ -121,7 +128,7 @@
 import { QuestionFilled, Select } from '@element-plus/icons-vue';
 import { AttendanceViewItem } from '@/models';
 import { PropType, ref } from 'vue';
-import { dateUtil, stringUtil } from '@/utils';
+import { dateUtil, stringUtil, TIME_OFF_LIST } from '@/utils';
 import TrafficTable from '@/components/traffic/TrafficTable.vue';
 import { computed } from 'vue';
 

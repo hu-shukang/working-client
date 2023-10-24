@@ -18,11 +18,11 @@ export type AttendanceReportModel = {
 export type AttendanceItemFormModel = {
   dateRange: Date[];
   skipHoliday: boolean;
-  start: string;
-  end: string;
+  start?: string;
+  end?: string;
   break?: number;
   nightBreak?: number;
-  timeOff?: number;
+  timeOff?: string;
   remotely: boolean;
   comment?: string;
   routeIds: string[];
@@ -79,9 +79,9 @@ export type AttendanceViewItem = {
 
 export type AttendanceItem = {
   /** 出勤時刻 HH:mm */
-  start: string;
+  start?: string;
   /** 退勤時刻 HH:mm */
-  end: string;
+  end?: string;
   /** 通常休憩(単位:分) */
   break?: number;
   /** 深夜休憩(単位:分) */

@@ -57,3 +57,46 @@ export const PROCESS_INFOS = {
     message: '作成失敗',
   },
 };
+
+export const TIME_OFF_LIST = [
+  {
+    label: '有休',
+    value: '1',
+  },
+  {
+    label: '半有休',
+    value: '2',
+  },
+  {
+    label: '休日出勤',
+    value: '3',
+  },
+  {
+    label: '振替休日',
+    value: '4',
+  },
+  {
+    label: '振替出勤',
+    value: '5',
+  },
+  {
+    label: '特別休暇',
+    value: '6',
+  },
+  {
+    label: '欠勤',
+    value: '7',
+  },
+  {
+    label: '遅刻',
+    value: '8',
+  },
+  {
+    label: '早退',
+    value: '9',
+  },
+  {
+    label: 'その他',
+    value: '10',
+  },
+];

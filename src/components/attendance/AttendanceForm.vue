@@ -73,8 +73,18 @@
       </el-input>
     </el-form-item>
     <el-form-item label="休暇" prop="timeOff">
-      <el-select v-model="form.timeOff" clearable placeholder="休暇">
-        <el-option label="item.label" value="item.value" />
+      <el-select
+        :model-value="form.timeOff"
+        clearable
+        placeholder="休暇"
+        @change="timeOffChangeHandler"
+      >
+        <el-option
+          v-for="op in TIME_OFF_LIST"
+          :key="op.value"
+          :label="op.label"
+          :value="op.value"
+        />
       </el-select>
     </el-form-item>
     <el-form-item label="在宅勤務" prop="remotely">
@@ -146,7 +156,7 @@
 
 <script setup lang="ts">
 import { AttendanceItemFormModel, TrafficItemModel } from '@/models';
-import { Const, TRIGGERS, dateUtil } from '@/utils';
+import { Const, TRIGGERS, dateUtil, TIME_OFF_LIST } from '@/utils';
 import { PropType, computed, ref } from 'vue';
 import { Check, Close, Plus, Timer } from '@element-plus/icons-vue';
 import TrafficFormDialog from '@/components/traffic/TrafficFormDialog.vue';
@@ -234,6 +244,24 @@ const routeChangeHandler = (ids: string[]) => {
 
 const trafficFormSubmitHandler = (traffic: TrafficItemModel) => {
   emits('addTraffic', traffic);
+};
+
+const timeOffChangeHandler = (val: string) => {
+  if (val === '1') {
+    form.value = {
+      ...form.value,
+      start: undefined,
+      end: undefined,
+      break: undefined,
+      nightBreak: undefined,
+      remotely: false,
+      routeIds: [],
+      timeOff: val,
+      comment: undefined,
+    };
+  } else {
+    form.value.timeOff = val;
+  }
 };
 
 const save = () => {

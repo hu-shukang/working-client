@@ -5,6 +5,7 @@ import ja from 'dayjs/locale/ja';
 import isBetween from 'dayjs/plugin/isBetween';
 import { Const, WEEKDAY } from './const.util';
 import { AttendanceItem, DateInfo } from '@/models';
+import { isBlank } from 'underscore.string';
 
 type DayjsDate = string | number | dayjs.Dayjs | Date | null | undefined;
 
@@ -104,14 +105,19 @@ class DateUtil {
 
   public getNightOvertime(item: AttendanceItem) {
     const { start, end, nightBreak } = item;
-    if (start === '' || end === '') {
+    if (
+      item.start === undefined ||
+      item.end === undefined ||
+      isBlank(item.start) ||
+      isBlank(item.end)
+    ) {
       return undefined;
     }
-    const earlyMorningOvertime = dateUtil.calcMinutesInRange(start, end, [
+    const earlyMorningOvertime = dateUtil.calcMinutesInRange(start!, end!, [
       '00:00',
       '05:00',
     ]);
-    const nightOvertime = dateUtil.calcMinutesInRange(start, end, [
+    const nightOvertime = dateUtil.calcMinutesInRange(start!, end!, [
       '22:00',
       '24:00',
     ]);
@@ -120,7 +126,12 @@ class DateUtil {
   }
 
   public getCalculateWorkingTime(item: AttendanceItem) {
-    if (item.start === '' || item.end === '') {
+    if (
+      item.start === undefined ||
+      item.end === undefined ||
+      isBlank(item.start) ||
+      isBlank(item.end)
+    ) {
       return undefined;
     }
     let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
@@ -130,7 +141,12 @@ class DateUtil {
   }
 
   public getActualWorkingTime(item: AttendanceItem) {
-    if (item.start === '' || item.end === '') {
+    if (
+      item.start === undefined ||
+      item.end === undefined ||
+      isBlank(item.start) ||
+      isBlank(item.end)
+    ) {
       return undefined;
     }
     let minutes = dateUtil.calcMinutesInRange(item.start, item.end);
