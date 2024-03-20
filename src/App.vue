@@ -1,8 +1,9 @@
 <template>
   <el-config-provider :locale="local">
-    <div v-loading.fullscreen.lock="loading" class="global-loading">
+    <!-- <div v-loading.fullscreen.lock="loading" class="global-loading">
       <router-view />
-    </div>
+    </div> -->
+    <CommonTable />
   </el-config-provider>
 </template>
 

@@ -12,6 +12,7 @@ declare module 'vue' {
     AttendanceSummary: typeof import('./src/components/attendance/AttendanceSummary.vue')['default']
     AttendanceTable: typeof import('./src/components/attendance/AttendanceTable.vue')['default']
     Calendar: typeof import('./src/components/common/Calendar/Calendar.vue')['default']
+    CommonTable: typeof import('./src/components/common/Table/CommonTable.vue')['default']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
